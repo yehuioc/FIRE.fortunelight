@@ -18,7 +18,7 @@ This directory contains the recoverable source snapshots for every complete rele
 
 The archive keeps the executable mini-program source needed to inspect/rebuild each release (app/pages/utils/config/readme/version files).
 
-Generated visual-test screenshots, test output, docs generated during QA, and project.private.config.json were intentionally excluded from this compact GitHub transport archive. The original release ZIP hashes are recorded in /VERSIONS.md.
+Generated visual-test screenshots, test output, docs generated during QA, and project.private.config.json were intentionally excluded from this compact GitHub transport archive. Repository-wide completion and integrity status is recorded in /VERSIONS.md.
 
 ## Archive identity
 
