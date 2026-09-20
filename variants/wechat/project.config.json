@@ -1,0 +1,44 @@
+{
+  "description": "财富自由指南灯 v0.6.1 · 记录动力与每周回顾",
+  "packOptions": {
+    "ignore": [
+      {
+        "type": "folder",
+        "value": "tests"
+      },
+      {
+        "type": "folder",
+        "value": "visual_test"
+      },
+      {
+        "type": "folder",
+        "value": "docs"
+      },
+      {
+        "type": "file",
+        "value": "README.md"
+      },
+      {
+        "type": "file",
+        "value": "VERSION.txt"
+      },
+      {
+        "type": "folder",
+        "value": ".git"
+      }
+    ]
+  },
+  "setting": {
+    "es6": true,
+    "postcss": true,
+    "minified": true,
+    "checkInvalidKey": true,
+    "checkSiteMap": true,
+    "uploadWithSourceMap": true,
+    "compileHotReLoad": true
+  },
+  "compileType": "miniprogram",
+  "appid": "touristappid",
+  "projectname": "wealth-freedom-beacon-v061",
+  "condition": {}
+}

@@ -1,0 +1,88 @@
+.preset-page { min-height: 100vh; padding: 28rpx 28rpx 70rpx; box-sizing: border-box; background: #07080c; color: #eee9df; }
+.card { margin-bottom: 20rpx; padding: 26rpx; background: #11141a; border: 1rpx solid rgba(255,255,255,.08); border-radius: 26rpx; }
+.intro__title, .section-title { color: #f1ede3; font-size: 29rpx; font-weight: 650; }
+.intro__text, .empty, .foot-note { margin-top: 12rpx; color: #7d818b; font-size: 21rpx; line-height: 1.65; }
+.field { margin-top: 22rpx; }
+.field__label { margin-bottom: 9rpx; color: #8b8e96; font-size: 21rpx; }
+.optional { color: #666a73; font-size: 18rpx; }
+.control { min-height: 78rpx; padding: 0 20rpx; box-sizing: border-box; display: flex; align-items: center; background: #171a21; border-radius: 15rpx; color: #ddd8ce; font-size: 23rpx; }
+.control--input { height: 78rpx; line-height: 78rpx; }
+.save-btn { width: 100%; height: 82rpx; margin: 24rpx 0 0; display: flex; align-items: center; justify-content: center; background: #e1b954; color: #17140e; border-radius: 17rpx; font-size: 24rpx; font-weight: 700; }
+.preset-row { padding: 20rpx 0; display: flex; align-items: center; border-top: 1rpx solid rgba(255,255,255,.06); }
+.preset-row:first-of-type { margin-top: 12rpx; }
+.preset-row__main { min-width: 0; flex: 1; }
+.preset-row__title { color: #ded9cf; font-size: 23rpx; }
+.preset-row__meta { margin-top: 6rpx; color: #737781; font-size: 19rpx; line-height: 1.5; }
+.delete-btn { width: 100rpx; height: 58rpx; margin: 0 0 0 15rpx; padding: 0; display: flex; align-items: center; justify-content: center; background: #211817; color: #cc9681; border-radius: 13rpx; font-size: 19rpx; }
+.foot-note { padding: 0 12rpx; text-align: center; }
+.theme-paper.preset-page { background: #eee7db; color: #2d2720; }
+.theme-paper .card { background: #faf6ee; border-color: #ddd2c2; }
+.theme-paper .intro__title, .theme-paper .section-title, .theme-paper .preset-row__title { color: #332c24; }
+.theme-paper .intro__text, .theme-paper .empty, .theme-paper .foot-note, .theme-paper .field__label, .theme-paper .preset-row__meta { color: #7d7265; }
+.theme-paper .control { background: #eee6da; color: #51483e; }
+.theme-paper .save-btn { background: #a8741f; color: #fffaf0; }
+.theme-paper .preset-row { border-color: #e0d6c8; }
+.theme-paper .delete-btn { background: #ead5cc; color: #955d4d; }
+
+/* >>> v0.6.2 proportional typography generated >>> */
+/* 85% */
+.font-scale-85 .intro__title,.font-scale-85 .section-title { font-size:24.6rpx; }
+.font-scale-85 .intro__text,.font-scale-85 .empty,.font-scale-85 .foot-note { font-size:17.8rpx; }
+.font-scale-85 .field__label { font-size:17.8rpx; }
+.font-scale-85 .optional { font-size:15.3rpx; }
+.font-scale-85 .control { font-size:19.6rpx; }
+.font-scale-85 .save-btn { font-size:20.4rpx; }
+.font-scale-85 .preset-row__title { font-size:19.6rpx; }
+.font-scale-85 .preset-row__meta { font-size:16.1rpx; }
+.font-scale-85 .delete-btn { font-size:16.1rpx; }
+/* 90% */
+.font-scale-90 .intro__title,.font-scale-90 .section-title { font-size:26.1rpx; }
+.font-scale-90 .intro__text,.font-scale-90 .empty,.font-scale-90 .foot-note { font-size:18.9rpx; }
+.font-scale-90 .field__label { font-size:18.9rpx; }
+.font-scale-90 .optional { font-size:16.2rpx; }
+.font-scale-90 .control { font-size:20.7rpx; }
+.font-scale-90 .save-btn { font-size:21.6rpx; }
+.font-scale-90 .preset-row__title { font-size:20.7rpx; }
+.font-scale-90 .preset-row__meta { font-size:17.1rpx; }
+.font-scale-90 .delete-btn { font-size:17.1rpx; }
+/* 95% */
+.font-scale-95 .intro__title,.font-scale-95 .section-title { font-size:27.5rpx; }
+.font-scale-95 .intro__text,.font-scale-95 .empty,.font-scale-95 .foot-note { font-size:19.9rpx; }
+.font-scale-95 .field__label { font-size:19.9rpx; }
+.font-scale-95 .optional { font-size:17.1rpx; }
+.font-scale-95 .control { font-size:21.8rpx; }
+.font-scale-95 .save-btn { font-size:22.8rpx; }
+.font-scale-95 .preset-row__title { font-size:21.8rpx; }
+.font-scale-95 .preset-row__meta { font-size:18.1rpx; }
+.font-scale-95 .delete-btn { font-size:18.1rpx; }
+/* 105% */
+.font-scale-105 .intro__title,.font-scale-105 .section-title { font-size:30.5rpx; }
+.font-scale-105 .intro__text,.font-scale-105 .empty,.font-scale-105 .foot-note { font-size:22.1rpx; }
+.font-scale-105 .field__label { font-size:22.1rpx; }
+.font-scale-105 .optional { font-size:18.9rpx; }
+.font-scale-105 .control { font-size:24.2rpx; }
+.font-scale-105 .save-btn { font-size:25.2rpx; }
+.font-scale-105 .preset-row__title { font-size:24.2rpx; }
+.font-scale-105 .preset-row__meta { font-size:19.9rpx; }
+.font-scale-105 .delete-btn { font-size:19.9rpx; }
+/* 110% */
+.font-scale-110 .intro__title,.font-scale-110 .section-title { font-size:31.9rpx; }
+.font-scale-110 .intro__text,.font-scale-110 .empty,.font-scale-110 .foot-note { font-size:23.1rpx; }
+.font-scale-110 .field__label { font-size:23.1rpx; }
+.font-scale-110 .optional { font-size:19.8rpx; }
+.font-scale-110 .control { font-size:25.3rpx; }
+.font-scale-110 .save-btn { font-size:26.4rpx; }
+.font-scale-110 .preset-row__title { font-size:25.3rpx; }
+.font-scale-110 .preset-row__meta { font-size:20.9rpx; }
+.font-scale-110 .delete-btn { font-size:20.9rpx; }
+/* 115% */
+.font-scale-115 .intro__title,.font-scale-115 .section-title { font-size:33.3rpx; }
+.font-scale-115 .intro__text,.font-scale-115 .empty,.font-scale-115 .foot-note { font-size:24.1rpx; }
+.font-scale-115 .field__label { font-size:24.1rpx; }
+.font-scale-115 .optional { font-size:20.7rpx; }
+.font-scale-115 .control { font-size:26.4rpx; }
+.font-scale-115 .save-btn { font-size:27.6rpx; }
+.font-scale-115 .preset-row__title { font-size:26.4rpx; }
+.font-scale-115 .preset-row__meta { font-size:21.8rpx; }
+.font-scale-115 .delete-btn { font-size:21.8rpx; }
+/* <<< v0.6.2 proportional typography generated <<< */

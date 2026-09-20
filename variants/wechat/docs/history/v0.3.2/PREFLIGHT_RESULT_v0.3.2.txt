@@ -1,0 +1,28 @@
+财富自由指南灯 v0.3.2 RELEASE PREFLIGHT
+Date: 2026-08-21
+
+PASS model.test.js
+PASS storage.test.js
+PASS page_flow.test.js
+PASS grid_render.test.js
+PASS secondary_pages.test.js
+PASS static_check.py
+PASS visual equivalent render: 390x844 / 360x800 / 320x568
+PASS horizontal overflow checks
+PASS transaction button geometric centering check
+
+User regression locked:
+- start ¥10,000 / ¥100 per day = 100 lit days
+- expense ¥50 => current assets ¥9,950 => 99 lit days (-1)
+- then expense ¥1,100 => current assets ¥8,850 => 88 lit days (-11)
+
+Rendering architecture:
+- transparent Canvas 2D render surface
+- wx.canvasToTempFilePath export
+- ordinary image is user-visible grid
+- no wx.vibrateShort
+
+NOT EXECUTED IN THIS ENVIRONMENT:
+- official WeChat DevTools compiler/simulator
+- iOS WeChat device runtime
+- Android WeChat device runtime

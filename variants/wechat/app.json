@@ -1,0 +1,20 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/analysis/analysis",
+    "pages/history/history",
+    "pages/activity/activity",
+    "pages/presets/presets",
+    "pages/settings/settings",
+    "pages/guide/guide"
+  ],
+  "window": {
+    "navigationBarTitleText": "财富自由指南灯",
+    "navigationBarBackgroundColor": "#07080c",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#07080c",
+    "backgroundTextStyle": "dark"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

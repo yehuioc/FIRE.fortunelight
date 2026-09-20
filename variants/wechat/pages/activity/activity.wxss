@@ -1,0 +1,121 @@
+.activity-page { min-height: 100vh; padding: 26rpx 28rpx 70rpx; box-sizing: border-box; background: #07080c; color: #eee9df; }
+.card { margin-bottom: 20rpx; background: #11141a; border: 1rpx solid rgba(255,255,255,.08); border-radius: 26rpx; box-sizing: border-box; }
+.hero { padding: 28rpx; }.hero__eyebrow,.why__eyebrow { color:#8f783d; font-size:16rpx; letter-spacing:3rpx; }.hero__title { margin-top:8rpx; color:#f0ece2; font-size:38rpx; font-weight:700; }.hero__copy { margin-top:9rpx; color:#7a7e87; font-size:20rpx; line-height:1.55; }
+.metric-grid { display:flex; flex-wrap:wrap; justify-content:space-between; }.metric { width:48.6%; padding:22rpx; text-align:center; }.metric__value { color:#efcb67; font-size:38rpx; font-weight:700; font-variant-numeric:tabular-nums; }.metric__label { margin-top:5rpx; color:#737781; font-size:18rpx; }
+.section { padding:25rpx; }.section-head { display:flex; align-items:flex-start; justify-content:space-between; gap:15rpx; }.section-title,.why__title { color:#eee9df; font-size:28rpx; font-weight:650; }.section-copy,.why__copy { margin-top:7rpx; color:#777b84; font-size:19rpx; line-height:1.55; }.section-badge { color:#9d874b; font-size:18rpx; flex:none; }
+.activity-grid { margin-top:20rpx; display:flex; flex-direction:column; gap:6rpx; }.activity-row { display:flex; gap:6rpx; }.activity-cell { height:18rpx; flex:1; background:#20242c; border-radius:4rpx; }.activity-cell--1 { background:#5d5939; }.activity-cell--2 { background:#95803c; }.activity-cell--3 { background:#c6a84d; }.activity-cell--4 { background:#f0ca63; box-shadow:0 0 10rpx rgba(241,199,91,.18); }.activity-cell--today { outline:1rpx solid rgba(255,238,182,.8); outline-offset:1rpx; }.activity-cell--future { opacity:.18; }
+.weekly { min-height:110rpx; padding:22rpx; display:flex; align-items:center; gap:16rpx; }.weekly__lamp { width:18rpx; height:18rpx; flex:none; border-radius:50%; background:#343844; }.weekly--glow { background:#121109; border-color:rgba(241,199,91,.3); }.weekly--glow .weekly__lamp { background:#f1c75b; box-shadow:0 0 20rpx rgba(241,199,91,.75); }.weekly__copy { flex:1; min-width:0; }.weekly__title { color:#ddd8ce; font-size:23rpx; }.weekly__sub { margin-top:5rpx; color:#737781; font-size:18rpx; line-height:1.45; }.weekly__arrow { color:#9b8448; font-size:32rpx; }
+.achievement { padding:20rpx 0; display:flex; align-items:flex-start; gap:14rpx; border-top:1rpx solid rgba(255,255,255,.06); opacity:.55; }.achievement:first-of-type { margin-top:12rpx; }.achievement--unlocked { opacity:1; }.achievement__mark { width:28rpx; color:#5f646e; font-size:20rpx; }.achievement--unlocked .achievement__mark { color:#e7c55f; }.achievement--weird.achievement--unlocked .achievement__mark { color:#a8c889; }.achievement__copy { flex:1; min-width:0; }.achievement__name { color:#d8d3c9; font-size:21rpx; }.achievement__desc { margin-top:5rpx; color:#71757e; font-size:17rpx; line-height:1.45; }.achievement__bar { height:6rpx; margin-top:10rpx; overflow:hidden; background:#222630; border-radius:999rpx; }.achievement__fill { height:100%; background:#9f8740; border-radius:999rpx; }.achievement__progress { width:82rpx; flex:none; color:#767a83; font-size:17rpx; text-align:right; }
+.why { padding:25rpx; }.why__title { margin-top:9rpx; }.why__action { margin-top:17rpx; color:#c5a84e; font-size:20rpx; }.empty { color:#777b84; font-size:20rpx; }
+.theme-paper.activity-page { background:#eee7db; color:#2d2720; }.theme-paper .card { background:#faf6ee; border-color:#ddd2c2; }.theme-paper .hero__title,.theme-paper .section-title,.theme-paper .why__title,.theme-paper .achievement__name,.theme-paper .weekly__title { color:#40372e; }.theme-paper .hero__copy,.theme-paper .section-copy,.theme-paper .why__copy,.theme-paper .achievement__desc,.theme-paper .achievement__progress,.theme-paper .weekly__sub,.theme-paper .metric__label { color:#7d7265; }.theme-paper .metric__value { color:#a8741f; }.theme-paper .activity-cell { background:#ddd4c6; }.theme-paper .activity-cell--1 { background:#d6c49d; }.theme-paper .activity-cell--2 { background:#c9a967; }.theme-paper .activity-cell--3 { background:#b8842b; }.theme-paper .activity-cell--4 { background:#9d6b1c; box-shadow:none; }.theme-paper .weekly--glow { background:#f0e2bd; border-color:#c9a65f; }.theme-paper .achievement { border-color:#e0d6c8; }.theme-paper .achievement__bar { background:#e0d6c8; }.theme-paper .achievement__fill { background:#a8741f; }
+
+/* >>> v0.6.2 proportional typography generated >>> */
+/* 85% */
+.font-scale-85 .hero__eyebrow,.font-scale-85 .why__eyebrow { font-size:13.6rpx; }
+.font-scale-85 .hero__title { font-size:32.3rpx; }
+.font-scale-85 .hero__copy { font-size:17rpx; }
+.font-scale-85 .metric__value { font-size:32.3rpx; }
+.font-scale-85 .metric__label { font-size:15.3rpx; }
+.font-scale-85 .section-title,.font-scale-85 .why__title { font-size:23.8rpx; }
+.font-scale-85 .section-copy,.font-scale-85 .why__copy { font-size:16.1rpx; }
+.font-scale-85 .section-badge { font-size:15.3rpx; }
+.font-scale-85 .weekly__title { font-size:19.6rpx; }
+.font-scale-85 .weekly__sub { font-size:15.3rpx; }
+.font-scale-85 .weekly__arrow { font-size:27.2rpx; }
+.font-scale-85 .achievement__mark { font-size:17rpx; }
+.font-scale-85 .achievement__name { font-size:17.8rpx; }
+.font-scale-85 .achievement__desc { font-size:14.4rpx; }
+.font-scale-85 .achievement__progress { font-size:14.4rpx; }
+.font-scale-85 .why__action { font-size:17rpx; }
+.font-scale-85 .empty { font-size:17rpx; }
+/* 90% */
+.font-scale-90 .hero__eyebrow,.font-scale-90 .why__eyebrow { font-size:14.4rpx; }
+.font-scale-90 .hero__title { font-size:34.2rpx; }
+.font-scale-90 .hero__copy { font-size:18rpx; }
+.font-scale-90 .metric__value { font-size:34.2rpx; }
+.font-scale-90 .metric__label { font-size:16.2rpx; }
+.font-scale-90 .section-title,.font-scale-90 .why__title { font-size:25.2rpx; }
+.font-scale-90 .section-copy,.font-scale-90 .why__copy { font-size:17.1rpx; }
+.font-scale-90 .section-badge { font-size:16.2rpx; }
+.font-scale-90 .weekly__title { font-size:20.7rpx; }
+.font-scale-90 .weekly__sub { font-size:16.2rpx; }
+.font-scale-90 .weekly__arrow { font-size:28.8rpx; }
+.font-scale-90 .achievement__mark { font-size:18rpx; }
+.font-scale-90 .achievement__name { font-size:18.9rpx; }
+.font-scale-90 .achievement__desc { font-size:15.3rpx; }
+.font-scale-90 .achievement__progress { font-size:15.3rpx; }
+.font-scale-90 .why__action { font-size:18rpx; }
+.font-scale-90 .empty { font-size:18rpx; }
+/* 95% */
+.font-scale-95 .hero__eyebrow,.font-scale-95 .why__eyebrow { font-size:15.2rpx; }
+.font-scale-95 .hero__title { font-size:36.1rpx; }
+.font-scale-95 .hero__copy { font-size:19rpx; }
+.font-scale-95 .metric__value { font-size:36.1rpx; }
+.font-scale-95 .metric__label { font-size:17.1rpx; }
+.font-scale-95 .section-title,.font-scale-95 .why__title { font-size:26.6rpx; }
+.font-scale-95 .section-copy,.font-scale-95 .why__copy { font-size:18.1rpx; }
+.font-scale-95 .section-badge { font-size:17.1rpx; }
+.font-scale-95 .weekly__title { font-size:21.8rpx; }
+.font-scale-95 .weekly__sub { font-size:17.1rpx; }
+.font-scale-95 .weekly__arrow { font-size:30.4rpx; }
+.font-scale-95 .achievement__mark { font-size:19rpx; }
+.font-scale-95 .achievement__name { font-size:19.9rpx; }
+.font-scale-95 .achievement__desc { font-size:16.1rpx; }
+.font-scale-95 .achievement__progress { font-size:16.1rpx; }
+.font-scale-95 .why__action { font-size:19rpx; }
+.font-scale-95 .empty { font-size:19rpx; }
+/* 105% */
+.font-scale-105 .hero__eyebrow,.font-scale-105 .why__eyebrow { font-size:16.8rpx; }
+.font-scale-105 .hero__title { font-size:39.9rpx; }
+.font-scale-105 .hero__copy { font-size:21rpx; }
+.font-scale-105 .metric__value { font-size:39.9rpx; }
+.font-scale-105 .metric__label { font-size:18.9rpx; }
+.font-scale-105 .section-title,.font-scale-105 .why__title { font-size:29.4rpx; }
+.font-scale-105 .section-copy,.font-scale-105 .why__copy { font-size:19.9rpx; }
+.font-scale-105 .section-badge { font-size:18.9rpx; }
+.font-scale-105 .weekly__title { font-size:24.2rpx; }
+.font-scale-105 .weekly__sub { font-size:18.9rpx; }
+.font-scale-105 .weekly__arrow { font-size:33.6rpx; }
+.font-scale-105 .achievement__mark { font-size:21rpx; }
+.font-scale-105 .achievement__name { font-size:22.1rpx; }
+.font-scale-105 .achievement__desc { font-size:17.9rpx; }
+.font-scale-105 .achievement__progress { font-size:17.9rpx; }
+.font-scale-105 .why__action { font-size:21rpx; }
+.font-scale-105 .empty { font-size:21rpx; }
+/* 110% */
+.font-scale-110 .hero__eyebrow,.font-scale-110 .why__eyebrow { font-size:17.6rpx; }
+.font-scale-110 .hero__title { font-size:41.8rpx; }
+.font-scale-110 .hero__copy { font-size:22rpx; }
+.font-scale-110 .metric__value { font-size:41.8rpx; }
+.font-scale-110 .metric__label { font-size:19.8rpx; }
+.font-scale-110 .section-title,.font-scale-110 .why__title { font-size:30.8rpx; }
+.font-scale-110 .section-copy,.font-scale-110 .why__copy { font-size:20.9rpx; }
+.font-scale-110 .section-badge { font-size:19.8rpx; }
+.font-scale-110 .weekly__title { font-size:25.3rpx; }
+.font-scale-110 .weekly__sub { font-size:19.8rpx; }
+.font-scale-110 .weekly__arrow { font-size:35.2rpx; }
+.font-scale-110 .achievement__mark { font-size:22rpx; }
+.font-scale-110 .achievement__name { font-size:23.1rpx; }
+.font-scale-110 .achievement__desc { font-size:18.7rpx; }
+.font-scale-110 .achievement__progress { font-size:18.7rpx; }
+.font-scale-110 .why__action { font-size:22rpx; }
+.font-scale-110 .empty { font-size:22rpx; }
+/* 115% */
+.font-scale-115 .hero__eyebrow,.font-scale-115 .why__eyebrow { font-size:18.4rpx; }
+.font-scale-115 .hero__title { font-size:43.7rpx; }
+.font-scale-115 .hero__copy { font-size:23rpx; }
+.font-scale-115 .metric__value { font-size:43.7rpx; }
+.font-scale-115 .metric__label { font-size:20.7rpx; }
+.font-scale-115 .section-title,.font-scale-115 .why__title { font-size:32.2rpx; }
+.font-scale-115 .section-copy,.font-scale-115 .why__copy { font-size:21.8rpx; }
+.font-scale-115 .section-badge { font-size:20.7rpx; }
+.font-scale-115 .weekly__title { font-size:26.4rpx; }
+.font-scale-115 .weekly__sub { font-size:20.7rpx; }
+.font-scale-115 .weekly__arrow { font-size:36.8rpx; }
+.font-scale-115 .achievement__mark { font-size:23rpx; }
+.font-scale-115 .achievement__name { font-size:24.1rpx; }
+.font-scale-115 .achievement__desc { font-size:19.5rpx; }
+.font-scale-115 .achievement__progress { font-size:19.5rpx; }
+.font-scale-115 .why__action { font-size:23rpx; }
+.font-scale-115 .empty { font-size:23rpx; }
+/* <<< v0.6.2 proportional typography generated <<< */

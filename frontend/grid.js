@@ -294,7 +294,7 @@
       this.totalCells = total_cells || 0;
       this.pastCells = past_cells || 0;
       this.trackedPastCells = Math.min(tracked_past_cells || 0, this.pastCells);
-      this.futureCells = future_cells || this.totalCells;
+      this.futureCells = future_cells ?? this.totalCells;
       this.assetLit = Math.min(asset_lit || 0, this.futureCells);
       this.incomeLit = Math.min(income_lit || 0, Math.max(0, this.futureCells - this.assetLit));
       this.litCount = Math.min(lit_count || 0, this.futureCells);
@@ -323,8 +323,8 @@
       const H = Math.max(40, this.cssH - padding * 2);
       const N = this.totalCells;
       let best = { cell: 2, cols: 1, rows: N, gap: 0 };
-      for (let s = 40; s >= 2; s--) {
-        const gap = s >= 4 ? 1 : 0;
+      for (let s = 40; s >= 0.5; s -= 0.5) {
+        const gap = s >= 1.5 ? 1 : 0.5;
         const cols = Math.floor((W + gap) / (s + gap));
         if (cols < 1) continue;
         const rows = Math.ceil(N / cols);
@@ -391,8 +391,9 @@
 
         const moving = !this.cameraConverged();
         // today 呼吸需要持续重绘
-        const breathing = this.totalCells > 0 && this.pastCells < this.totalCells;
-        if (this.animations.size > 0 || this.needsRedraw || moving || breathing) {
+        const breathing = !prefersReducedMotion() && this.totalCells > 0 && this.pastCells < this.totalCells && now - (this.lastBreath || 0) > 80;
+        if (breathing) this.lastBreath = now;
+        if (!document.hidden && (this.animations.size > 0 || this.needsRedraw || moving || breathing)) {
           this.draw();
           this.needsRedraw = false;
         }
@@ -406,6 +407,7 @@
             else if (a.type === 'extinguish') this.litCount = Math.min(this.litCount, rel);
             this._syncLitSegments();
             this.animations.delete(idx);
+            this.onProgress?.(this.litCount);
           }
         }
         this.rafId = requestAnimationFrame(tick);
@@ -417,7 +419,7 @@
     draw() {
       const { ctx, dpr } = this;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      ctx.fillStyle = '#06060c';
+      ctx.fillStyle = C.bg;
       ctx.fillRect(0, 0, this.cssW, this.cssH);
 
       const { scale, tx, ty } = this.camera;
@@ -478,10 +480,21 @@
       if (to <= from) return;
       ctx.fillStyle = color;
       ctx.beginPath();
+      const { scale, tx, ty } = this.camera;
+      const left = (0 - this.cssW / 2 - tx) / scale + this.cssW / 2;
+      const top = (0 - this.cssH / 2 - ty) / scale + this.cssH / 2;
+      const right = left + this.cssW / scale;
+      const bottom = top + this.cssH / scale;
+      const firstRow = Math.max(0, Math.floor((top - this.grid.y) / step) - 1);
+      const lastRow = Math.min(this.rows, Math.ceil((bottom - this.grid.y) / step) + 1);
+      from = Math.max(from, firstRow * this.cols);
+      to = Math.min(to, lastRow * this.cols);
       for (let i = from; i < to; i++) {
         if (animating.has(i)) continue;
         const col = i % this.cols;
         const row = (i / this.cols) | 0;
+        const x = this.grid.x + col * step;
+        if (x + cell < left || x > right) continue;
         ctx.rect(this.grid.x + col * step, this.grid.y + row * step, cell, cell);
       }
       ctx.fill();
@@ -512,8 +525,9 @@
       // 中心格本体 · 用 goldBloom 强标识（无论 today 是 lit 还是 unlit 都覆盖为发光）
       const s = 1 + breath * 0.10;
       const w = r.w * s, h = r.h * s;
-      ctx.fillStyle = C.goldBloom;
-      ctx.fillRect(cx - w / 2, cy - h / 2, w, h);
+      ctx.strokeStyle = C.goldBloom;
+      ctx.lineWidth = Math.max(0.4, r.w * 0.15);
+      ctx.strokeRect(cx - w / 2, cy - h / 2, w, h);
     }
 
     drawAnimating(ctx) {
@@ -574,61 +588,74 @@
     // 仪式动画 · 持续追焦
     // ============================================
     /** from / to 是 future-relative 索引（freedom_days_bought 区间）· 内部偏移 pastCells 转真实 idx */
-    async lightUp(from, to) {
-      const delta = to - from;
-      if (delta <= 0) return;
-      if (prefersReducedMotion()) { this.litCount = to; this.needsRedraw = true; return; }
-
-      const past = this.pastCells;
-      const realFrom = from + past;
-      const realTo = to + past;
-      const scale = pickScale(delta);
-      const vol = audioVolumePer(delta);
-      this.setCameraToCell(realFrom, scale);
-      await sleep(600);
-
-      const interval = intervalFor(delta);
-      for (let i = realFrom; i < realTo; i++) {
-        this.animations.set(i, { type: 'ignite', t0: performance.now(), dur: IGNITE_MS, anim: igniteFrame });
-        this.setCameraToCell(i, scale);
-        if (this.audio) this.audio.ignite(vol);
-        this.needsRedraw = true;
-        if (i < realTo - 1) await sleep(interval);
-      }
-      await sleep(IGNITE_MS);
-      this.litCount = Math.max(this.litCount, to);
-      this._syncLitSegments();
-      this.resetCamera();
-      await sleep(CAMERA_SETTLE_MS);
+    setTheme(theme) {
+      const paper = theme === 'paper';
+      Object.assign(C, paper ? {bg:'#f2ede2',past:'#dfd8cb',tracked:'#d2bc98',unlit:'#cfc8b9',gold:'#b98732',goldBloom:'#7a581f',asset:'#6d91bc',ash:'#b2a18a'} : {bg:'#0a0a12',past:'#16161e',tracked:'#2c2418',unlit:'#2a2a3a',gold:'#ffd166',goldBloom:'#fff4d6',asset:'#9cc3ff',ash:'#5a4030'});
+      for (const key of Object.keys(RGB)) RGB[key] = hexToRgb(C[key]);
+      this.needsRedraw = true;
     }
 
-    async extinguish(from, to) {
-      const delta = to - from;
-      if (delta <= 0) return;
-      if (prefersReducedMotion()) { this.litCount = from; this.needsRedraw = true; return; }
-
-      const past = this.pastCells;
-      const realFrom = from + past;
-      const realTo = to + past;
-      const scale = pickScale(delta);
-      const vol = audioVolumePer(delta);
-      this.setCameraToCell(realTo - 1, scale);
-      await sleep(600);
-
-      const interval = Math.round(intervalFor(delta) * 1.4);
-      for (let i = realTo - 1; i >= realFrom; i--) {
-        this.animations.set(i, { type: 'extinguish', t0: performance.now(), dur: EXTINGUISH_MS, anim: extinguishFrame });
-        this.setCameraToCell(i, scale);
-        if (this.audio) this.audio.extinguish(vol);
-        this.needsRedraw = true;
-        if (i > realFrom) await sleep(interval);
-      }
-      await sleep(EXTINGUISH_MS);
-      this.litCount = from;
-      this._syncLitSegments();
+    cancel() {
+      if (this.animationFrame) cancelAnimationFrame(this.animationFrame);
+      this.animationFrame = null;
+      this.animations.clear();
+      this.camera = { scale:1, tx:0, ty:0 };
       this.resetCamera();
-      await sleep(CAMERA_SETTLE_MS);
+      this.userZoom = 1;
+      const resolve = this.animationResolve;
+      this.animationResolve = null;
+      this.needsRedraw = true;
+      if (resolve) resolve();
     }
+
+    lightUp(from, to) { return this.animateRange(from, to, true); }
+    extinguish(from, to) { return this.animateRange(from, to, false); }
+
+    animateRange(from, to, ignite) {
+      this.cancel();
+      const delta = to - from;
+      if (delta <= 0) return Promise.resolve();
+      const target = ignite ? to : from;
+      if (prefersReducedMotion()) {
+        this.litCount = target; this._syncLitSegments(); this.needsRedraw = true;
+        return Promise.resolve();
+      }
+      const scale = pickScale(delta);
+      const interval = Math.min(intervalFor(delta) * (ignite ? 1 : 1.4), 12000 / Math.max(1, delta - 1));
+      const duration = ignite ? IGNITE_MS : EXTINGUISH_MS;
+      const vol = audioVolumePer(delta);
+      const audioStep = Math.max(1, Math.ceil(delta / 48));
+      let dispatched = 0, settling = false;
+      const started = performance.now();
+      const first = (ignite ? from : to - 1) + this.pastCells;
+      this.setCameraToCell(first, scale);
+      return new Promise(resolve => {
+        this.animationResolve = resolve;
+        const tick = now => {
+          if (!this.animationResolve) return;
+          const elapsed = now - started - 600;
+          const due = Math.min(delta, Math.max(0, Math.floor(elapsed / interval) + 1));
+          for (; dispatched < due; dispatched++) {
+            const idx = (ignite ? from + dispatched : to - 1 - dispatched) + this.pastCells;
+            this.animations.set(idx, {type:ignite ? 'ignite' : 'extinguish', t0:started + 600 + dispatched * interval, dur:duration, anim:ignite ? igniteFrame : extinguishFrame});
+            this.setCameraToCell(idx, scale);
+            if (this.audio && dispatched % audioStep === 0) {
+              try { if (ignite) this.audio.ignite(vol); else this.audio.extinguish(vol); } catch (_) { /* audio is optional */ }
+            }
+          }
+          const finishedAt = (delta - 1) * interval + duration;
+          if (elapsed >= finishedAt && !settling) {
+            this.litCount = target; this._syncLitSegments(); this.animations.clear();
+            this.onProgress?.(target); this.resetCamera(); settling = true;
+          }
+          if (elapsed >= finishedAt + CAMERA_SETTLE_MS) { this.cancel(); return; }
+          this.needsRedraw = true;
+          this.animationFrame = requestAnimationFrame(tick);
+        };
+        this.animationFrame = requestAnimationFrame(tick);
+      });
+    }
+
   }
   window.LifeGrid = LifeGrid;
 

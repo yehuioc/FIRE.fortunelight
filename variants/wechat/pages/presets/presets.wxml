@@ -1,0 +1,30 @@
+<page-meta page-style="background-color: {{pageBackground}};" />
+<view class="container preset-page {{themeClass}} {{appearanceClass}}">
+  <view class="intro card">
+    <view class="intro__title">分类不变，登记更快。</view>
+    <view class="intro__text">主分类负责统计；快捷标签负责说明“这一次具体是什么”。例如“正餐 → 日常吃饭 / 聚餐 / 约会”。选中标签后会记录标签名，并可选自动补一段备注或消费性质。</view>
+  </view>
+
+  <view class="section card">
+    <view class="section-title">新增快捷标签</view>
+    <view class="field">
+      <view class="field__label">所属主分类</view>
+      <picker mode="selector" range="{{categories}}" range-key="name" value="{{categoryIndex}}" bindchange="onCategory"><view class="control">{{categories[categoryIndex].name}}</view></picker>
+    </view>
+    <view class="field"><view class="field__label">标签名称</view><input class="control control--input" value="{{form.label}}" maxlength="12" placeholder="例如：日常吃饭 / 聚餐 / 约会" bindinput="onLabel"/></view>
+    <view class="field"><view class="field__label">默认备注 <text class="optional">可选</text></view><input class="control control--input" value="{{form.note}}" maxlength="40" placeholder="例如：和朋友聚餐" bindinput="onNote"/></view>
+    <view class="field"><view class="field__label">默认消费性质 <text class="optional">可选</text></view><picker mode="selector" range="{{natureOptions}}" range-key="name" value="{{natureIndex}}" bindchange="onNature"><view class="control">{{natureOptions[natureIndex].name}}</view></picker></view>
+    <button class="save-btn" bindtap="addPreset">加入快捷标签</button>
+  </view>
+
+  <view class="section card">
+    <view class="section-title">已有快捷标签</view>
+    <view wx:if="{{!items.length}}" class="empty">还没有自定义快捷标签。你完全可以不用这个功能；主分类仍然可以正常统计。</view>
+    <view wx:for="{{items}}" wx:key="id" class="preset-row">
+      <view class="preset-row__main"><view class="preset-row__title">{{item.categoryName}} · {{item.label}}</view><view class="preset-row__meta">{{item.natureName}} · {{item.noteText}}</view></view>
+      <button class="delete-btn" data-id="{{item.id}}" bindtap="remove">删除</button>
+    </view>
+  </view>
+
+  <view class="foot-note">快捷标签不会参与百分比的重复计算：一笔支出始终只属于一个主分类。标签只是更细的描述和趋势筛选入口。</view>
+</view>

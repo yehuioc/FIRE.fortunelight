@@ -67,11 +67,15 @@ def seed_database(
             conn.execute("""
                 UPDATE settings SET
                   tracking_days_override = 0,
-                  avg_daily_expense_override = 0
+                  avg_daily_expense_override = 0,
+                  config_json = '{}'
                 WHERE id = 1
             """)
         else:
-            birth = today.replace(year=today.year - DEFAULT_TARGET_AGE_OFFSET)
+            try:
+                birth = today.replace(year=today.year - DEFAULT_TARGET_AGE_OFFSET)
+            except ValueError:
+                birth = today.replace(year=today.year - DEFAULT_TARGET_AGE_OFFSET, day=28)
             conn.execute(
                 """INSERT INTO settings (id, birth_date, target_age, currency, show_past,
                     use_initial_assets, initial_assets, tracking_days_override,

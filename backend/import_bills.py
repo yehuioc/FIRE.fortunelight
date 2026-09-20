@@ -1,11 +1,15 @@
 """财富自由指南针 · 账单导入器
 支持: 微信支付 XLSX + 工商银行 PDF/CSV + 支付宝 CSV
-去重: (occurred_on, type, amount) 唯一索引
+默认仅预览；--apply 才写入。按原文件 SHA256 + 交易内容 + 同内容出现次数去重。
 用法: .venv/Scripts/python backend/import_bills.py
 """
 from __future__ import annotations
 
 import io
+import argparse
+import hashlib
+import json
+from contextlib import closing
 import sqlite3
 import sys
 from csv import DictReader
@@ -14,11 +18,15 @@ from pathlib import Path
 from typing import Optional
 
 ROOT = Path(__file__).resolve().parent.parent
-DB = ROOT / "data" / "ledger.db"
+try:
+    from .database import DB_PATH, db, init_db, backup_database, init_connection
+except ImportError:
+    from database import DB_PATH, db, init_db, backup_database, init_connection
+DB = DB_PATH
 IMPORTS = ROOT / "imports"
 
 # ── 配置 ──
-CUTOFF_DATE = "2026-05-23"  # 财富灯首次使用日（Settings创建日期）
+CUTOFF_DATE = "0001-01-01"  # Only an explicit --since filters old records.
 
 # ── 微信 XLSX 列索引 (1-based)──
 WX_COL = {
@@ -36,14 +44,7 @@ WX_DATA_START = 19    # 第一条数据行
 
 
 def ensure_schema(conn: sqlite3.Connection) -> None:
-    """建唯一索引（幂等），顺便 init_db 保底"""
-    from database import init_connection
-
     init_connection(conn)
-    conn.execute("""
-        CREATE UNIQUE INDEX IF NOT EXISTS idx_tx_dedup
-        ON transactions(occurred_on, type, amount)
-    """)
 
 
 def parse_wx_date(val) -> Optional[str]:
@@ -143,9 +144,9 @@ def import_wechat_xlsx(xlsx_path: Path, conn: sqlite3.Connection) -> dict:
             now = datetime.now().isoformat()
             conn.execute(
                 "INSERT OR IGNORE INTO transactions (occurred_on, type, amount, note, created_at) VALUES (?,?,?,?,?)",
-                (occurred, tx_type, amount, note[:200], now),
+                (occurred, tx_type, amount, note[:500], now),
             )
-            if conn.total_changes > 0:
+            if conn.execute("SELECT changes()").fetchone()[0] > 0:
                 inserted += 1
                 if tx_type == "income":
                     income_amt += amount
@@ -269,9 +270,9 @@ def import_icbc_pdf(pdf_path: Path, conn: sqlite3.Connection) -> dict:
                     now = datetime.now().isoformat()
                     conn.execute(
                         "INSERT OR IGNORE INTO transactions (occurred_on, type, amount, note, created_at) VALUES (?,?,?,?,?)",
-                        (occurred, tx_type, abs_amount, note[:200], now),
+                        (occurred, tx_type, abs_amount, note[:500], now),
                     )
-                    if conn.total_changes > 0:
+                    if conn.execute("SELECT changes()").fetchone()[0] > 0:
                         stats["inserted"] += 1
                         if tx_type == "income":
                             stats["income_amt"] += abs_amount
@@ -332,7 +333,7 @@ def import_icbc_csv(csv_path: Path, conn: sqlite3.Connection) -> dict:
                 "INSERT OR IGNORE INTO transactions (occurred_on, type, amount, note, created_at) VALUES (?,?,?,?,?)",
                 (occurred, tx_type, abs_amount, note, now),
             )
-            if conn.total_changes > 0:
+            if conn.execute("SELECT changes()").fetchone()[0] > 0:
                 stats["inserted"] += 1
                 if tx_type == "income":
                     stats["income_amt"] += abs_amount
@@ -447,7 +448,7 @@ def import_alipay_csv(csv_path: Path, conn: sqlite3.Connection) -> dict:
                 "INSERT OR IGNORE INTO transactions (occurred_on, type, amount, note, created_at) VALUES (?,?,?,?,?)",
                 (occurred, tx_type, amount, note, now),
             )
-            if conn.total_changes > 0:
+            if conn.execute("SELECT changes()").fetchone()[0] > 0:
                 stats["inserted"] += 1
                 if tx_type == "income":
                     stats["income_amt"] += amount
@@ -504,71 +505,76 @@ def write_imported_md(batch_dir: Path, wx_stats: dict, icbc_stats: dict) -> None
 
 
 def main() -> None:
-    conn = sqlite3.connect(str(DB))
-    conn.row_factory = sqlite3.Row
-    ensure_schema(conn)
-
-    # 扫描 imports 下所有未导入批次
-    if not IMPORTS.exists():
-        print("imports/ 目录不存在，请先放入账单文件再运行。")
-        sys.exit(1)
-
-    for batch_dir in sorted(IMPORTS.iterdir()):
-        if not batch_dir.is_dir():
-            continue
-        if (batch_dir / "_imported.md").exists():
-            print(f"[SKIP] {batch_dir.name} — 已导入，跳过")
-            continue
-
-        wx_files = list(batch_dir.glob("*.xlsx")) + list(batch_dir.glob("*.xls"))
-        alipay_csvs = [f for f in batch_dir.glob("*.csv") if "支付宝" in f.name or "alipay" in f.name.lower()]
-        icbc_pdfs = list(batch_dir.glob("*.pdf"))
-        icbc_csvs = [f for f in batch_dir.glob("*.csv") if f not in alipay_csvs]
-
-        print(f"\n{'='*60}")
-        print(f"[导入] {batch_dir.name}")
-        print(f"{'='*60}")
-
-        wx_stats = None
-        icbc_stats = None
-
-        for xlsx in wx_files:
-            print(f"  微信 XLSX: {xlsx.name}")
-            wx_stats = import_wechat_xlsx(xlsx, conn)
-            print(f"    扫描 {wx_stats['total']} | 导入 {wx_stats['inserted']} | 去重 {wx_stats['duped']} | 过滤(>{CUTOFF_DATE}) {wx_stats['skipped_cutoff']} | 失败 {wx_stats['skipped_parse']}")
-            if wx_stats['income_amt'] > 0:
-                print(f"    收入 CNY{wx_stats['income_amt']:,.2f}  支出 CNY{wx_stats['expense_amt']:,.2f}")
-
-        for csv in alipay_csvs:
-            print(f"  支付宝 CSV: {csv.name}")
-            ali_stats = import_alipay_csv(csv, conn)
-            print(f"    扫描 {ali_stats['total']} | 导入 {ali_stats['inserted']} | 去重 {ali_stats['duped']} | 过滤 {ali_stats['skipped_cutoff']} | 跳过(内部/0元) {ali_stats['skipped_parse']}")
-            if ali_stats['income_amt'] > 0:
-                print(f"    收入 CNY{ali_stats['income_amt']:,.2f}  支出 CNY{ali_stats['expense_amt']:,.2f}")
-
-        for pdf in icbc_pdfs:
-            print(f"  银行 PDF: {pdf.name}")
-            icbc_stats = import_icbc_pdf(pdf, conn)
-            print(f"    扫描 {icbc_stats['total']} | 导入 {icbc_stats['inserted']} | 去重 {icbc_stats['duped']} | 过滤 {icbc_stats['skipped_cutoff']} | 失败 {icbc_stats['skipped_parse']}")
-            if icbc_stats['income_amt'] > 0:
-                print(f"    收入 CNY{icbc_stats['income_amt']:,.2f}  支出 CNY{icbc_stats['expense_amt']:,.2f}")
-
-        for csv in icbc_csvs:
-            print(f"  银行 CSV: {csv.name}")
-            icbc_stats = import_icbc_csv(csv, conn)
-            print(f"    扫描 {icbc_stats['total']} | 导入 {icbc_stats['inserted']} | 去重 {icbc_stats['duped']} | 过滤 {icbc_stats['skipped_cutoff']} | 失败 {icbc_stats['skipped_parse']}")
-
-        write_imported_md(batch_dir, wx_stats or {}, icbc_stats or {})
-
-    # 最终统计
-    total = conn.execute("SELECT COUNT(*) FROM transactions").fetchone()[0]
-    totals = conn.execute("SELECT type, COUNT(*), SUM(amount) FROM transactions GROUP BY type").fetchall()
-    print(f"\n{'='*60}")
-    print(f"数据库交易总数: {total}")
-    for r in totals:
-        print(f"  {r[0]}: {r[1]}笔, CNY{r[2]:,.2f}")
-    conn.close()
-    print("导入完成。")
+    global CUTOFF_DATE
+    parser = argparse.ArgumentParser(description="账单先预览；确认只有真实自由事件后，使用 --apply 写入。")
+    parser.add_argument("paths", nargs="*", type=Path, help="微信 XLSX、支付宝 CSV、银行 CSV/PDF")
+    parser.add_argument("--since", help="只导入这个日期起的记录；默认不截断历史")
+    parser.add_argument("--apply", action="store_true", help="自动备份当前库后，写入预览的记录")
+    args = parser.parse_args()
+    if args.since:
+        CUTOFF_DATE = date.fromisoformat(args.since).isoformat()
+    files = args.paths or sorted(p for p in IMPORTS.rglob("*") if p.is_file() and p.suffix.lower() in (".xlsx", ".csv", ".pdf"))
+    if not files:
+        parser.error("未找到支持的账单，请传入文件路径或放入 imports/。")
+    parsed = []
+    for source in files:
+        source = source.resolve()
+        if not source.is_file():
+            parser.error(f"文件不存在：{source}")
+        digest = hashlib.sha256(source.read_bytes()).hexdigest()
+        memory = sqlite3.connect(":memory:")
+        memory.row_factory = sqlite3.Row
+        ensure_schema(memory)
+        suffix = source.suffix.lower()
+        if suffix == ".xlsx": result = import_wechat_xlsx(source, memory)
+        elif suffix == ".pdf": result = import_icbc_pdf(source, memory)
+        elif suffix == ".csv" and ("支付宝" in source.name or "alipay" in source.name.lower()): result = import_alipay_csv(source, memory)
+        elif suffix == ".csv": result = import_icbc_csv(source, memory)
+        else: parser.error("仅支持 .xlsx / .csv / .pdf")
+        records = memory.execute("SELECT * FROM transactions ORDER BY id").fetchall()
+        signatures = {}
+        for row in records:
+            item = dict(row)
+            date.fromisoformat(item["occurred_on"])
+            if item["amount_cents"] <= 0:
+                raise ValueError("发现非正金额，停止整个导入")
+            signature = json.dumps([item["occurred_on"], item["type"], item["amount_cents"], item["note"]], ensure_ascii=False)
+            signatures[signature] = signatures.get(signature, 0) + 1
+            # Preserve repeated identical events; changing --since never shifts other keys.
+            item["entry_key"] = "bill:" + hashlib.sha256(f"{digest}:{signature}:{signatures[signature]}".encode()).hexdigest()
+            parsed.append(item)
+        memory.close()
+        print(json.dumps({"file": source.name, **result}, ensure_ascii=False))
+    existing = set()
+    if DB.exists():
+        with closing(sqlite3.connect(DB)) as current:
+            columns = {row[1] for row in current.execute("PRAGMA table_info(transactions)")}
+            if "entry_key" in columns:
+                existing = {row[0] for row in current.execute("SELECT entry_key FROM transactions WHERE entry_key IS NOT NULL")}
+    seen = set(existing)
+    new = []
+    for item in parsed:
+        if item["entry_key"] not in seen:
+            new.append(item)
+            seen.add(item["entry_key"])
+    print(json.dumps({"preview_rows":len(parsed), "new_rows":len(new), "already_imported":len(parsed)-len(new),
+                      "income":sum(x["amount_cents"] for x in new if x["type"]=="income")/100,
+                      "expense":sum(x["amount_cents"] for x in new if x["type"]=="expense")/100},ensure_ascii=False))
+    for row in new[:20]:
+        print(f"  {row['occurred_on']} {row['type']} {row['amount']:.2f} {row['note']}")
+    if not args.apply:
+        print("仅预览，未修改本地账本。确认账户互转、退款、重复渠道等语义后，再加 --apply。")
+        return
+    init_db(DB)
+    backup = backup_database(DB, "before-bill-import")
+    with db(DB) as conn:
+        conn.execute("BEGIN IMMEDIATE")
+        for item in new:
+            conn.execute("""INSERT OR IGNORE INTO transactions
+                (occurred_on,type,amount,amount_cents,note,created_at,entry_key)
+                VALUES(?,?,?,?,?,?,?)""",
+                (item["occurred_on"],item["type"],item["amount"],item["amount_cents"],item["note"],item["created_at"],item["entry_key"]))
+    print(f"写入完成，恢复备份：{backup}")
 
 
 if __name__ == "__main__":

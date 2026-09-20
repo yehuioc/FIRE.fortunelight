@@ -1,0 +1,44 @@
+<page-meta page-style="background-color: {{pageBackground}};" />
+<view class="container analysis-page {{themeClass}} {{appearanceClass}}">
+  <view class="period card">
+    <view class="period__copy"><view class="period__title">消费分析</view><view class="period__sub">只呈现真实账本，不替你判断“该不该花”。</view></view>
+    <view class="period-switch"><view wx:for="{{periodOptions}}" wx:key="id" class="period-switch__item {{period === item.id ? 'period-switch__item--active' : ''}}" data-id="{{item.id}}" bindtap="selectPeriod">{{item.name}}</view></view>
+  </view>
+
+  <view wx:if="{{summary}}">
+    <view class="overview-grid">
+      <view class="metric card"><view class="metric__label">{{periodMetricLabel}}</view><view class="metric__value">{{totalText}}</view><view class="metric__sub">{{summary.label}}</view></view>
+      <view class="metric card"><view class="metric__label">上一周期同期</view><view class="metric__value metric__value--small">{{previousText}}</view><view class="metric__sub {{deltaClass}}">{{deltaText}} · {{deltaPctText}}</view></view>
+      <view class="metric card metric--wide"><view class="metric__label">最大消费分类</view><view class="metric__value metric__value--small">{{topText}}</view><view class="metric__sub">先看钱去了哪里，再决定是否值得削减。</view></view>
+    </view>
+
+    <view class="section card">
+      <view class="section-title">主分类占比</view><view class="section-copy">金额和百分比同时展示；一笔账只进入一个主分类，因此不会重复计算。</view>
+      <view wx:if="{{!categories.length}}" class="empty">这个周期还没有生活消耗。</view>
+      <view wx:for="{{categories}}" wx:key="id" class="break-row">
+        <view class="break-row__head"><view>{{item.name}}</view><view class="break-row__amount">{{item.amountText}} · {{item.shareText}}</view></view>
+        <view class="bar"><view class="bar__fill" style="width:{{item.barWidth}};"></view></view>
+      </view>
+    </view>
+
+    <view class="section card">
+      <view class="section-title">消费性质</view><view class="section-copy">“必要 / 可调 / 可省”来自你自己登记时的判断；旧账和没判断的账会保留为“未设定”。</view>
+      <view wx:if="{{!natures.length}}" class="empty">暂时没有可统计的性质数据。</view>
+      <view wx:for="{{natures}}" wx:key="id" class="nature-row"><view class="nature-row__name">{{item.name}}</view><view class="nature-row__amount">{{item.amountText}}</view><view class="nature-row__share">{{item.shareText}}</view></view>
+    </view>
+
+    <view class="section card">
+      <view class="section-head"><view><view class="section-title">{{trendTitle}}</view><view class="section-copy">周/月按天，年按月聚合。峰值 {{trendMaxText}}</view></view></view>
+      <scroll-view class="chip-scroll" scroll-x enhanced show-scrollbar="{{false}}"><view class="chip-row"><view wx:for="{{categories}}" wx:key="id" class="choice-chip {{selectedCategory === item.id ? 'choice-chip--active' : ''}}" data-id="{{item.id}}" bindtap="selectCategory">{{item.name}}</view></view></scroll-view>
+      <view wx:if="{{detailTags.length}}" class="detail-block"><view class="detail-label">进一步看快捷标签</view><view class="chip-row chip-row--wrap"><view wx:for="{{detailTags}}" wx:key="*this" class="choice-chip choice-chip--small {{selectedDetailTag === item ? 'choice-chip--active' : ''}}" data-tag="{{item}}" bindtap="selectDetailTag">{{item}}</view></view></view>
+      <canvas type="2d" id="trendCanvas" class="trend-canvas"></canvas>
+    </view>
+
+    <view class="section card">
+      <view class="section-title">导出本周期消费报告</view><view class="section-copy">CSV 会先给出总支出、主分类占比和消费性质汇总，再列出逐笔明细；完整恢复仍使用设置里的 JSON 备份。</view>
+      <button class="export-btn" loading="{{exporting}}" bindtap="exportCsv">导出可读 CSV</button>
+      <view wx:if="{{exportHint}}" class="export-hint">{{exportHint}}</view>
+    </view>
+  </view>
+  <view wx:else class="section card"><view class="empty">暂时无法读取消费分析数据。</view></view>
+</view>

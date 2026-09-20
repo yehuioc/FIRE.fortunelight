@@ -1,0 +1,5 @@
+{
+  "ignite_12_small_320": {"durationMs": 7450, "frames": 443, "avgFrameMsApprox": 16.82},
+  "extinguish_12_midnight_390": {"durationMs": 9516, "frames": 566, "avgFrameMsApprox": 16.81},
+  "ignite_1000_midnight_390": {"durationMs": 8916, "frames": 527, "avgFrameMsApprox": 16.92, "wallMs": 9262}
+}

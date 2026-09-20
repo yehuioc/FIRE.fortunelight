@@ -1,0 +1,4 @@
+{
+  "desc": "财富自由指南灯页面索引",
+  "rules": [{ "action": "allow", "page": "*" }]
+}

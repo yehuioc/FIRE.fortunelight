@@ -1,0 +1,15 @@
+{
+  "environment": "local Chromium Canvas 2D; not WeChat runtime",
+  "ignite_1000": {
+    "durationMs": 13699,
+    "frames": 753,
+    "approxAvgFrameMs": 18.19,
+    "outerWallMs": 13403
+  },
+  "extinguish_1000": {
+    "durationMs": 18299,
+    "frames": 1062,
+    "approxAvgFrameMs": 17.23,
+    "outerWallMs": 18460
+  }
+}

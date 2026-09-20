@@ -1,0 +1,19 @@
+model.test.js: PASS
+storage.test.js: PASS
+page_flow.test.js: PASS
+secondary_pages.test.js: PASS
+static_check.py: PASS
+ALL AUTOMATED CHECKS PASSED
+iphone_home_midnight {'sw': 390, 'cw': 390, 'sh': 1076, 'ch': 844}
+iphone_home_paper {'sw': 390, 'cw': 390, 'sh': 1076, 'ch': 844}
+iphone_onboarding_quick {'sw': 390, 'cw': 390, 'sh': 844, 'ch': 844}
+iphone_onboarding_advanced {'sw': 390, 'cw': 390, 'sh': 844, 'ch': 844}
+android_home_midnight {'sw': 360, 'cw': 360, 'sh': 1076, 'ch': 800}
+android_home_paper {'sw': 360, 'cw': 360, 'sh': 1076, 'ch': 800}
+small_onboarding_quick {'sw': 320, 'cw': 320, 'sh': 568, 'ch': 568}
+small_onboarding_advanced {'sw': 320, 'cw': 320, 'sh': 568, 'ch': 568}
+iphone_settings_midnight {'sw': 390, 'cw': 390, 'sh': 879, 'ch': 844}
+iphone_settings_advanced {'sw': 390, 'cw': 390, 'sh': 1089, 'ch': 844}
+iphone_settings_paper {'sw': 390, 'cw': 390, 'sh': 879, 'ch': 844}
+
+RELEASE PREFLIGHT v0.3.1 PASSED (excluding official WeChat DevTools/device runtime)

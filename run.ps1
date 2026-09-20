@@ -1,22 +1,11 @@
 $ErrorActionPreference = 'Stop'
-
-$project = Split-Path -Parent $MyInvocation.MyCommand.Path
-$venv = Join-Path $project '.venv'
-$python = Join-Path $venv 'Scripts\python.exe'
-
-if (-not (Test-Path -LiteralPath $python)) {
-    Write-Host '[setup] creating venv...'
-    python -m venv $venv
+$projectRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
+$localPython = Join-Path $projectRoot '.venv\Scripts\python.exe'
+if (Test-Path -LiteralPath $localPython) {
+    & $localPython (Join-Path $projectRoot 'run.py') @args
+} elseif (Get-Command py -ErrorAction SilentlyContinue) {
+    & py -3 (Join-Path $projectRoot 'run.py') @args
+} else {
+    & python (Join-Path $projectRoot 'run.py') @args
 }
-
-& $python -m pip install -q -r (Join-Path $project 'backend\requirements.txt')
-
-$url = 'http://127.0.0.1:8766'
-Write-Host "[run] starting on $url"
-Start-Process $url
-Push-Location $project
-try {
-    & $python -m uvicorn backend.main:app --host 127.0.0.1 --port 8766 --reload
-} finally {
-    Pop-Location
-}
+exit $LASTEXITCODE

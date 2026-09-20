@@ -1,0 +1,23 @@
+const assert=require('assert');
+const mem=new Map(); const clone=v=>v===undefined?undefined:JSON.parse(JSON.stringify(v));
+global.wx={getStorageSync:k=>mem.has(k)?clone(mem.get(k)):'',setStorageSync:(k,v)=>mem.set(k,clone(v)),removeStorageSync:k=>mem.delete(k)};
+try{delete require.cache[require.resolve('../utils/storage')]}catch{}
+const storage=require('../utils/storage'); const model=require('../utils/model'); const habits=require('../utils/habits');
+storage.clearAll();
+const settings=model.normalizeSettings({birth_date:'2000-01-01',target_age:80,mode:'quick',manual_daily_expense:80,freedom_delta_hint:false,habit_center:false,achievements_enabled:false,quick_entry_enabled:false,missed_prompt_enabled:false,weekly_review_enabled:false});
+storage.saveConfiguration(settings,0,'2026-09-20',true);
+storage.addTransaction({occurred_on:'2026-09-20',type:'expense',amount:10,category_id:'meal'});
+const backup=storage.createBackup();
+assert.strictEqual(backup.settings.freedom_delta_hint,false);
+assert.strictEqual(backup.settings.habit_center,false);
+assert.strictEqual(backup.settings.quick_entry_enabled,false);
+storage.markWeeklyReportSeen(habits.weekKey(new Date(2026,8,20,12)));
+assert.strictEqual(storage.getHabitState().last_weekly_report_seen,'2026-09-14');
+storage.clearAll();
+assert.strictEqual(storage.getHabitState().last_weekly_report_seen,'');
+storage.importBackup(backup,storage.validateBackupDocument(backup).settings);
+const restored=model.normalizeSettings(storage.getSettingsStrict());
+assert.strictEqual(restored.achievements_enabled,false);
+assert.strictEqual(restored.weekly_review_enabled,false);
+assert.strictEqual(storage.getTransactions().length,1);
+console.log('v061_settings_backup.test.js: PASS');

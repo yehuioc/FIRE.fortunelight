@@ -1,0 +1,80 @@
+<page-meta page-style="background-color: {{pageBackground}};" />
+<view class="container guide-page {{themeClass}} {{appearanceClass}}">
+  <view class="guide-header card">
+    <view class="guide-header__eyebrow">FORTUNE LIGHT MANUAL</view>
+    <view class="guide-header__title">财富自由指南灯 · 说明书</view>
+    <view class="guide-header__sub">不会用时随时回来查；新手引导只讲最必要的部分。</view>
+    <view class="guide-tabs"><view class="guide-tab {{activeTab === 'usage' ? 'guide-tab--active' : ''}}" data-tab="usage" bindtap="switchTab">使用指南</view><view class="guide-tab {{activeTab === 'idea' ? 'guide-tab--active' : ''}}" data-tab="idea" bindtap="switchTab">核心理念</view></view>
+  </view>
+
+  <block wx:if="{{activeTab === 'usage'}}">
+    <view class="section card"><view class="section-title">最快怎么记一笔</view>
+      <view class="usage-step"><view class="usage-step__no">1</view><view><view class="usage-step__title">输入真实金额</view><view class="usage-step__desc">生活消耗或新增财富，金额始终填真实发生额。</view></view></view>
+      <view class="usage-step"><view class="usage-step__no">2</view><view><view class="usage-step__title">生活消耗选一个主分类</view><view class="usage-step__desc">主分类决定统计口径，每笔只算一次。快捷标签、消费性质、备注都可以不填。</view></view></view>
+      <view class="usage-step"><view class="usage-step__no">3</view><view><view class="usage-step__title">保存，看自由时间反馈</view><view class="usage-step__desc">跨过完整一天时由人生方格点亮 / 熄灭；没跨整数日时可以显示 ±0.xx 天的轻提示。</view></view></view>
+    </view>
+
+    <view class="section card"><view class="section-title">主分类、快捷标签、备注有什么区别</view>
+      <view class="boundary"><view class="boundary__title">主分类 = 统计口径</view><view>例如正餐、饮料/零食、生活用品。每笔支出只能属于一个主分类，避免百分比重复计算。</view></view>
+      <view class="boundary"><view class="boundary__title">快捷标签 = 少打字</view><view>例如“正餐 → 日常吃饭 / 聚餐 / 约会”。它可以自动带入默认备注或消费性质，但不会替你决定真实金额。</view></view>
+      <view class="boundary"><view class="boundary__title">备注 = 具体事实</view><view>写店名、对象、用途等细节。备注不参与分类占比统计。</view></view>
+      <view class="guide-actions-inline"><button bindtap="goPresets">管理快捷标签</button></view>
+    </view>
+
+    <view class="section card"><view class="section-title">消费性质是可选的复盘标签</view>
+      <view class="boundary"><view class="boundary__title">必要</view><view>你认为当前阶段基本不可避免的支出。</view></view>
+      <view class="boundary"><view class="boundary__title">可调</view><view>需要可以保留，但金额、频率或方式有调整空间。</view></view>
+      <view class="boundary"><view class="boundary__title">可省</view><view>你自己认为可以不发生的支出。</view></view>
+      <view class="formula-note">它只用于你自己的消费复盘，不改变财富自由公式，也不会由系统替你判断某笔消费“该不该花”。</view>
+    </view>
+
+    <view class="section card"><view class="section-title">消费分析怎么读</view>
+      <view class="boundary"><view class="boundary__title">周 / 月 / 年</view><view>看不同时间尺度的总支出、分类金额、分类占比与上一周期比较。</view></view>
+      <view class="boundary"><view class="boundary__title">单分类趋势</view><view>看某个主分类或快捷标签随时间怎么变化，判断是偶发还是长期趋势。</view></view>
+      <view class="boundary"><view class="boundary__title">上周回顾提醒灯</view><view>新一周开始后，如果上一周有真实记录，首页独立入口会亮灯。点开后进入上一完整自然周的消费分析，并把灯熄灭。</view></view>
+      <view class="guide-actions-inline"><button bindtap="goAnalysis">打开消费分析</button></view>
+    </view>
+
+    <view class="section card"><view class="section-title">记录中心、成就与补账</view>
+      <view class="boundary"><view class="boundary__title">记录中心</view><view>显示累计记录天数、当前/最长连续、近 30 天覆盖率和 12 周活动格。关闭后首页整块隐藏。</view></view>
+      <view class="boundary"><view class="boundary__title">成就</view><view>由真实账本自动解锁，不需要额外签到。正式成就和少量奇怪成就只是反馈，不参与计算。</view></view>
+      <view class="boundary"><view class="boundary__title">温和补账</view><view>只有已经形成记录习惯、昨天却明显没有记录时才提醒；昨天确实没有自由事件就不用补。</view></view>
+    </view>
+
+    <view class="section card"><view class="section-title">首页可以按你的习惯重排</view>
+      <view class="formula-note">在“设置 → 首页布局”里调整“自由概览 / 人生方格 / 记录中心 / 记一笔真实的账”的先后。默认采用明确的调整模式，避免首页长按误触。</view>
+      <view class="guide-actions-inline"><button bindtap="goSettings">去设置首页布局</button></view>
+    </view>
+
+    <view class="section card"><view class="section-title">数据与备份</view>
+      <view class="boundary"><view class="boundary__title">完整 JSON 备份</view><view>用于换设备或恢复，包含设置、快捷标签和全部账本。</view></view>
+      <view class="boundary"><view class="boundary__title">可读 CSV 报告</view><view>用于阅读和分析，不替代完整恢复备份。</view></view>
+      <view class="boundary"><view class="boundary__title">历史记录</view><view>长账本按月分桶、历史页分批读取，不需要一次把全部记录塞进页面。</view></view>
+      <view class="guide-actions-inline"><button bindtap="goHistory">查看历史记录</button></view>
+    </view>
+  </block>
+
+  <block wx:else>
+    <view class="manifesto card">
+      <view class="manifesto__eyebrow">THE CORE IDEA</view>
+      <view class="manifesto__title"><view>钱只是数字。</view><view>真正要买回来的，</view><view class="manifesto__title-gold">是属于自己的时间。</view></view>
+      <view class="manifesto__copy">财富自由指南灯不想再问“账户里有多少钱”，而是把财富翻译成更接近人生的问题：按照你的生活成本估计，这些自由财富究竟能支撑多少天不被下一份工资逼着做选择？</view>
+    </view>
+
+    <view class="section card"><view class="section-title">只有一个内核</view><view class="formula">日均生活成本（账本估计） = 累计生活消耗 ÷ 观察跨度</view><view class="formula">净储蓄 = 计入模型的自由财富 − 生活消耗</view><view class="formula formula--gold">收入自由天数 = floor(正净储蓄 ÷ 日均生活成本)</view><view class="formula-note">“账本估计”和“手动估计”只是获得同一个变量的两种方式。生活成本是一把尺，不是绝对真值；净储蓄和自由天数的公式不会改变。</view></view>
+
+    <view class="section card"><view class="section-title">这里只记录“自由事件”</view><view class="boundary"><view class="boundary__title">真正新增自由财富</view><view>工资、真实赚到的钱、真正增加你可支配资源的收入，应该进入模型。</view></view><view class="boundary"><view class="boundary__title">真正的生活消耗</view><view>房租、吃饭、娱乐、交通等真实消耗生活资源的支出，应该进入模型。</view></view><view class="boundary"><view class="boundary__title">不改变自由本质的现金流，不要记</view><view>自己的账户互转、已经记过消费后的信用卡还款、借款本金，都不应该伪装成新增财富或新的生活消耗。退款/报销时，删除原支出，再按最终真实净消耗重新记录。</view></view></view>
+
+    <view class="section card"><view class="section-title">两种使用方式，不是两套算法</view><view class="mode-explain"><view class="mode-explain__title">上手版</view><view>只帮你少填参数。你给出日均生活成本和起始自由本金，系统马上得到第一份自由时间基准。</view></view><view class="mode-explain"><view class="mode-explain__title">高级自主版</view><view>公式完全相同，只是把成本估计、观察跨度、额外起始资产和人生方格范围等输入控制权交给你。</view></view></view>
+
+    <view class="section card"><view class="section-title">熄灭不是惩罚，它在显示一次交换</view><view class="step"><view class="step__no">01</view><view><view class="step__title">生活消耗会降低净储蓄</view><view class="step__desc">方格熄灭是在呈现机会成本，不是在评价这笔消费“对不对”。</view></view></view><view class="step"><view class="step__no">02</view><view><view class="step__title">你是在拿未来自由交换今天的价值</view><view class="step__desc">一顿喜欢的饭、一次旅行、给家人的礼物都可能值得。指南灯只把“拿什么换了什么”照出来，值不值由你决定。</view></view></view><view class="step"><view class="step__no">03</view><view><view class="step__title">账本估计还会重新估计生活成本</view><view class="step__desc">如果只是口径变化，系统会明确标成“重算”，不会伪装成某一笔钱单独造成的奖惩。</view></view></view></view>
+
+    <view class="section card"><view class="section-title">FREE 到底意味着什么</view><view class="boundary"><view class="boundary__title">它代表“当前人生区间已被覆盖”</view><view>按照你现在的生活成本估计、人生坐标与自由资源，现有资源已经覆盖剩余人生方格。</view></view><view class="boundary"><view class="boundary__title">它不是永久退休证明</view><view>这里没有假设投资收益率、安全提取率、通胀或未来收入，所以 FREE 不是传统 FIRE 意义上“永久退休能力已被证明”。</view></view></view>
+
+    <view class="section card"><view class="section-title">三条边界</view><view class="boundary"><view class="boundary__title">不是投资建议</view><view>不预测收益、通胀、未来工资、资产价格或安全提取率。</view></view><view class="boundary"><view class="boundary__title">不是预算警察</view><view>它不会告诉你某笔消费“该不该花”，只把数学影响照出来，并把判断权留给你。</view></view><view class="boundary"><view class="boundary__title">不是寿命预测</view><view>目标年龄只决定人生方格的显示范围，可以随时修改。</view></view></view>
+
+    <view class="quote">“数据是真相，动画是仪式。仪式服从真相。”</view>
+  </block>
+
+  <view class="privacy">当前版本不要求登录，不把账本上传至开发者服务器。生日、交易与设置默认保存在当前设备的小程序本地存储。</view>
+</view>

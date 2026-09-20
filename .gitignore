@@ -6,3 +6,16 @@ memory/
 __pycache__/
 *.pyc
 .DS_Store
+
+# Private inputs, recovery copies and release artifacts
+reference/
+releases/
+.evidence/
+node_modules/
+*.db
+*.db-*
+*.sqlite*
+.env*
+!.env.example
+.pytest_cache/
+variants/wechat/project.private.config.json

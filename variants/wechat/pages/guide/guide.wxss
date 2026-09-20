@@ -1,0 +1,206 @@
+.guide-page { min-height: 100vh; padding-bottom: 80rpx; background: #07080c; color: #f4f1e8; }
+.card { background: #11141a; border: 1rpx solid rgba(255,255,255,0.08); border-radius: 28rpx; box-sizing: border-box; }
+.manifesto, .section { padding: 29rpx; margin-bottom: 20rpx; }
+.section-title { color: #f2eee5; font-size: 28rpx; font-weight: 600; }
+.manifesto__eyebrow { color: #987f3e; font-size: 19rpx; letter-spacing: 4rpx; }
+.manifesto__title { margin-top: 17rpx; color: #ece7dd; font-size: 40rpx; line-height: 1.45; font-weight: 700; }
+.manifesto__title-gold { color: #f1c75b; }
+.manifesto__copy { margin-top: 23rpx; color: #90939c; font-size: 23rpx; line-height: 1.75; }
+.mode-explain { margin-top: 18rpx; padding: 20rpx; background: #171a21; border-radius: 15rpx; color: #838791; font-size: 21rpx; line-height: 1.6; }
+.mode-explain__title { margin-bottom: 6rpx; color: #ddc066; font-size: 24rpx; font-weight: 600; }
+.step { padding: 22rpx 0; display: flex; border-bottom: 1rpx solid rgba(255,255,255,0.07); }
+.step__no { width: 54rpx; flex: none; color: #6c5c32; font-size: 20rpx; }
+.step__title { color: #e2ded5; font-size: 25rpx; font-weight: 600; }
+.step__desc { margin-top: 6rpx; color: #7f828c; font-size: 21rpx; line-height: 1.55; }
+.formula { margin-top: 15rpx; padding: 18rpx; background: #171a21; border-radius: 14rpx; color: #bcb9b1; font-size: 22rpx; line-height: 1.55; }
+.formula--gold { color: #e5c76b; }
+.formula-note { margin-top: 16rpx; color: #737680; font-size: 20rpx; line-height: 1.55; }
+.boundary { padding: 20rpx 0; color: #858892; font-size: 21rpx; line-height: 1.55; border-bottom: 1rpx solid rgba(255,255,255,0.07); }
+.boundary__title { margin-bottom: 5rpx; color: #d7ba63; font-size: 24rpx; }
+.quote { padding: 30rpx 18rpx; color: #b49b59; text-align: center; font-size: 23rpx; }
+.privacy { padding: 0 17rpx; color: #60646d; text-align: center; font-size: 19rpx; line-height: 1.6; }
+
+.theme-paper.guide-page { background: #eee7db; color: #29231d; }
+.theme-paper .card { background: #faf6ee; border-color: #ddd2c2; }
+.theme-paper .section-title, .theme-paper .manifesto__title, .theme-paper .step__title { color: #332c24; }
+.theme-paper .manifesto__eyebrow, .theme-paper .manifesto__title-gold, .theme-paper .mode-explain__title, .theme-paper .boundary__title { color: #9a6b20; }
+.theme-paper .manifesto__copy, .theme-paper .step__desc, .theme-paper .formula-note, .theme-paper .boundary, .theme-paper .privacy { color: #786e62; }
+.theme-paper .mode-explain, .theme-paper .formula { background: #eee6da; color: #5d5348; }
+.theme-paper .step, .theme-paper .boundary { border-color: #e0d5c6; }
+.theme-paper .formula--gold, .theme-paper .quote { color: #93651c; }
+
+/* v0.5.1 阅读偏好 */
+.guide-page.font-serif { font-family:"Songti SC",STSong,SimSun,serif; }
+.font-size-large .manifesto__copy,.font-size-large .formula-note,.font-size-large .boundary view,.font-size-large .mode-explain > view:last-child { font-size:24rpx; }
+.font-size-large .section-title { font-size:31rpx; }
+.font-size-compact .manifesto__copy,.font-size-compact .formula-note,.font-size-compact .boundary view,.font-size-compact .mode-explain > view:last-child { font-size:20rpx; }
+
+/* v0.6.2 · 说明书双入口 */
+.guide-header { padding:26rpx; margin-bottom:20rpx; }
+.guide-header__eyebrow { color:#987f3e; font-size:17rpx; letter-spacing:3rpx; }
+.guide-header__title { margin-top:8rpx; color:#ece7dd; font-size:31rpx; font-weight:700; }
+.guide-header__sub { margin-top:7rpx; color:#7f838d; font-size:19rpx; line-height:1.55; }
+.guide-tabs { margin-top:20rpx; padding:5rpx; display:flex; background:#0d1016; border-radius:15rpx; }
+.guide-tab { width:50%; padding:14rpx 0; border-radius:11rpx; text-align:center; color:#777b85; font-size:21rpx; }
+.guide-tab--active { background:#292312; color:#e7c564; }
+.usage-step { padding:20rpx 0; display:flex; border-bottom:1rpx solid rgba(255,255,255,.07); }
+.usage-step__no { width:52rpx; flex:none; color:#9a7d38; font-size:20rpx; }
+.usage-step__title { color:#e2ded5; font-size:24rpx; font-weight:600; }
+.usage-step__desc { margin-top:6rpx; color:#7f828c; font-size:20rpx; line-height:1.6; }
+.guide-actions-inline { margin-top:18rpx; }
+.guide-actions-inline button { min-height:70rpx; margin:0; padding:0 18rpx; display:flex; align-items:center; justify-content:center; border-radius:14rpx; background:#1d1a12; color:#d2b65c; font-size:20rpx; }
+.theme-paper .guide-header__title,.theme-paper .usage-step__title { color:#332c24; }
+.theme-paper .guide-header__eyebrow { color:#9a6b20; }
+.theme-paper .guide-header__sub,.theme-paper .usage-step__desc { color:#786e62; }
+.theme-paper .guide-tabs { background:#e4dbce; }
+.theme-paper .guide-tab { color:#756b5f; }
+.theme-paper .guide-tab--active { background:#d9bf82; color:#5e420f; }
+.theme-paper .usage-step { border-color:#e0d5c6; }
+.theme-paper .guide-actions-inline button { background:#eadfbf; color:#805b18; }
+
+/* >>> v0.6.2 proportional typography generated >>> */
+/* 85% */
+.font-scale-85 .section-title { font-size:23.8rpx; }
+.font-scale-85 .manifesto__eyebrow { font-size:16.1rpx; }
+.font-scale-85 .manifesto__title { font-size:34rpx; }
+.font-scale-85 .manifesto__copy { font-size:19.6rpx; }
+.font-scale-85 .mode-explain { font-size:17.8rpx; }
+.font-scale-85 .mode-explain__title { font-size:20.4rpx; }
+.font-scale-85 .step__no { font-size:17rpx; }
+.font-scale-85 .step__title { font-size:21.2rpx; }
+.font-scale-85 .step__desc { font-size:17.8rpx; }
+.font-scale-85 .formula { font-size:18.7rpx; }
+.font-scale-85 .formula-note { font-size:17rpx; }
+.font-scale-85 .boundary { font-size:17.8rpx; }
+.font-scale-85 .boundary__title { font-size:20.4rpx; }
+.font-scale-85 .quote { font-size:19.6rpx; }
+.font-scale-85 .privacy { font-size:16.1rpx; }
+.font-scale-85 .guide-header__eyebrow { font-size:14.4rpx; }
+.font-scale-85 .guide-header__title { font-size:26.3rpx; }
+.font-scale-85 .guide-header__sub { font-size:16.1rpx; }
+.font-scale-85 .guide-tab { font-size:17.8rpx; }
+.font-scale-85 .usage-step__no { font-size:17rpx; }
+.font-scale-85 .usage-step__title { font-size:20.4rpx; }
+.font-scale-85 .usage-step__desc { font-size:17rpx; }
+.font-scale-85 .guide-actions-inline button { font-size:17rpx; }
+/* 90% */
+.font-scale-90 .section-title { font-size:25.2rpx; }
+.font-scale-90 .manifesto__eyebrow { font-size:17.1rpx; }
+.font-scale-90 .manifesto__title { font-size:36rpx; }
+.font-scale-90 .manifesto__copy { font-size:20.7rpx; }
+.font-scale-90 .mode-explain { font-size:18.9rpx; }
+.font-scale-90 .mode-explain__title { font-size:21.6rpx; }
+.font-scale-90 .step__no { font-size:18rpx; }
+.font-scale-90 .step__title { font-size:22.5rpx; }
+.font-scale-90 .step__desc { font-size:18.9rpx; }
+.font-scale-90 .formula { font-size:19.8rpx; }
+.font-scale-90 .formula-note { font-size:18rpx; }
+.font-scale-90 .boundary { font-size:18.9rpx; }
+.font-scale-90 .boundary__title { font-size:21.6rpx; }
+.font-scale-90 .quote { font-size:20.7rpx; }
+.font-scale-90 .privacy { font-size:17.1rpx; }
+.font-scale-90 .guide-header__eyebrow { font-size:15.3rpx; }
+.font-scale-90 .guide-header__title { font-size:27.9rpx; }
+.font-scale-90 .guide-header__sub { font-size:17.1rpx; }
+.font-scale-90 .guide-tab { font-size:18.9rpx; }
+.font-scale-90 .usage-step__no { font-size:18rpx; }
+.font-scale-90 .usage-step__title { font-size:21.6rpx; }
+.font-scale-90 .usage-step__desc { font-size:18rpx; }
+.font-scale-90 .guide-actions-inline button { font-size:18rpx; }
+/* 95% */
+.font-scale-95 .section-title { font-size:26.6rpx; }
+.font-scale-95 .manifesto__eyebrow { font-size:18.1rpx; }
+.font-scale-95 .manifesto__title { font-size:38rpx; }
+.font-scale-95 .manifesto__copy { font-size:21.8rpx; }
+.font-scale-95 .mode-explain { font-size:19.9rpx; }
+.font-scale-95 .mode-explain__title { font-size:22.8rpx; }
+.font-scale-95 .step__no { font-size:19rpx; }
+.font-scale-95 .step__title { font-size:23.8rpx; }
+.font-scale-95 .step__desc { font-size:19.9rpx; }
+.font-scale-95 .formula { font-size:20.9rpx; }
+.font-scale-95 .formula-note { font-size:19rpx; }
+.font-scale-95 .boundary { font-size:19.9rpx; }
+.font-scale-95 .boundary__title { font-size:22.8rpx; }
+.font-scale-95 .quote { font-size:21.8rpx; }
+.font-scale-95 .privacy { font-size:18.1rpx; }
+.font-scale-95 .guide-header__eyebrow { font-size:16.1rpx; }
+.font-scale-95 .guide-header__title { font-size:29.4rpx; }
+.font-scale-95 .guide-header__sub { font-size:18.1rpx; }
+.font-scale-95 .guide-tab { font-size:19.9rpx; }
+.font-scale-95 .usage-step__no { font-size:19rpx; }
+.font-scale-95 .usage-step__title { font-size:22.8rpx; }
+.font-scale-95 .usage-step__desc { font-size:19rpx; }
+.font-scale-95 .guide-actions-inline button { font-size:19rpx; }
+/* 105% */
+.font-scale-105 .section-title { font-size:29.4rpx; }
+.font-scale-105 .manifesto__eyebrow { font-size:19.9rpx; }
+.font-scale-105 .manifesto__title { font-size:42rpx; }
+.font-scale-105 .manifesto__copy { font-size:24.2rpx; }
+.font-scale-105 .mode-explain { font-size:22.1rpx; }
+.font-scale-105 .mode-explain__title { font-size:25.2rpx; }
+.font-scale-105 .step__no { font-size:21rpx; }
+.font-scale-105 .step__title { font-size:26.2rpx; }
+.font-scale-105 .step__desc { font-size:22.1rpx; }
+.font-scale-105 .formula { font-size:23.1rpx; }
+.font-scale-105 .formula-note { font-size:21rpx; }
+.font-scale-105 .boundary { font-size:22.1rpx; }
+.font-scale-105 .boundary__title { font-size:25.2rpx; }
+.font-scale-105 .quote { font-size:24.2rpx; }
+.font-scale-105 .privacy { font-size:19.9rpx; }
+.font-scale-105 .guide-header__eyebrow { font-size:17.9rpx; }
+.font-scale-105 .guide-header__title { font-size:32.6rpx; }
+.font-scale-105 .guide-header__sub { font-size:19.9rpx; }
+.font-scale-105 .guide-tab { font-size:22.1rpx; }
+.font-scale-105 .usage-step__no { font-size:21rpx; }
+.font-scale-105 .usage-step__title { font-size:25.2rpx; }
+.font-scale-105 .usage-step__desc { font-size:21rpx; }
+.font-scale-105 .guide-actions-inline button { font-size:21rpx; }
+/* 110% */
+.font-scale-110 .section-title { font-size:30.8rpx; }
+.font-scale-110 .manifesto__eyebrow { font-size:20.9rpx; }
+.font-scale-110 .manifesto__title { font-size:44rpx; }
+.font-scale-110 .manifesto__copy { font-size:25.3rpx; }
+.font-scale-110 .mode-explain { font-size:23.1rpx; }
+.font-scale-110 .mode-explain__title { font-size:26.4rpx; }
+.font-scale-110 .step__no { font-size:22rpx; }
+.font-scale-110 .step__title { font-size:27.5rpx; }
+.font-scale-110 .step__desc { font-size:23.1rpx; }
+.font-scale-110 .formula { font-size:24.2rpx; }
+.font-scale-110 .formula-note { font-size:22rpx; }
+.font-scale-110 .boundary { font-size:23.1rpx; }
+.font-scale-110 .boundary__title { font-size:26.4rpx; }
+.font-scale-110 .quote { font-size:25.3rpx; }
+.font-scale-110 .privacy { font-size:20.9rpx; }
+.font-scale-110 .guide-header__eyebrow { font-size:18.7rpx; }
+.font-scale-110 .guide-header__title { font-size:34.1rpx; }
+.font-scale-110 .guide-header__sub { font-size:20.9rpx; }
+.font-scale-110 .guide-tab { font-size:23.1rpx; }
+.font-scale-110 .usage-step__no { font-size:22rpx; }
+.font-scale-110 .usage-step__title { font-size:26.4rpx; }
+.font-scale-110 .usage-step__desc { font-size:22rpx; }
+.font-scale-110 .guide-actions-inline button { font-size:22rpx; }
+/* 115% */
+.font-scale-115 .section-title { font-size:32.2rpx; }
+.font-scale-115 .manifesto__eyebrow { font-size:21.8rpx; }
+.font-scale-115 .manifesto__title { font-size:46rpx; }
+.font-scale-115 .manifesto__copy { font-size:26.4rpx; }
+.font-scale-115 .mode-explain { font-size:24.1rpx; }
+.font-scale-115 .mode-explain__title { font-size:27.6rpx; }
+.font-scale-115 .step__no { font-size:23rpx; }
+.font-scale-115 .step__title { font-size:28.7rpx; }
+.font-scale-115 .step__desc { font-size:24.1rpx; }
+.font-scale-115 .formula { font-size:25.3rpx; }
+.font-scale-115 .formula-note { font-size:23rpx; }
+.font-scale-115 .boundary { font-size:24.1rpx; }
+.font-scale-115 .boundary__title { font-size:27.6rpx; }
+.font-scale-115 .quote { font-size:26.4rpx; }
+.font-scale-115 .privacy { font-size:21.8rpx; }
+.font-scale-115 .guide-header__eyebrow { font-size:19.5rpx; }
+.font-scale-115 .guide-header__title { font-size:35.6rpx; }
+.font-scale-115 .guide-header__sub { font-size:21.8rpx; }
+.font-scale-115 .guide-tab { font-size:24.1rpx; }
+.font-scale-115 .usage-step__no { font-size:23rpx; }
+.font-scale-115 .usage-step__title { font-size:27.6rpx; }
+.font-scale-115 .usage-step__desc { font-size:23rpx; }
+.font-scale-115 .guide-actions-inline button { font-size:23rpx; }
+/* <<< v0.6.2 proportional typography generated <<< */

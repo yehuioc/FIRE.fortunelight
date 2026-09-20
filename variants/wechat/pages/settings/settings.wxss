@@ -1,0 +1,324 @@
+.settings-page { min-height: 100vh; padding-bottom: 70rpx; background: #07080c; color: #f4f1e8; }
+.intro, .section, .danger { padding: 27rpx; margin-bottom: 20rpx; }
+.intro__title { color: #e3c66f; font-size: 29rpx; font-weight: 700; }
+.intro__text, .danger__copy, .section-copy { margin-top: 10rpx; color: #878a94; font-size: 22rpx; line-height: 1.65; }
+.section-title { color: #f2eee5; font-size: 28rpx; font-weight: 600; }
+.card { background: #11141a; border: 1rpx solid rgba(255,255,255,0.08); border-radius: 28rpx; box-sizing: border-box; }
+
+.mode-select { margin-top: 22rpx; display: flex; justify-content: space-between; }
+.mode-option { width: 48.5%; padding: 20rpx; box-sizing: border-box; background: #171a21; border: 2rpx solid transparent; border-radius: 17rpx; }
+.mode-option--active { background: #211d12; border-color: rgba(228,188,86,0.55); }
+.mode-option__title { color: #dfdbd2; font-size: 25rpx; font-weight: 700; }
+.mode-option__desc { margin-top: 7rpx; color: #777b85; font-size: 19rpx; line-height: 1.55; }
+.mode-option--active .mode-option__desc { color: #9d9378; }
+
+.field { margin-top: 24rpx; }
+.field__label { margin-bottom: 9rpx; color: #81848e; font-size: 21rpx; }
+.control, .money-control { min-height: 80rpx; padding: 0 20rpx; box-sizing: border-box; display: flex; align-items: center; background: #171a21; border-radius: 15rpx; color: #ebe7de; font-size: 25rpx; }
+.control--input { height: 80rpx; line-height: 80rpx; }
+.inline { display: flex; align-items: center; }
+.inline .control { flex: 1; }
+.inline text { margin-left: 15rpx; color: #81848d; font-size: 23rpx; }
+.money-control text { margin-right: 10rpx; color: #777b84; }
+.money-control input, .money-control__input { height: 80rpx; line-height: 80rpx; flex: 1; color: #ebe7de; font-size: 25rpx; }
+.switch-row { padding-top: 25rpx; display: flex; align-items: center; }
+.switch-copy { flex: 1; padding-right: 22rpx; }
+.switch-copy__title { color: #dfdbd2; font-size: 25rpx; }
+.switch-copy__sub { margin-top: 5rpx; color: #777b85; font-size: 20rpx; line-height: 1.5; }
+.explain-box { margin-top: 20rpx; padding: 18rpx; background: #161922; border-radius: 14rpx; color: #858995; font-size: 20rpx; line-height: 1.6; }
+.source-select { padding: 5rpx; display: flex; background: #0d1016; border-radius: 15rpx; }
+.source-option { width: 50%; padding: 15rpx 0; color: #777b85; text-align: center; border-radius: 11rpx; font-size: 22rpx; }
+.source-option--active { background: #292312; color: #e7c564; }
+
+.theme-list { margin-top: 22rpx; }
+.theme-option { padding: 16rpx; margin-top: 14rpx; display: flex; align-items: center; border: 2rpx solid transparent; border-radius: 18rpx; background: #171a21; }
+.theme-option--active { border-color: rgba(228,188,86,0.58); background: #1e1b14; }
+.theme-preview { width: 116rpx; height: 80rpx; padding: 14rpx; box-sizing: border-box; flex: none; border-radius: 13rpx; overflow: hidden; }
+.theme-preview--midnight { background: #090b10; }
+.theme-preview--paper { background: #e8e0d3; border: 1rpx solid #cfc3b2; }
+.theme-preview__glow { width: 23rpx; height: 23rpx; background: #e4bc56; border-radius: 50%; }
+.theme-preview--paper .theme-preview__glow { background: #a8741f; }
+.theme-preview__line { width: 78rpx; height: 7rpx; margin-top: 9rpx; background: #4a4437; border-radius: 8rpx; }
+.theme-preview--paper .theme-preview__line { background: #796b59; }
+.theme-preview__line--short { width: 50rpx; margin-top: 6rpx; opacity: .55; }
+.theme-option__copy { margin-left: 18rpx; flex: 1; }
+.theme-option__title { color: #e2ded5; font-size: 24rpx; font-weight: 600; }
+.theme-option__desc { margin-top: 5rpx; color: #767a84; font-size: 19rpx; line-height: 1.5; }
+
+.save-btn, .danger-btn { display: flex; align-items: center; justify-content: center; line-height: 1.2; }
+.save-btn { width: 100%; height: 88rpx; margin: 29rpx 0; padding: 0 24rpx; background: #e4bc56; color: #15130e; border-radius: 18rpx; font-size: 26rpx; font-weight: 700; }
+.danger-btn { width: 100%; min-height: 76rpx; margin: 21rpx 0 0; padding: 0 22rpx; background: #211819; color: #bd8274; border-radius: 16rpx; font-size: 22rpx; }
+
+.theme-paper.settings-page { background: #eee7db; color: #29231d; }
+.theme-paper .card { background: #faf6ee; border-color: #ddd2c2; }
+.theme-paper .intro__title, .theme-paper .section-title { color: #342d25; }
+.theme-paper .intro__text, .theme-paper .danger__copy, .theme-paper .section-copy, .theme-paper .field__label, .theme-paper .mode-option__desc, .theme-paper .switch-copy__sub, .theme-paper .theme-option__desc { color: #776d61; }
+.theme-paper .mode-option, .theme-paper .control, .theme-paper .money-control, .theme-paper .theme-option { background: #eee6da; color: #443b32; }
+.theme-paper .mode-option--active, .theme-paper .theme-option--active { background: #efe1bc; border-color: #ad7b2a; }
+.theme-paper .mode-option__title, .theme-paper .switch-copy__title, .theme-paper .theme-option__title { color: #40372e; }
+.theme-paper .control, .theme-paper .money-control input, .theme-paper .money-control__input { color: #40372e; }
+.theme-paper .source-select { background: #e4dbce; }
+.theme-paper .source-option { color: #756b5f; }
+.theme-paper .source-option--active { background: #d9bf82; color: #5e420f; }
+.theme-paper .explain-box { background: #eee6da; color: #74695e; }
+.theme-paper .save-btn { background: #a8741f; color: #fffaf0; }
+.theme-paper .danger-btn { background: #eadbd5; color: #905c4d; }
+
+.current-balance { margin-top: 16rpx; padding: 15rpx 18rpx; border-radius: 14rpx; background: #11141a; color: #8b8e97; font-size: 20rpx; line-height: 1.55; }
+.current-balance text { color: #e7c564; font-weight: 600; }
+.theme-paper .current-balance { background: #e8dfd2; color: #776d61; }
+.theme-paper .current-balance text { color: #9b6b20; }
+
+/* v0.5.1 · 解释性输入、字体大小与备份恢复 */
+.settings-page.font-serif { font-family:"Songti SC",STSong,SimSun,serif; }
+.settings-page.font-serif input,.settings-page.font-serif button { font-family:"Songti SC",STSong,SimSun,serif; }
+.field__help { margin-top:9rpx; color:#6f737d; font-size:19rpx; line-height:1.55; }
+.concept-box,.compare-item { margin-top:18rpx; padding:18rpx 20rpx; border-radius:15rpx; background:#151922; color:#858995; font-size:20rpx; line-height:1.6; }
+.concept-box__title,.compare-item__title { margin-bottom:7rpx; color:#d7bd75; font-size:21rpx; font-weight:600; }
+.compare-item--asset { background:#121922; }
+.warning-box { margin-top:15rpx; padding:16rpx 18rpx; border-radius:14rpx; background:#211b12; color:#ae9762; font-size:19rpx; line-height:1.6; }
+.read-choice { display:flex; gap:12rpx; }
+.read-choice__item { min-width:0; flex:1; min-height:72rpx; padding:0 12rpx; display:flex; align-items:center; justify-content:center; box-sizing:border-box; border:2rpx solid transparent; border-radius:14rpx; background:#171a21; color:#888c95; font-size:22rpx; }
+.read-choice__item--active { border-color:rgba(228,188,86,.58); background:#292312; color:#e7c564; }
+.read-choice__item--serif { font-family:"Songti SC",STSong,SimSun,serif; }
+.backup-actions { margin-top:22rpx; display:flex; gap:14rpx; }
+.backup-btn { min-width:0; flex:1; min-height:78rpx; margin:0; padding:0 16rpx; display:flex; align-items:center; justify-content:center; border-radius:16rpx; background:#181b23; color:#b5b7bd; font-size:22rpx; line-height:1.2; }
+.backup-btn--primary { background:#2a2517; color:#e6c665; }
+.backup-note { margin-top:16rpx; color:#70747e; font-size:19rpx; line-height:1.6; }
+.backup-status { margin-top:16rpx; padding:16rpx 18rpx; border-radius:14rpx; background:#121922; color:#9aaab6; font-size:20rpx; line-height:1.55; }
+.font-size-standard .intro__text,.font-size-standard .section-copy { font-size:23rpx; }
+.font-size-standard .field__label { font-size:22rpx; }
+.font-size-large .intro__title,.font-size-large .section-title { font-size:31rpx; }
+.font-size-large .intro__text,.font-size-large .section-copy { font-size:25rpx; }
+.font-size-large .field__label,.font-size-large .field__help,.font-size-large .mode-option__desc,.font-size-large .switch-copy__sub,.font-size-large .backup-note { font-size:21rpx; }
+.font-size-large .control,.font-size-large .money-control,.font-size-large .money-control input,.font-size-large .mode-option__title,.font-size-large .switch-copy__title,.font-size-large .theme-option__title { font-size:27rpx; }
+.font-size-large .read-choice__item,.font-size-large .backup-btn { font-size:24rpx; }
+.font-size-compact .intro__text,.font-size-compact .section-copy { font-size:20rpx; }
+.font-size-compact .field__label,.font-size-compact .field__help { font-size:19rpx; }
+.theme-paper .field__help,.theme-paper .concept-box,.theme-paper .compare-item,.theme-paper .backup-note { color:#74695e; }
+.theme-paper .concept-box,.theme-paper .compare-item,.theme-paper .read-choice__item,.theme-paper .backup-btn { background:#eee6da; }
+.theme-paper .concept-box__title,.theme-paper .compare-item__title { color:#95691f; }
+.theme-paper .warning-box { background:#efe1bc; color:#765a25; }
+.theme-paper .read-choice__item { color:#756b5f; }
+.theme-paper .read-choice__item--active { background:#d9bf82; border-color:#ad7b2a; color:#5e420f; }
+.theme-paper .backup-btn--primary { background:#dcc58f; color:#5e420f; }
+.theme-paper .backup-status { background:#e4e8e8; color:#5e6e75; }
+
+/* v0.6.2 · 字号比例 / 首页布局 / 使用帮助 */
+.font-scale-scroll { width:100%; margin-top:12rpx; white-space:nowrap; }
+.font-scale-row { display:inline-flex; gap:10rpx; padding-right:4rpx; }
+.font-scale-chip { min-width:92rpx; min-height:64rpx; padding:0 14rpx; box-sizing:border-box; display:flex; align-items:center; justify-content:center; border-radius:14rpx; border:2rpx solid transparent; background:#171a21; color:#878b95; font-size:20rpx; }
+.font-scale-chip--active { background:#292312; border-color:rgba(228,188,86,.58); color:#e7c564; }
+.layout-list { margin-top:20rpx; display:flex; flex-direction:column; gap:10rpx; }
+.layout-row { min-height:92rpx; padding:14rpx 14rpx; display:flex; align-items:center; gap:12rpx; box-sizing:border-box; background:#171a21; border-radius:16rpx; }
+.layout-row__handle { width:28rpx; flex:none; color:#656a73; font-size:28rpx; text-align:center; }
+.layout-row__copy { min-width:0; flex:1; }
+.layout-row__title { color:#dfdbd2; font-size:23rpx; font-weight:600; }
+.layout-row__desc { margin-top:4rpx; color:#737782; font-size:18rpx; line-height:1.4; }
+.layout-row__actions { flex:none; display:flex; gap:8rpx; }
+.layout-move { width:58rpx; height:58rpx; min-height:0; margin:0; padding:0; display:flex; align-items:center; justify-content:center; border-radius:12rpx; background:#0e1117; color:#c8a94f; font-size:24rpx; line-height:1; }
+.layout-move[disabled] { opacity:.28; }
+.layout-reset { margin-top:14rpx; color:#a38b4c; font-size:19rpx; text-align:right; }
+.help-actions { margin-top:14rpx; display:flex; gap:12rpx; }
+.help-actions .backup-btn { margin:0; }
+.theme-paper .font-scale-chip,.theme-paper .layout-row,.theme-paper .layout-move { background:#eee6da; }
+.theme-paper .font-scale-chip { color:#756b5f; }
+.theme-paper .font-scale-chip--active { background:#d9bf82; border-color:#ad7b2a; color:#5e420f; }
+.theme-paper .layout-row__title { color:#40372e; }
+.theme-paper .layout-row__desc,.theme-paper .layout-row__handle { color:#7c7165; }
+.theme-paper .layout-move,.theme-paper .layout-reset { color:#95691f; }
+
+/* >>> v0.6.2 proportional typography generated >>> */
+/* 85% */
+.font-scale-85 .intro__title { font-size:24.6rpx; }
+.font-scale-85 .intro__text,.font-scale-85 .danger__copy,.font-scale-85 .section-copy { font-size:18.7rpx; }
+.font-scale-85 .section-title { font-size:23.8rpx; }
+.font-scale-85 .mode-option__title { font-size:21.2rpx; }
+.font-scale-85 .mode-option__desc { font-size:16.1rpx; }
+.font-scale-85 .field__label { font-size:17.8rpx; }
+.font-scale-85 .control,.font-scale-85 .money-control { font-size:21.2rpx; }
+.font-scale-85 .inline text { font-size:19.6rpx; }
+.font-scale-85 .money-control input,.font-scale-85 .money-control__input { font-size:21.2rpx; }
+.font-scale-85 .switch-copy__title { font-size:21.2rpx; }
+.font-scale-85 .switch-copy__sub { font-size:17rpx; }
+.font-scale-85 .explain-box { font-size:17rpx; }
+.font-scale-85 .source-option { font-size:18.7rpx; }
+.font-scale-85 .theme-option__title { font-size:20.4rpx; }
+.font-scale-85 .theme-option__desc { font-size:16.1rpx; }
+.font-scale-85 .save-btn { font-size:22.1rpx; }
+.font-scale-85 .danger-btn { font-size:18.7rpx; }
+.font-scale-85 .current-balance { font-size:17rpx; }
+.font-scale-85 .field__help { font-size:16.1rpx; }
+.font-scale-85 .concept-box,.font-scale-85 .compare-item { font-size:17rpx; }
+.font-scale-85 .concept-box__title,.font-scale-85 .compare-item__title { font-size:17.8rpx; }
+.font-scale-85 .warning-box { font-size:16.1rpx; }
+.font-scale-85 .read-choice__item { font-size:18.7rpx; }
+.font-scale-85 .backup-btn { font-size:18.7rpx; }
+.font-scale-85 .backup-note { font-size:16.1rpx; }
+.font-scale-85 .backup-status { font-size:17rpx; }
+.font-scale-85 .layout-row__handle { font-size:23.8rpx; }
+.font-scale-85 .layout-row__title { font-size:19.6rpx; }
+.font-scale-85 .layout-row__desc { font-size:15.3rpx; }
+.font-scale-85 .layout-move { font-size:20.4rpx; }
+.font-scale-85 .layout-reset { font-size:16.1rpx; }
+/* 90% */
+.font-scale-90 .intro__title { font-size:26.1rpx; }
+.font-scale-90 .intro__text,.font-scale-90 .danger__copy,.font-scale-90 .section-copy { font-size:19.8rpx; }
+.font-scale-90 .section-title { font-size:25.2rpx; }
+.font-scale-90 .mode-option__title { font-size:22.5rpx; }
+.font-scale-90 .mode-option__desc { font-size:17.1rpx; }
+.font-scale-90 .field__label { font-size:18.9rpx; }
+.font-scale-90 .control,.font-scale-90 .money-control { font-size:22.5rpx; }
+.font-scale-90 .inline text { font-size:20.7rpx; }
+.font-scale-90 .money-control input,.font-scale-90 .money-control__input { font-size:22.5rpx; }
+.font-scale-90 .switch-copy__title { font-size:22.5rpx; }
+.font-scale-90 .switch-copy__sub { font-size:18rpx; }
+.font-scale-90 .explain-box { font-size:18rpx; }
+.font-scale-90 .source-option { font-size:19.8rpx; }
+.font-scale-90 .theme-option__title { font-size:21.6rpx; }
+.font-scale-90 .theme-option__desc { font-size:17.1rpx; }
+.font-scale-90 .save-btn { font-size:23.4rpx; }
+.font-scale-90 .danger-btn { font-size:19.8rpx; }
+.font-scale-90 .current-balance { font-size:18rpx; }
+.font-scale-90 .field__help { font-size:17.1rpx; }
+.font-scale-90 .concept-box,.font-scale-90 .compare-item { font-size:18rpx; }
+.font-scale-90 .concept-box__title,.font-scale-90 .compare-item__title { font-size:18.9rpx; }
+.font-scale-90 .warning-box { font-size:17.1rpx; }
+.font-scale-90 .read-choice__item { font-size:19.8rpx; }
+.font-scale-90 .backup-btn { font-size:19.8rpx; }
+.font-scale-90 .backup-note { font-size:17.1rpx; }
+.font-scale-90 .backup-status { font-size:18rpx; }
+.font-scale-90 .layout-row__handle { font-size:25.2rpx; }
+.font-scale-90 .layout-row__title { font-size:20.7rpx; }
+.font-scale-90 .layout-row__desc { font-size:16.2rpx; }
+.font-scale-90 .layout-move { font-size:21.6rpx; }
+.font-scale-90 .layout-reset { font-size:17.1rpx; }
+/* 95% */
+.font-scale-95 .intro__title { font-size:27.5rpx; }
+.font-scale-95 .intro__text,.font-scale-95 .danger__copy,.font-scale-95 .section-copy { font-size:20.9rpx; }
+.font-scale-95 .section-title { font-size:26.6rpx; }
+.font-scale-95 .mode-option__title { font-size:23.8rpx; }
+.font-scale-95 .mode-option__desc { font-size:18.1rpx; }
+.font-scale-95 .field__label { font-size:19.9rpx; }
+.font-scale-95 .control,.font-scale-95 .money-control { font-size:23.8rpx; }
+.font-scale-95 .inline text { font-size:21.8rpx; }
+.font-scale-95 .money-control input,.font-scale-95 .money-control__input { font-size:23.8rpx; }
+.font-scale-95 .switch-copy__title { font-size:23.8rpx; }
+.font-scale-95 .switch-copy__sub { font-size:19rpx; }
+.font-scale-95 .explain-box { font-size:19rpx; }
+.font-scale-95 .source-option { font-size:20.9rpx; }
+.font-scale-95 .theme-option__title { font-size:22.8rpx; }
+.font-scale-95 .theme-option__desc { font-size:18.1rpx; }
+.font-scale-95 .save-btn { font-size:24.7rpx; }
+.font-scale-95 .danger-btn { font-size:20.9rpx; }
+.font-scale-95 .current-balance { font-size:19rpx; }
+.font-scale-95 .field__help { font-size:18.1rpx; }
+.font-scale-95 .concept-box,.font-scale-95 .compare-item { font-size:19rpx; }
+.font-scale-95 .concept-box__title,.font-scale-95 .compare-item__title { font-size:19.9rpx; }
+.font-scale-95 .warning-box { font-size:18.1rpx; }
+.font-scale-95 .read-choice__item { font-size:20.9rpx; }
+.font-scale-95 .backup-btn { font-size:20.9rpx; }
+.font-scale-95 .backup-note { font-size:18.1rpx; }
+.font-scale-95 .backup-status { font-size:19rpx; }
+.font-scale-95 .layout-row__handle { font-size:26.6rpx; }
+.font-scale-95 .layout-row__title { font-size:21.8rpx; }
+.font-scale-95 .layout-row__desc { font-size:17.1rpx; }
+.font-scale-95 .layout-move { font-size:22.8rpx; }
+.font-scale-95 .layout-reset { font-size:18.1rpx; }
+/* 105% */
+.font-scale-105 .intro__title { font-size:30.5rpx; }
+.font-scale-105 .intro__text,.font-scale-105 .danger__copy,.font-scale-105 .section-copy { font-size:23.1rpx; }
+.font-scale-105 .section-title { font-size:29.4rpx; }
+.font-scale-105 .mode-option__title { font-size:26.2rpx; }
+.font-scale-105 .mode-option__desc { font-size:19.9rpx; }
+.font-scale-105 .field__label { font-size:22.1rpx; }
+.font-scale-105 .control,.font-scale-105 .money-control { font-size:26.2rpx; }
+.font-scale-105 .inline text { font-size:24.2rpx; }
+.font-scale-105 .money-control input,.font-scale-105 .money-control__input { font-size:26.2rpx; }
+.font-scale-105 .switch-copy__title { font-size:26.2rpx; }
+.font-scale-105 .switch-copy__sub { font-size:21rpx; }
+.font-scale-105 .explain-box { font-size:21rpx; }
+.font-scale-105 .source-option { font-size:23.1rpx; }
+.font-scale-105 .theme-option__title { font-size:25.2rpx; }
+.font-scale-105 .theme-option__desc { font-size:19.9rpx; }
+.font-scale-105 .save-btn { font-size:27.3rpx; }
+.font-scale-105 .danger-btn { font-size:23.1rpx; }
+.font-scale-105 .current-balance { font-size:21rpx; }
+.font-scale-105 .field__help { font-size:19.9rpx; }
+.font-scale-105 .concept-box,.font-scale-105 .compare-item { font-size:21rpx; }
+.font-scale-105 .concept-box__title,.font-scale-105 .compare-item__title { font-size:22.1rpx; }
+.font-scale-105 .warning-box { font-size:19.9rpx; }
+.font-scale-105 .read-choice__item { font-size:23.1rpx; }
+.font-scale-105 .backup-btn { font-size:23.1rpx; }
+.font-scale-105 .backup-note { font-size:19.9rpx; }
+.font-scale-105 .backup-status { font-size:21rpx; }
+.font-scale-105 .layout-row__handle { font-size:29.4rpx; }
+.font-scale-105 .layout-row__title { font-size:24.2rpx; }
+.font-scale-105 .layout-row__desc { font-size:18.9rpx; }
+.font-scale-105 .layout-move { font-size:25.2rpx; }
+.font-scale-105 .layout-reset { font-size:19.9rpx; }
+/* 110% */
+.font-scale-110 .intro__title { font-size:31.9rpx; }
+.font-scale-110 .intro__text,.font-scale-110 .danger__copy,.font-scale-110 .section-copy { font-size:24.2rpx; }
+.font-scale-110 .section-title { font-size:30.8rpx; }
+.font-scale-110 .mode-option__title { font-size:27.5rpx; }
+.font-scale-110 .mode-option__desc { font-size:20.9rpx; }
+.font-scale-110 .field__label { font-size:23.1rpx; }
+.font-scale-110 .control,.font-scale-110 .money-control { font-size:27.5rpx; }
+.font-scale-110 .inline text { font-size:25.3rpx; }
+.font-scale-110 .money-control input,.font-scale-110 .money-control__input { font-size:27.5rpx; }
+.font-scale-110 .switch-copy__title { font-size:27.5rpx; }
+.font-scale-110 .switch-copy__sub { font-size:22rpx; }
+.font-scale-110 .explain-box { font-size:22rpx; }
+.font-scale-110 .source-option { font-size:24.2rpx; }
+.font-scale-110 .theme-option__title { font-size:26.4rpx; }
+.font-scale-110 .theme-option__desc { font-size:20.9rpx; }
+.font-scale-110 .save-btn { font-size:28.6rpx; }
+.font-scale-110 .danger-btn { font-size:24.2rpx; }
+.font-scale-110 .current-balance { font-size:22rpx; }
+.font-scale-110 .field__help { font-size:20.9rpx; }
+.font-scale-110 .concept-box,.font-scale-110 .compare-item { font-size:22rpx; }
+.font-scale-110 .concept-box__title,.font-scale-110 .compare-item__title { font-size:23.1rpx; }
+.font-scale-110 .warning-box { font-size:20.9rpx; }
+.font-scale-110 .read-choice__item { font-size:24.2rpx; }
+.font-scale-110 .backup-btn { font-size:24.2rpx; }
+.font-scale-110 .backup-note { font-size:20.9rpx; }
+.font-scale-110 .backup-status { font-size:22rpx; }
+.font-scale-110 .layout-row__handle { font-size:30.8rpx; }
+.font-scale-110 .layout-row__title { font-size:25.3rpx; }
+.font-scale-110 .layout-row__desc { font-size:19.8rpx; }
+.font-scale-110 .layout-move { font-size:26.4rpx; }
+.font-scale-110 .layout-reset { font-size:20.9rpx; }
+/* 115% */
+.font-scale-115 .intro__title { font-size:33.3rpx; }
+.font-scale-115 .intro__text,.font-scale-115 .danger__copy,.font-scale-115 .section-copy { font-size:25.3rpx; }
+.font-scale-115 .section-title { font-size:32.2rpx; }
+.font-scale-115 .mode-option__title { font-size:28.7rpx; }
+.font-scale-115 .mode-option__desc { font-size:21.8rpx; }
+.font-scale-115 .field__label { font-size:24.1rpx; }
+.font-scale-115 .control,.font-scale-115 .money-control { font-size:28.7rpx; }
+.font-scale-115 .inline text { font-size:26.4rpx; }
+.font-scale-115 .money-control input,.font-scale-115 .money-control__input { font-size:28.7rpx; }
+.font-scale-115 .switch-copy__title { font-size:28.7rpx; }
+.font-scale-115 .switch-copy__sub { font-size:23rpx; }
+.font-scale-115 .explain-box { font-size:23rpx; }
+.font-scale-115 .source-option { font-size:25.3rpx; }
+.font-scale-115 .theme-option__title { font-size:27.6rpx; }
+.font-scale-115 .theme-option__desc { font-size:21.8rpx; }
+.font-scale-115 .save-btn { font-size:29.9rpx; }
+.font-scale-115 .danger-btn { font-size:25.3rpx; }
+.font-scale-115 .current-balance { font-size:23rpx; }
+.font-scale-115 .field__help { font-size:21.8rpx; }
+.font-scale-115 .concept-box,.font-scale-115 .compare-item { font-size:23rpx; }
+.font-scale-115 .concept-box__title,.font-scale-115 .compare-item__title { font-size:24.1rpx; }
+.font-scale-115 .warning-box { font-size:21.8rpx; }
+.font-scale-115 .read-choice__item { font-size:25.3rpx; }
+.font-scale-115 .backup-btn { font-size:25.3rpx; }
+.font-scale-115 .backup-note { font-size:21.8rpx; }
+.font-scale-115 .backup-status { font-size:23rpx; }
+.font-scale-115 .layout-row__handle { font-size:32.2rpx; }
+.font-scale-115 .layout-row__title { font-size:26.4rpx; }
+.font-scale-115 .layout-row__desc { font-size:20.7rpx; }
+.font-scale-115 .layout-move { font-size:27.6rpx; }
+.font-scale-115 .layout-reset { font-size:21.8rpx; }
+/* <<< v0.6.2 proportional typography generated <<< */

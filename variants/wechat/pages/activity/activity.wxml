@@ -1,0 +1,45 @@
+<page-meta page-style="background-color: {{pageBackground}};" />
+<view class="container activity-page {{themeClass}} {{appearanceClass}}">
+  <view class="hero card">
+    <view class="hero__eyebrow">RECORD ACTIVITY</view>
+    <view class="hero__title">记录中心</view>
+    <view class="hero__copy">不额外签到。每一笔真实记录，本身就是一次留下痕迹。</view>
+  </view>
+
+  <view wx:if="{{loadFailed}}" class="section card"><view class="empty">暂时无法安全读取记录中心数据。</view></view>
+  <block wx:else>
+    <block wx:if="{{habitCenterEnabled && summary}}">
+    <view class="metric-grid">
+      <view class="metric card"><view class="metric__value">{{summary.recordedDays}}</view><view class="metric__label">累计记录天数</view></view>
+      <view class="metric card"><view class="metric__value">{{summary.currentStreak}}</view><view class="metric__label">当前连续</view></view>
+      <view class="metric card"><view class="metric__value">{{summary.longestStreak}}</view><view class="metric__label">最长连续</view></view>
+      <view class="metric card"><view class="metric__value">{{summary.coveragePct}}%</view><view class="metric__label">近 {{summary.coverageDenominator}} 天覆盖</view></view>
+    </view>
+
+    <view class="section card">
+      <view class="section-head"><view><view class="section-title">12 周活动</view><view class="section-copy">颜色越亮，代表当天留下的记录越多；空白不是失败，只表示没有数据。</view></view><view class="section-badge">{{unlockedText}} 成就</view></view>
+      <view class="activity-grid">
+        <view wx:for="{{activityRows}}" wx:key="id" wx:for-item="row" class="activity-row">
+          <view wx:for="{{row.cells}}" wx:key="date" wx:for-item="cell" class="activity-cell activity-cell--{{cell.level}} {{cell.today ? 'activity-cell--today' : ''}} {{cell.future ? 'activity-cell--future' : ''}}"></view>
+        </view>
+      </view>
+    </view>
+    </block>
+
+    <view wx:if="{{weeklyReview}}" class="weekly card {{weeklyReview.shouldGlow ? 'weekly--glow' : ''}}" bindtap="goWeeklyReview">
+      <view class="weekly__lamp"></view><view class="weekly__copy"><view class="weekly__title">上周回顾</view><view class="weekly__sub">{{weeklyReview.shouldGlow ? '新一周已经开始。看一次真实数据，再决定下周怎么花。' : '上周数据已经看过，仍可再次打开。'}}</view></view><view class="weekly__arrow">›</view>
+    </view>
+
+    <view wx:if="{{formalAchievements.length}}" class="section card">
+      <view class="section-title">正式成就</view><view class="section-copy">把长期行为做成里程碑，但不会因为断一天把过去全部清零。</view>
+      <view wx:for="{{formalAchievements}}" wx:key="id" class="achievement {{item.unlocked ? 'achievement--unlocked' : ''}}"><view class="achievement__mark">{{item.unlocked ? '●' : '○'}}</view><view class="achievement__copy"><view class="achievement__name">{{item.name}}</view><view class="achievement__desc">{{item.desc}}</view><view class="achievement__bar"><view class="achievement__fill" style="width:{{item.progressPct}}%;"></view></view></view><view class="achievement__progress">{{item.progressText}}</view></view>
+    </view>
+
+    <view wx:if="{{weirdAchievements.length}}" class="section card">
+      <view class="section-title">奇怪成就</view><view class="section-copy">没什么大道理，只是让账本偶尔有一点人味。</view>
+      <view wx:for="{{weirdAchievements}}" wx:key="id" class="achievement achievement--weird {{item.unlocked ? 'achievement--unlocked' : ''}}"><view class="achievement__mark">{{item.unlocked ? '◆' : '◇'}}</view><view class="achievement__copy"><view class="achievement__name">{{item.name}}</view><view class="achievement__desc">{{item.desc}}</view><view class="achievement__bar"><view class="achievement__fill" style="width:{{item.progressPct}}%;"></view></view></view><view class="achievement__progress">{{item.progressText}}</view></view>
+    </view>
+
+    <view class="why card" bindtap="goGuide"><view class="why__eyebrow">WHY FIRE?</view><view class="why__title">你不是为了把账记漂亮</view><view class="why__copy">你是在把模糊的消费、收入和时间压力，翻译成“我还能买回多少自主时间”。数据最终要服务于选择，而不是服务于打卡。</view><view class="why__action">重新看一遍理念 ›</view></view>
+  </block>
+</view>

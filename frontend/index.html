@@ -1,288 +1,109 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="midnight">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#0a0a0f">
-  <title>财富自由指南灯</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='6' fill='%23ffd166'/%3E%3Ccircle cx='16' cy='16' r='10' fill='none' stroke='%23ffd166' stroke-opacity='.35' stroke-width='1.4'/%3E%3C/svg%3E">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css">
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <title>财富自由指南灯 · Fortune Light</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect x='6' y='6' width='28' height='28' rx='5' fill='%23dfb568'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-
-  <!-- 背景星空层 -->
-  <canvas id="starfield" aria-hidden="true"></canvas>
-
-  <main class="layout">
-
-    <!-- 左 1/3 账本面板 -->
-    <aside class="ledger" aria-label="账本面板">
-      <header class="brand">
-        <span class="brand__mark" aria-hidden="true">
-          <svg viewBox="0 0 24 24" width="22" height="22"><circle cx="12" cy="12" r="4.5" fill="#ffd166"/><circle cx="12" cy="12" r="8" fill="none" stroke="#ffd166" stroke-opacity=".35" stroke-width="1.2"/></svg>
-        </span>
-        <div>
-          <h1 class="brand__title">财富自由指南灯</h1>
-          <p class="brand__sub">每一笔收入，点亮一颗人生星辰</p>
-        </div>
-        <button class="icon-btn" id="btn-settings" title="设置" aria-label="设置">
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.03 1.56V21a2 2 0 1 1-4 0v-.08a1.7 1.7 0 0 0-1.11-1.56 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.56-1.03H3a2 2 0 1 1 0-4h.08A1.7 1.7 0 0 0 4.6 9 1.7 1.7 0 0 0 4.26 7.13L4.2 7.07A2 2 0 1 1 7.03 4.24l.06.06A1.7 1.7 0 0 0 9 4.6 1.7 1.7 0 0 0 10.03 3.04V3a2 2 0 1 1 4 0v.08A1.7 1.7 0 0 0 15 4.6a1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9c.05.39.27.74.6.96.32.22.7.32 1.07.29H21a2 2 0 1 1 0 4h-.08a1.7 1.7 0 0 0-1.52 1.03z"/></svg>
-        </button>
-      </header>
-
-      <!-- 财富自由进度卡 · v2 -->
-      <section class="progress-card">
-        <header class="progress-card__head">
-          <span class="progress-card__title">财富自由之旅</span>
-          <span class="progress-card__pct"><span id="ring-pct">0.0</span><span class="progress-card__pct-sym">%</span></span>
-        </header>
-
-        <div class="progress-card__hero">
-          <span class="progress-card__big" id="lit-count">0</span>
-          <span class="progress-card__big-unit">天</span>
-        </div>
-        <div class="progress-card__hero-sub">
-          已买自由 · 距完成还差 <em id="remaining-days">0</em> 天
-        </div>
-
-        <div class="dual-bar" aria-hidden="true">
-          <span class="dual-bar__asset"  id="bar-asset"></span>
-          <span class="dual-bar__income" id="bar-income"></span>
-        </div>
-
-        <div class="breakdown">
-          <div class="breakdown__row breakdown__row--asset" id="row-asset" hidden>
-            <span class="breakdown__icon breakdown__icon--asset"></span>
-            <span class="breakdown__label">资产带来</span>
-            <span class="breakdown__value" id="asset-days">0</span>
-            <span class="breakdown__unit">天</span>
-            <span class="breakdown__hint"><em id="asset-amount">¥0</em></span>
-          </div>
-          <div class="breakdown__row breakdown__row--income">
-            <span class="breakdown__icon breakdown__icon--income"></span>
-            <span class="breakdown__label">净储蓄带来</span>
-            <span class="breakdown__value" id="income-days">0</span>
-            <span class="breakdown__unit">天</span>
-            <span class="breakdown__hint"><em id="net-saving">¥0</em></span>
-          </div>
-        </div>
-      </section>
-
-      <!-- 添加交易 -->
-      <section class="tx-form">
-        <div class="seg" role="tablist" aria-label="交易类型">
-          <button class="seg__btn is-active" data-type="income" role="tab" aria-selected="true">
-            <span class="seg__dot seg__dot--income"></span>收入
-          </button>
-          <button class="seg__btn" data-type="expense" role="tab" aria-selected="false">
-            <span class="seg__dot seg__dot--expense"></span>支出
-          </button>
-        </div>
-        <label class="field field--amount">
-          <span class="field__label">金额</span>
-          <div class="field__row">
-            <span class="field__prefix">¥</span>
-            <input id="tx-amount" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0.00" autocomplete="off">
-          </div>
-        </label>
-        <div class="field-grid">
-          <div class="field">
-            <span class="field__label">日期</span>
-            <div class="date-input" data-picker>
-              <input type="hidden" id="tx-date">
-              <button type="button" class="date-input__trigger" aria-haspopup="dialog">
-                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-                <span class="date-input__value">选择日期</span>
-              </button>
-              <div class="date-popover" hidden role="dialog" aria-label="日期选择">
-                <header class="date-popover__head">
-                  <button type="button" class="date-popover__nav" data-nav="prev" aria-label="上一月">
-                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-                  </button>
-                  <span class="date-popover__title"></span>
-                  <button type="button" class="date-popover__nav" data-nav="next" aria-label="下一月">
-                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-                  </button>
-                </header>
-                <div class="date-popover__weekdays"><span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div>
-                <div class="date-popover__grid"></div>
-                <footer class="date-popover__foot">
-                  <button type="button" class="date-popover__btn" data-action="today">今天</button>
-                  <button type="button" class="date-popover__btn" data-action="clear">清除</button>
-                </footer>
-              </div>
-            </div>
-          </div>
-          <label class="field">
-            <span class="field__label">备注</span>
-            <input id="tx-note" type="text" maxlength="40" placeholder="选填">
-          </label>
-        </div>
-        <button class="btn btn--primary" id="btn-submit">
-          <span class="btn__shimmer" aria-hidden="true"></span>
-          <span class="btn__text">点亮人生</span>
-        </button>
-      </section>
-
-      <!-- 统计仪表盘 -->
-      <section class="stats">
-        <div class="stat"><div class="stat__label">总收入</div><div class="stat__value stat__value--income" id="st-income">¥0</div></div>
-        <div class="stat"><div class="stat__label">总支出</div><div class="stat__value stat__value--expense" id="st-expense">¥0</div></div>
-        <div class="stat"><div class="stat__label">日均花销</div><div class="stat__value" id="st-avg">¥0</div></div>
-        <div class="stat"><div class="stat__label">记账天数</div><div class="stat__value" id="st-days">0</div></div>
-      </section>
-
-      <!-- 最近交易 -->
-      <section class="tx-list" aria-label="最近交易">
-        <div class="tx-list__head">
-          <h2>最近交易</h2>
-          <span class="tx-list__count" id="tx-count">0</span>
-        </div>
-        <ul class="tx-list__items" id="tx-items" role="list"></ul>
-        <div class="tx-list__empty" id="tx-empty">
-          <p>尚未记录任何交易</p>
-          <p class="tx-list__hint">每一笔收入都将点亮你的人生方格</p>
-        </div>
-      </section>
-
-    </aside>
-
-    <!-- 右 2/3 人生方格 -->
-    <section class="stage" aria-label="人生方格视图">
-      <div class="stage__chrome">
-        <div class="stage__title">
-          <span class="stage__title-cn">人生方格</span>
-          <span class="stage__title-en">— Days of Freedom</span>
-        </div>
-        <div class="stage__legend">
-          <span class="legend-item"><i class="legend-swatch legend-swatch--lit"></i>已点亮</span>
-          <span class="legend-item"><i class="legend-swatch legend-swatch--unlit"></i>未点亮</span>
-          <span class="legend-item" id="legend-overflow" hidden><i class="legend-swatch legend-swatch--over"></i>超额</span>
-        </div>
-        <button class="icon-btn stage-collapse-btn" id="btn-stage-collapse" title="折叠指南灯面板" aria-label="折叠指南灯面板" hidden>
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18l6-6 6 6"/></svg>
-        </button>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <header class="topbar">
+    <a class="brand" href="#home"><span class="brand-mark" aria-hidden="true">◈</span><span>财富自由指南灯<small>FORTUNE LIGHT</small></span></a>
+    <nav aria-label="主导航">
+      <button data-page="home" class="active">指南灯</button><button data-page="analysis">消费分析</button>
+      <button data-page="history">完整账本</button><button data-page="activity">记录中心</button>
+      <button data-page="guide">使用指南</button><button id="open-settings">设置</button>
+    </nav>
+  </header>
+  <main id="main">
+    <div class="page-heading"><p class="eyebrow" id="page-eyebrow">把钱翻译成时间</p><h1 id="page-title">你的自由，正在发生。</h1><span class="local-badge"><i></i>仅存此电脑 <span id="version"></span></span></div>
+    <div id="error-banner" role="alert" hidden></div>
+    <div id="first-run" class="notice" hidden>从人生坐标、日均生活成本和起始自由本金开始。<button id="setup-now">建立指南灯</button><button data-restore>从备份恢复</button></div>
+    <section id="page-home" class="page">
+      <button id="weekly-review" class="weekly" hidden><span class="review-dot"></span><span>上周回顾 <small>看清上一周的生活消耗 · 进入消费分析</small></span><span>↗</span></button>
+      <div id="home-layout">
+        <section class="card overview" data-module="overview" aria-labelledby="overview-title">
+          <div class="card-heading"><h2 id="overview-title">自由概览</h2><span id="cost-label" class="tag">生活成本估计</span></div>
+          <p class="muted">现有自由资源，约可覆盖</p>
+          <div class="hero-number"><span id="freedom-days">0</span><span>天</span></div>
+          <p id="fractional-days" class="muted">先为生活成本建立一个估计。</p>
+          <div class="progress-track" role="progressbar" aria-label="当前人生区间覆盖率" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="asset-bar"></i><i id="income-bar"></i></div>
+          <div class="split muted"><span id="coverage">0% 已覆盖</span><span id="remaining">—</span></div>
+          <div class="metrics"><div><span>账本净储蓄</span><strong id="net-savings">¥0</strong></div><div><span>日均生活成本</span><strong id="daily-cost">—</strong></div><div><span>累计新增财富</span><strong id="total-income">¥0</strong></div><div><span>累计生活消耗</span><strong id="total-expense">¥0</strong></div></div>
+          <p id="model-note" class="note"></p><p id="excluded-note" class="notice" hidden></p>
+        </section>
+        <section class="card life" data-module="life" aria-labelledby="life-title">
+          <div class="card-heading"><h2 id="life-title">人生方格</h2><button id="expand-grid" class="text-button">放大查看 ↗</button></div>
+          <div class="canvas-wrap" id="canvas-wrap"><canvas id="grid" aria-label="每一格代表一天。金色为净储蓄覆盖的自由日，蓝色为独立资产覆盖的自由日。"></canvas><div id="grid-empty" class="empty">从今天开始，为自由点一盏灯。</div></div>
+          <div class="legend"><span><i class="gold"></i>自由日</span><span id="asset-legend"><i class="blue"></i>独立资产</span><span><i class="gray"></i>尚未覆盖</span><span id="past-legend"><i class="past"></i>已走过</span></div>
+          <p id="grid-caption" class="note">人生坐标由你设定，不是寿命预测。</p>
+        </section>
+        <section class="card habits" data-module="habits" aria-labelledby="habits-title">
+          <div class="card-heading"><h2 id="habits-title">留下生活的证据</h2><button class="text-button" data-page="activity">记录与成就 ↗</button></div>
+          <div id="habit-stats" class="habit-stats"></div><div id="home-heatmap" class="heatmap" aria-label="最近十二周记录活动"></div>
+          <p class="note">记账本身就是记录。不需要再做一次签到。</p><div id="missed-prompt" class="notice" hidden></div>
+        </section>
+        <section class="card entry" data-module="entry" aria-labelledby="entry-title">
+          <div class="card-heading"><h2 id="entry-title">记一笔真实的账</h2><button class="text-button" data-page="presets">管理快捷标签 ↗</button></div>
+          <form id="entry-form">
+            <div class="segmented" role="group" aria-label="事件类型"><button type="button" data-type="expense" class="selected">生活消耗</button><button type="button" data-type="income">新增财富</button></div>
+            <div class="form-row"><label>金额（元）<input id="tx-amount" name="amount" type="number" min="0.01" step="0.01" required inputmode="decimal" placeholder="0.00"></label><label>发生日期<input id="tx-date" type="date" required></label></div>
+            <div id="expense-fields"><div class="form-row"><label>主分类<select id="tx-category"></select></label><label>消费性质 <span class="muted">可选</span><select id="tx-nature"></select></label></div><div id="frequent-presets" class="chips"></div><label>快捷标签 <span class="muted">可选</span><select id="tx-preset"><option value="">不使用标签</option></select></label></div>
+            <label>备注 <span class="muted">可选</span><input id="tx-note" maxlength="500" placeholder="给这笔记录一点上下文"></label>
+            <p id="entry-tip" class="note">只记录真正改变自由资源的事件。账户互转、借款本金、已记消费的信用卡还款不重复记录。</p>
+            <button id="submit-tx" class="primary" type="submit">记录生活消耗</button>
+          </form>
+        </section>
       </div>
-      <div class="stage__canvas-wrap">
-        <canvas id="grid" aria-label="人生方格 Canvas"></canvas>
-        <div class="stage__hint" id="stage-hint">每一格代表你生命中的一天</div>
-        <div class="stage__zoom-hint" id="stage-zoom-hint">滚轮缩放 · 双击重置</div>
-      </div>
-      <div class="stage__footer">
-        <span id="stage-footer-text">设置生日后开始你的财富自由之旅</span>
-      </div>
+      <section class="card recent"><div class="card-heading"><h2>最近记录</h2><button data-page="history" class="text-button">完整账本 ↗</button></div><div id="recent-list"></div></section>
     </section>
-
+    <section id="page-analysis" class="page" hidden>
+      <div class="card"><div class="toolbar"><label>统计周期<select id="analysis-period"><option value="week">周</option><option value="month" selected>月</option><option value="year">年</option></select></label><label>周期内任意日期<input id="analysis-anchor" type="date"></label><button id="refresh-analysis">查看</button><a id="export-csv" class="button" href="/api/analysis.csv" download>导出本周期 CSV</a></div><p id="analysis-range" class="note"></p><div id="analysis-metrics" class="summary-metrics"></div></div>
+      <div class="two-columns"><section class="card"><h2>生活消耗花在哪里</h2><div id="category-bars" class="bar-list"></div></section><section class="card"><h2>由你判断的消费性质</h2><p class="note">用于复盘，不影响自由天数，也不代表系统对消费的评价。</p><div id="nature-bars" class="bar-list"></div></section></div>
+      <section class="card"><div class="card-heading"><h2>消费趋势</h2><div class="toolbar"><label>主分类<select id="trend-category"></select></label><label>快捷标签<select id="trend-tag"><option value="">全部标签</option></select></label></div></div><div id="trend-chart"></div><details><summary>查看趋势明细</summary><div id="trend-table"></div></details></section>
+    </section>
+    <section id="page-history" class="page" hidden><div class="card"><div class="toolbar"><label class="grow">搜索备注或标签<input id="history-query" type="search" maxlength="100" placeholder="例如：午餐、地铁"></label><label>类型<select id="history-type"><option value="">全部</option><option value="expense">生活消耗</option><option value="income">新增财富</option></select></label><label>主分类<select id="history-category"></select></label><button id="search-history">搜索</button></div><p id="history-count" class="note"></p><div id="history-list"></div><div class="pagination"><button id="history-prev">上一页</button><span id="history-page"></span><button id="history-next">下一页</button></div></div></section>
+    <section id="page-activity" class="page" hidden><section class="card"><h2>记录，让选择有依据</h2><p class="muted">没有发生自由事件的日子，不需要为了连续性补一笔假账。</p><div id="activity-stats" class="habit-stats"></div><div id="activity-heatmap" class="heatmap"></div><p class="note">最近 12 周 · 颜色深浅只表示记录次数</p></section><section class="card" id="achievement-card"><h2>成就来自真实账本</h2><p class="note">由账本重新计算，不使用积分。断一天不会抹掉历史最长连续记录。</p><div id="achievements" class="achievement-grid"></div></section></section>
+    <section id="page-presets" class="page" hidden><div class="two-columns"><section class="card"><h2>新建快捷标签</h2><p class="note">填入常见场景，金额始终由你按实际发生额输入。</p><form id="preset-form"><label>主分类<select id="preset-category"></select></label><label>标签名称<input id="preset-label" maxlength="40" required placeholder="例如：工作午餐"></label><label>默认备注<input id="preset-note" maxlength="500"></label><label>默认消费性质<select id="preset-nature"></select></label><button class="primary" type="submit">保存标签</button></form></section><section class="card"><h2>已有快捷标签</h2><p class="note">移除标签不会改动已经保存的历史记录。</p><div id="preset-list"></div></section></div></section>
+    <section id="page-guide" class="page" hidden><article class="card prose">
+      <p class="eyebrow">使用指南 / 核心理念</p><h2>钱不是终点，选择才是。</h2><p>指南灯把你已经拥有的自由资源，按你采用的生活成本估计，翻译成能自主支配的天数。它帮助看见选择的代价，不要求每一次消费都更少。</p>
+      <h3>先建立一个可用的估计</h3><p>上手模式只需要出生日期、目标年龄、日均生活成本和起始自由本金。目标年龄是你选择的人生坐标，不是寿命预测。本金会成为一笔系统基准收入，后续生活消耗从账本净储蓄中扣减。</p>
+      <h3>这里只记录“自由事件”</h3><p>新增财富是可用于自己生活的净新增资源；生活消耗是实际发生的个人成本。账户互转、借款本金、投资资产内部搬动，以及已经记过消费的信用卡还款，都不再重复计为收支。退款或报销：编辑原支出为最终净消耗；全额退回时删除原记录。</p>
+      <h3>一格是一天，小数也有意义</h3><p>方格只显示完整自由日。保存真实交易后，小提示会显示估算天数的变化；跨越完整一天才播放点亮或熄灭仪式。消费是把未来自由交换成今天的价值，值不值由你决定。首次建立成本、修改设置或修正旧账时，系统直接重算，不伪装成单笔财富的奖励。</p>
+      <h3>分类、标签与性质</h3><p>一笔生活消耗只有一个主分类，金额不会重复统计。快捷标签带入分类、默认备注和消费性质，但不会替你填写金额。“必要 / 可调 / 可省”是可选的自我复盘标签，不改变自由天数。缺乏事实的历史记录保留为“未分类 / 未设定”。</p>
+      <h3>看周期，也看同期</h3><p>消费分析支持周、月、年和历史周期。当前周期只与上一周期的对应进度比较；已结束周期按完整周期比较。按主分类、快捷标签查看趋势，CSV 适合阅读与表格分析。上周回顾直接进入上一完整自然周的消费分析。</p>
+      <h3>记录中心与温和提醒</h3><p>累计记录天数、当前连续、历史最长连续、覆盖率和十二周活动格，都来自真实账本；起始本金不算签到。今天还没结束时保留截至昨天的连续链。漏记提示只帮你想起真实发生的事，不生成记录。记录中心、成就、常用入口和回顾灯都可以分别关闭。</p>
+      <h3>高级模式：把输入控制权交给你</h3><p>生活成本可改用“累计生活消耗 ÷ 首笔真实记录至今天的跨度”，也可覆盖统计天数。账本估计会受到漏记、补账和时间推移影响，它不是绝对真值。额外起始资产是独立折算的桶，负净储蓄不会直接扣掉它；不要与起始自由本金重复填写同一笔钱。切换上手模式会停用这些高级参数，切回时可恢复。</p>
+      <h3>FREE 表示什么</h3><p>按当前生活成本估计与人生坐标，现有自由资源已覆盖剩余人生区间。它不是永久退休证明，不预测通胀、投资收益或未来支出；修改假设会改变结果。</p>
+      <h3>本地使用与备份</h3><p>账本保存在此电脑的 SQLite 文件中，无账号、无云同步。设置中的 JSON 导出用于完整恢复；恢复前会预览并自动备份当前数据库。支持导入微信小程序 v1 / v2 JSON 备份，源码压缩包不含你的手机账本。请把备份另存到你信任的位置，本地存储本身不等于灾备。</p>
+      <h3>按自己的习惯摆放</h3><p>设置中可切换深夜金 / 纸上自由、系统字体 / 宋体、85%–115% 字号，以及四个首页模块的顺序。可以关闭声音、仪式或各项记录反馈，不影响账本和计算。</p>
+      <button id="replay-guide">重新播放新手引导</button>
+    </article></section>
   </main>
-
-  <!-- 引导/设置对话 -->
-  <div class="overlay" id="overlay" hidden>
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-      <header class="modal__head">
-        <h2 id="modal-title">点燃人生第一颗星辰</h2>
-        <p>告诉我你的生日，我们计算从今天起到 <strong id="modal-target-age-display">80</strong> 岁还有多少天可以被你点亮。</p>
-      </header>
-      <div class="modal__body">
-        <div class="field">
-          <span class="field__label">出生日期</span>
-          <div class="date-input" data-picker>
-            <input type="hidden" id="cfg-birth" required>
-            <button type="button" class="date-input__trigger" aria-haspopup="dialog">
-              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-              <span class="date-input__value">选择出生日期</span>
-            </button>
-            <div class="date-popover" hidden role="dialog" aria-label="日期选择">
-              <header class="date-popover__head">
-                <button type="button" class="date-popover__nav" data-nav="prev-year" aria-label="上一年">«</button>
-                <button type="button" class="date-popover__nav" data-nav="prev" aria-label="上一月">
-                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-                </button>
-                <span class="date-popover__title"></span>
-                <button type="button" class="date-popover__nav" data-nav="next" aria-label="下一月">
-                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-                </button>
-                <button type="button" class="date-popover__nav" data-nav="next-year" aria-label="下一年">»</button>
-              </header>
-              <div class="date-popover__weekdays"><span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div>
-              <div class="date-popover__grid"></div>
-              <footer class="date-popover__foot">
-                <button type="button" class="date-popover__btn" data-action="today">今天</button>
-              </footer>
-            </div>
-          </div>
-        </div>
-        <label class="field">
-          <span class="field__label">目标年龄</span>
-          <div class="field__row">
-            <input id="cfg-target-age" type="number" min="20" max="120" value="80">
-            <span class="field__suffix">岁</span>
-          </div>
-        </label>
-        <label class="toggle" for="cfg-show-past">
-          <span class="toggle__head">
-            <span class="toggle__title">显示过去</span>
-            <span class="toggle__hint">关闭：第一格 = 今天 · 打开：从 0 岁开始全寿命方格</span>
-          </span>
-          <input type="checkbox" id="cfg-show-past" role="switch">
-          <span class="toggle__track" aria-hidden="true"><span class="toggle__thumb"></span></span>
-        </label>
-        <label class="toggle" for="cfg-use-assets">
-          <span class="toggle__head">
-            <span class="toggle__title">纳入起始资产</span>
-            <span class="toggle__hint">把记账起始时已有的资产也算成自由的来源</span>
-          </span>
-          <input type="checkbox" id="cfg-use-assets" role="switch">
-          <span class="toggle__track" aria-hidden="true"><span class="toggle__thumb"></span></span>
-        </label>
-        <label class="field" id="cfg-assets-field" hidden>
-          <span class="field__label">记账起始时资产</span>
-          <div class="field__row">
-            <span class="field__prefix">¥</span>
-            <input id="cfg-initial-assets" type="number" inputmode="decimal" min="0" step="100" placeholder="0">
-          </div>
-        </label>
-        <label class="field">
-          <span class="field__label">记账天数（手动覆盖 · 0=自动）</span>
-          <div class="field__row">
-            <input id="cfg-tracking-days" type="number" inputmode="numeric" min="0" step="1" placeholder="0">
-            <span class="field__suffix">天</span>
-          </div>
-        </label>
-        <label class="field">
-          <span class="field__label">日均花销（手动覆盖 · 0=自动）</span>
-          <div class="field__row">
-            <span class="field__prefix">¥</span>
-            <input id="cfg-avg-expense" type="number" inputmode="decimal" min="0" step="1" placeholder="0">
-          </div>
-        </label>
-      </div>
-      <footer class="modal__foot">
-        <button class="btn btn--ghost" id="cfg-cancel">取消</button>
-        <button class="btn btn--primary" id="cfg-save"><span class="btn__text">开始</span></button>
-      </footer>
-    </div>
-  </div>
-
-  <!-- 财富自由达成彩蛋 -->
-  <div class="freedom-banner" id="freedom-banner" hidden aria-live="polite">
-    <div class="freedom-banner__veil"></div>
-    <div class="freedom-banner__ripple"></div>
-    <div class="freedom-banner__ripple"></div>
-    <div class="freedom-banner__ripple"></div>
-    <div class="freedom-banner__ripple"></div>
-    <div class="freedom-banner__ripple"></div>
-    <div class="freedom-banner__inner">
-      <div class="freedom-banner__eyebrow">FINANCIAL FREEDOM ACHIEVED</div>
-      <div class="freedom-banner__word">FREE</div>
-      <div class="freedom-banner__zh">财 富 自 由</div>
-      <div class="freedom-banner__sub">你已点亮人生剩余的所有方格</div>
-    </div>
-  </div>
-
-  <script src="./grid.js"></script>
-  <script src="./app.js"></script>
+  <footer class="site-footer"><span>FORTUNE LIGHT · 数据是真相，动画是仪式。</span><span>本地主线 · 无云端账号</span></footer>
+  <div id="toast" role="status" aria-live="polite" hidden></div>
+  <dialog id="settings-dialog"><div class="dialog-header"><div><p class="eyebrow">让指南灯适合你的生活</p><h2>设置</h2></div><button data-close aria-label="关闭设置">×</button></div>
+    <form id="settings-form">
+      <div class="form-row"><label>出生日期<input id="cfg-birth" type="date" required></label><label>目标年龄<input id="cfg-age" type="number" min="1" max="150" required value="80"></label></div><p class="note">只用来画出人生区间，不预测你的寿命。</p>
+      <label>使用模式<select id="cfg-mode"><option value="quick">上手模式</option><option value="advanced">高级自主模式</option></select></label>
+      <div id="advanced-cost"><label>生活成本来源<select id="cfg-cost-mode"><option value="manual">手动估计</option><option value="ledger">账本估计</option></select></label></div>
+      <label id="manual-cost-field">日均生活成本（元 / 天）<input id="cfg-cost" type="number" min="0.01" step="0.01" value="100"><span class="note">可以用月度生活开销 ÷ 30 作起点，以后根据事实校准。</span></label>
+      <label>起始自由本金（元）<input id="cfg-opening" type="number" min="0" step="0.01" value="0"><span class="note">作为一笔基准收入进入净储蓄，后续消耗会扣减。已有记录对应的收入不要再填一次。</span></label>
+      <div id="advanced-fields"><label id="tracking-field">统计天数覆盖<input id="cfg-days" type="number" min="0" max="365000" value="0"><span class="note">0 表示首笔真实记录至今天；覆盖会同步改变账本日均估计。</span></label><label class="check"><input id="cfg-past" type="checkbox">显示已经走过的人生</label><label class="check"><input id="cfg-assets-enabled" type="checkbox">额外起始资产独立折算</label><label>独立资产金额（元）<input id="cfg-assets" type="number" min="0" step="0.01" value="0"><span class="note">这个桶不会被负净储蓄直接扣减。不要与起始自由本金重复填钱。</span></label></div>
+      <details open><summary>阅读与反馈</summary><div class="form-row"><label>主题<select id="cfg-theme"><option value="midnight">深夜金</option><option value="paper">纸上自由</option></select></label><label>字体<select id="cfg-font"><option value="system">系统字体</option><option value="serif">宋体阅读</option></select></label><label>字号<select id="cfg-scale"><option>85</option><option>90</option><option>95</option><option selected>100</option><option>105</option><option>110</option><option>115</option></select></label></div><div id="feedback-switches" class="switches"></div></details>
+      <details><summary>首页模块顺序</summary><p class="note">使用上下箭头调整，保存后生效。</p><ol id="module-order"></ol></details>
+      <div class="dialog-actions"><button type="button" data-close>取消</button><button class="primary" type="submit">保存设置</button></div>
+    </form>
+    <section class="backup-section"><h3>数据备份与恢复</h3><p class="note">JSON 用于完整恢复；恢复前自动备份当前数据库。与微信版的导入是手动文件交换。</p><div class="toolbar"><a class="button" href="/api/backup" download>导出完整 JSON</a><button data-restore>选择 JSON 恢复</button><button data-page="activity">查看记录与成就</button><button data-page="guide">打开使用指南</button></div></section>
+  </dialog>
+  <dialog id="onboarding-dialog"><div class="dialog-header"><span class="eyebrow">FORTUNE LIGHT</span><button data-close aria-label="稍后阅读">×</button></div><div id="onboarding-content" class="prose"></div><div class="dialog-actions"><button id="onboarding-prev">上一步</button><button id="onboarding-next" class="primary">继续</button></div><button data-restore class="text-button">已有账本？从 JSON 备份恢复</button></dialog>
+  <dialog id="edit-dialog"><div class="dialog-header"><h2>修正这笔记录</h2><button data-close aria-label="关闭编辑">×</button></div><form id="edit-form"><div class="form-row"><label>类型<select id="edit-type"><option value="expense">生活消耗</option><option value="income">新增财富</option></select></label><label>日期<input id="edit-date" type="date" required></label></div><label>金额<input id="edit-amount" type="number" step="0.01" min="0.01" required></label><div class="form-row"><label>主分类<select id="edit-category"></select></label><label>消费性质<select id="edit-nature"></select></label></div><label>标签<input id="edit-tag" maxlength="40"></label><label>备注<input id="edit-note" maxlength="500"></label><p class="note">退款 / 报销后可改为最终净消耗。全额退回时删除记录。修正会重算账本，不播放财富获得仪式。</p><div class="dialog-actions"><button type="button" data-close>取消</button><button type="submit" class="primary">保存修正</button></div></form></dialog>
+  <dialog id="restore-dialog"><div class="dialog-header"><h2>恢复前确认</h2><button data-close aria-label="取消恢复">×</button></div><div id="restore-preview"></div><p class="notice">恢复会替换当前账本、设置与快捷标签。系统会先在本地保存可回退的数据库副本。</p><div class="dialog-actions"><button data-close>取消</button><button id="confirm-restore" class="primary">备份当前数据并恢复</button></div></dialog>
+  <input id="restore-file" type="file" accept=".json,application/json" hidden>
+  <div id="ritual-overlay" hidden><div class="ritual-copy"><p class="eyebrow">每一格，都是一天自由</p><strong id="ritual-title"></strong><span id="ritual-count"></span><button id="skip-ritual">跳过动画</button></div></div>
+  <dialog id="celebration"><p class="eyebrow">CURRENT HORIZON FULLY COVERED</p><h2>FREE</h2><h3>财 富 自 由</h3><p>按当前生活成本估计，你的自由资源已覆盖所选人生区间。</p><p class="note">保留选择，也继续校准。这不是永久退休证明。</p><button class="primary" data-close>回到我的生活</button></dialog>
+  <script src="/grid.js"></script><script src="/app.js"></script>
 </body>
 </html>

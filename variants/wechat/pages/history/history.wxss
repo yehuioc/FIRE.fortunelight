@@ -1,0 +1,98 @@
+.history-page { min-height: 100vh; padding-bottom: 70rpx; background: #07080c; color: #f4f1e8; }
+.card { background: #11141a; border: 1rpx solid rgba(255,255,255,0.08); border-radius: 28rpx; box-sizing: border-box; }
+.summary { padding: 25rpx; margin-bottom: 20rpx; }
+.summary__title { color: #ebe6dc; font-size: 27rpx; font-weight: 600; }
+.summary__sub { margin-top: 7rpx; color: #797d87; font-size: 21rpx; }
+.empty { padding: 55rpx 25rpx; color: #777b84; text-align: center; font-size: 23rpx; }
+.tx { position: relative; margin-bottom: 15rpx; padding: 22rpx 16rpx 22rpx 23rpx; display: flex; align-items: center; overflow: hidden; }
+.tx__bar { position: absolute; left: 0; top: 0; bottom: 0; width: 5rpx; background: #9e6758; }
+.tx__bar--income { background: #c2a146; }
+.tx__main { flex: 1; min-width: 0; }
+.tx__note { color: #e1ddd3; font-size: 24rpx; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tx__date { margin-top: 5rpx; color: #70747e; font-size: 18rpx; }
+.tx__amount { margin-left: 12rpx; color: #c9c6bd; font-size: 24rpx; }
+.delete-btn { height: 56rpx; margin: 0 0 0 14rpx; padding: 0 15rpx; display: flex; align-items: center; justify-content: center; line-height: 1; background: #211819; color: #ad786b; border-radius: 13rpx; font-size: 19rpx; }
+.gold { color: #f1c75b; }
+
+.theme-paper.history-page { background: #eee7db; color: #29231d; }
+.theme-paper .card { background: #faf6ee; border-color: #ddd2c2; }
+.theme-paper .summary__title, .theme-paper .tx__note { color: #3c342b; }
+.theme-paper .summary__sub, .theme-paper .tx__date, .theme-paper .empty { color: #786e62; }
+.theme-paper .tx__amount { color: #5a5147; }
+.theme-paper .gold { color: #a8741f; }
+.theme-paper .delete-btn { background: #eadbd5; color: #915e50; }
+
+.action-feedback { padding:22rpx 24rpx; color:#b9a773; font-size:22rpx; line-height:1.65; }
+
+/* v0.5.1 长账本分批渲染与阅读偏好 */
+.history-page.font-serif { font-family:"Songti SC",STSong,SimSun,serif; }
+.history-page.font-serif button { font-family:"Songti SC",STSong,SimSun,serif; }
+.load-more { margin:18rpx 0 8rpx; min-height:82rpx; display:flex; align-items:center; justify-content:center; border-radius:18rpx; background:#171a21; color:#a3a6ae; font-size:22rpx; }
+.theme-paper .load-more { background:#e3dacd; color:#70675d; }
+.font-size-large .summary__title { font-size:29rpx; }
+.font-size-large .summary__sub,.font-size-large .tx__date { font-size:21rpx; }
+.font-size-large .tx__note,.font-size-large .tx__amount { font-size:26rpx; }
+.font-size-compact .summary__sub,.font-size-compact .tx__date { font-size:18rpx; }
+
+/* >>> v0.6.2 proportional typography generated >>> */
+/* 85% */
+.font-scale-85 .summary__title { font-size:22.9rpx; }
+.font-scale-85 .summary__sub { font-size:17.8rpx; }
+.font-scale-85 .empty { font-size:19.6rpx; }
+.font-scale-85 .tx__note { font-size:20.4rpx; }
+.font-scale-85 .tx__date { font-size:15.3rpx; }
+.font-scale-85 .tx__amount { font-size:20.4rpx; }
+.font-scale-85 .delete-btn { font-size:16.1rpx; }
+.font-scale-85 .action-feedback { font-size:18.7rpx; }
+.font-scale-85 .load-more { font-size:18.7rpx; }
+/* 90% */
+.font-scale-90 .summary__title { font-size:24.3rpx; }
+.font-scale-90 .summary__sub { font-size:18.9rpx; }
+.font-scale-90 .empty { font-size:20.7rpx; }
+.font-scale-90 .tx__note { font-size:21.6rpx; }
+.font-scale-90 .tx__date { font-size:16.2rpx; }
+.font-scale-90 .tx__amount { font-size:21.6rpx; }
+.font-scale-90 .delete-btn { font-size:17.1rpx; }
+.font-scale-90 .action-feedback { font-size:19.8rpx; }
+.font-scale-90 .load-more { font-size:19.8rpx; }
+/* 95% */
+.font-scale-95 .summary__title { font-size:25.6rpx; }
+.font-scale-95 .summary__sub { font-size:19.9rpx; }
+.font-scale-95 .empty { font-size:21.8rpx; }
+.font-scale-95 .tx__note { font-size:22.8rpx; }
+.font-scale-95 .tx__date { font-size:17.1rpx; }
+.font-scale-95 .tx__amount { font-size:22.8rpx; }
+.font-scale-95 .delete-btn { font-size:18.1rpx; }
+.font-scale-95 .action-feedback { font-size:20.9rpx; }
+.font-scale-95 .load-more { font-size:20.9rpx; }
+/* 105% */
+.font-scale-105 .summary__title { font-size:28.4rpx; }
+.font-scale-105 .summary__sub { font-size:22.1rpx; }
+.font-scale-105 .empty { font-size:24.2rpx; }
+.font-scale-105 .tx__note { font-size:25.2rpx; }
+.font-scale-105 .tx__date { font-size:18.9rpx; }
+.font-scale-105 .tx__amount { font-size:25.2rpx; }
+.font-scale-105 .delete-btn { font-size:19.9rpx; }
+.font-scale-105 .action-feedback { font-size:23.1rpx; }
+.font-scale-105 .load-more { font-size:23.1rpx; }
+/* 110% */
+.font-scale-110 .summary__title { font-size:29.7rpx; }
+.font-scale-110 .summary__sub { font-size:23.1rpx; }
+.font-scale-110 .empty { font-size:25.3rpx; }
+.font-scale-110 .tx__note { font-size:26.4rpx; }
+.font-scale-110 .tx__date { font-size:19.8rpx; }
+.font-scale-110 .tx__amount { font-size:26.4rpx; }
+.font-scale-110 .delete-btn { font-size:20.9rpx; }
+.font-scale-110 .action-feedback { font-size:24.2rpx; }
+.font-scale-110 .load-more { font-size:24.2rpx; }
+/* 115% */
+.font-scale-115 .summary__title { font-size:31rpx; }
+.font-scale-115 .summary__sub { font-size:24.1rpx; }
+.font-scale-115 .empty { font-size:26.4rpx; }
+.font-scale-115 .tx__note { font-size:27.6rpx; }
+.font-scale-115 .tx__date { font-size:20.7rpx; }
+.font-scale-115 .tx__amount { font-size:27.6rpx; }
+.font-scale-115 .delete-btn { font-size:21.8rpx; }
+.font-scale-115 .action-feedback { font-size:25.3rpx; }
+.font-scale-115 .load-more { font-size:25.3rpx; }
+/* <<< v0.6.2 proportional typography generated <<< */

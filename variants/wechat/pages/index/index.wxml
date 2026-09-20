@@ -1,0 +1,281 @@
+<page-meta page-style="background-color: {{pageBackground}};" />
+
+<block wx:if="{{startupBlocked}}">
+  <view class="startup-blocked {{themeClass}} {{appearanceClass}}">
+    <view class="startup-blocked__mark"></view>
+    <view class="startup-blocked__title">先保护你的原数据</view>
+    <view class="startup-blocked__copy">{{startupErrorText}}</view>
+    <button class="startup-blocked__retry" bindtap="retryStartup"><text>重新读取</text></button>
+  </view>
+</block>
+
+<block wx:elif="{{showOnboarding}}">
+<view class="onboarding {{themeClass}} {{appearanceClass}}">
+  <view wx:if="{{guideStep > 0}}" class="onboarding__head">
+    <view class="onboarding__eyebrow">DAYS OF FREEDOM</view>
+    <view class="onboarding__brand">财富自由指南灯</view>
+  </view>
+
+  <scroll-view scroll-y class="onboarding__body {{guideStep === 0 ? 'onboarding__body--opening' : ''}}">
+    <view wx:if="{{guideStep === 0}}" class="guide-panel guide-panel--opening guide-motion {{guideMotionClass}}">
+      <view class="opening-mark"><view class="opening-mark__halo opening-mark__halo--outer"></view><view class="opening-mark__halo opening-mark__halo--inner"></view><view class="opening-mark__core"></view></view>
+      <view class="opening-eyebrow">DAYS OF FREEDOM</view>
+      <view class="opening-title">财富自由指南灯</view>
+      <view class="opening-line"></view>
+      <view class="opening-statement">把钱，换算成属于你的时间。</view>
+      <view class="opening-copy">它不是用来评判你该不该花钱，而是让每一次真实的财富变化，都能被看见、被理解、被你自己判断值不值。</view>
+      <view class="opening-local-note">账本默认只保存在当前设备。你可以随时导出完整备份；换设备或清除数据后，也可以从备份恢复。</view>
+      <button class="opening-restore" loading="{{restoringBackup}}" bindtap="restoreBackupOnboarding">已有备份？直接恢复</button>
+    </view>
+
+    <view wx:elif="{{guideStep === 1}}" class="guide-panel guide-panel--preferences guide-motion {{guideMotionClass}}">
+      <view class="guide-panel__no">01 · 先选一个舒服的样子</view>
+      <view class="guide-panel__title guide-panel__title--preferences">先让指南灯，适合你长期看下去。</view>
+      <view class="preference-section"><view class="preference-section__label">主题</view><view class="preference-grid">
+        <view class="preference-card {{onboarding.theme === 'midnight' ? 'preference-card--active' : ''}}" data-theme="midnight" bindtap="selectOnboardingTheme"><view class="preference-preview preference-preview--midnight"><view class="preference-preview__dot"></view><view class="preference-preview__line"></view></view><view class="preference-card__title">深夜金</view><view class="preference-card__desc">沉静、克制、高对比</view></view>
+        <view class="preference-card {{onboarding.theme === 'paper' ? 'preference-card--active' : ''}}" data-theme="paper" bindtap="selectOnboardingTheme"><view class="preference-preview preference-preview--paper"><view class="preference-preview__dot"></view><view class="preference-preview__line"></view></view><view class="preference-card__title">纸上自由</view><view class="preference-card__desc">暖纸、墨色、旧金</view></view>
+      </view></view>
+      <view class="preference-section"><view class="preference-section__label">字体</view><view class="choice-row"><view class="choice-chip {{onboarding.font_family === 'system' ? 'choice-chip--active' : ''}}" data-font="system" bindtap="selectOnboardingFont">系统黑体</view><view class="choice-chip choice-chip--serif {{onboarding.font_family === 'serif' ? 'choice-chip--active' : ''}}" data-font="serif" bindtap="selectOnboardingFont">宋体阅读</view></view></view>
+      <view class="preference-section"><view class="preference-section__label">字号</view><view class="choice-row choice-row--three"><view class="choice-chip {{onboarding.font_scale === '90' ? 'choice-chip--active' : ''}}" data-scale="90" bindtap="selectOnboardingFontScale">紧凑</view><view class="choice-chip {{onboarding.font_scale === '100' ? 'choice-chip--active' : ''}}" data-scale="100" bindtap="selectOnboardingFontScale">舒适</view><view class="choice-chip {{onboarding.font_scale === '110' ? 'choice-chip--active' : ''}}" data-scale="110" bindtap="selectOnboardingFontScale">大字</view></view></view>
+      <view class="preference-note">这些只改变阅读体验，不改变任何计算结果；以后可以在设置中随时修改。</view>
+    </view>
+
+    <view wx:elif="{{guideStep === 2}}" class="guide-panel guide-panel--centered guide-motion {{guideMotionClass}}">
+      <view class="guide-panel__no">02 · 核心理念</view>
+      <view class="guide-panel__title"><view>钱不是终点。</view><view>真正稀缺的是</view><view class="guide-panel__title-gold">属于你自己的时间。</view></view>
+      <view class="guide-panel__formula"><view>自由财富</view><view class="formula-arrow">→</view><view>生活成本</view><view class="formula-arrow">→</view><view>自由天数</view></view>
+      <view class="guide-panel__copy">指南灯把抽象金额翻译成一个更接近生命的尺度：按你认可的生活成本，当前自由财富大约能覆盖多少天自主生活。</view>
+    </view>
+
+    <view wx:elif="{{guideStep === 3}}" class="guide-panel guide-panel--centered guide-motion {{guideMotionClass}}">
+      <view class="guide-panel__no">03 · 正确心态</view>
+      <view class="guide-panel__title"><view>先看清现实，</view><view>再决定怎样改变它。</view></view>
+      <view class="principle-row principle-row--first"><view class="principle-row__index">01</view><view><view class="principle-row__title">真实比进度重要</view><view class="principle-row__desc">不要为了让方格更亮而修改现实。</view></view></view>
+      <view class="principle-row"><view class="principle-row__index">02</view><view><view class="principle-row__title">生活成本是一把尺</view><view class="principle-row__desc">你可以自己估计，也可以让账本估计；它是当前模型的尺度，不是绝对真值。</view></view></view>
+      <view class="principle-row"><view class="principle-row__index">03</view><view><view class="principle-row__title">只记录真正改变自由时间的事</view><view class="principle-row__desc">账户互转、借款本金、重复还款，不是新的自由事件。</view></view></view>
+    </view>
+
+    <view wx:elif="{{guideStep === 4}}" class="guide-panel guide-panel--centered guide-motion {{guideMotionClass}}">
+      <view class="guide-panel__no">04 · 每笔都有反馈</view>
+      <view class="guide-panel__title"><view>每一笔钱，</view><view>都要告诉你它换走了什么。</view></view>
+      <view class="feedback-demo feedback-demo--up"><view class="feedback-demo__big">+18 天自由</view><view>真正新增的可支配财富，让你买回更多未来自主时间。</view></view>
+      <view class="feedback-demo feedback-demo--down"><view class="feedback-demo__big">−3 天未来自由</view><view>生活消耗把一部分未来自由交换成今天的价值；值不值由你判断。</view></view>
+      <view class="guide-panel__quote">数据是真相，动画是仪式。仪式服从真相。</view>
+    </view>
+
+    <view wx:else class="guide-panel guide-panel--setup guide-motion {{guideMotionClass}}">
+      <view class="guide-panel__no">05 · 建立你的第一盏灯</view>
+      <view class="guide-panel__title guide-panel__title--setup">简单上手，或把每个输入交回自己。</view>
+      <view class="mode-cards">
+        <view class="mode-card {{onboarding.mode === 'quick' ? 'mode-card--active' : ''}}" data-mode="quick" bindtap="selectOnboardingMode"><view class="mode-card__top"><view class="mode-card__title">上手版</view><view class="mode-card__tag">推荐</view></view><view class="mode-card__desc">只给出日均生活成本和起始自由本金，马上看到第一份自由时间基准。</view></view>
+        <view class="mode-card {{onboarding.mode === 'advanced' ? 'mode-card--active' : ''}}" data-mode="advanced" bindtap="selectOnboardingMode"><view class="mode-card__title">高级自主版</view><view class="mode-card__desc">公式不变，开放成本估计方式、观察跨度、起始资产与方格范围。</view></view>
+      </view>
+
+      <view class="setup-group"><view class="setup-group__title">人生坐标</view><view class="setup-explain">出生日期决定人生方格的起点；目标年龄是你自己选择的观察终点。它们只决定“这张人生地图画到哪里”，不是寿命预测。</view>
+        <view class="setup-field"><view class="setup-field__label">出生日期</view><picker mode="date" value="{{onboarding.birth_date}}" start="1900-01-01" end="{{today}}" bindchange="onOnboardingBirth"><view class="setup-control {{onboarding.birth_date ? '' : 'setup-control--placeholder'}}">{{onboarding.birth_date || '选择出生日期'}}</view></picker></view>
+        <view class="setup-field"><view class="setup-field__label">目标年龄</view><view class="setup-inline"><input class="setup-control setup-control--input" type="number" value="{{onboarding.target_age}}" bindinput="onOnboardingAge" maxlength="3"/><text>岁</text></view></view>
+      </view>
+
+      <view wx:if="{{onboarding.mode === 'quick'}}" class="setup-group"><view class="setup-group__title">上手版 · 两个数字就够</view><view class="setup-explain">一个数字回答“维持现在的生活一天大概要多少钱”，另一个回答“现在有多少真正可以拿来支撑自主生活的钱”。</view>
+        <view class="setup-field"><view class="setup-field__label">日均生活成本估计</view><view class="money-input"><text>¥</text><input class="money-input__field" type="digit" value="{{onboarding.manual_daily_expense}}" placeholder="例如 80" bindinput="onOnboardingDailyExpense" style="color:{{inputTextColor}};" placeholder-style="color:{{inputPlaceholderColor}};"/></view></view><view class="field-help">不用精确到每一块钱。先填一个你认可的现实估计，以后随时可以调整或改成账本估计。</view>
+        <view class="setup-field"><view class="setup-field__label">起始自由本金</view><view class="money-input"><text>¥</text><input class="money-input__field" type="digit" value="{{onboarding.opening_balance}}" placeholder="例如 30000" bindinput="onOnboardingOpeningBalance" style="color:{{inputTextColor}};" placeholder-style="color:{{inputPlaceholderColor}};"/></view></view>
+        <view class="concept-card"><view class="concept-card__title">它是什么？</view><view class="concept-card__body">它会被记成一笔“系统基准收入”，进入净储蓄。之后真正的生活消耗会通过同一个账本公式逐步消耗这部分自由。适合填写现金、活期或你确实愿意拿来支撑生活的起步资金。</view></view>
+      </view>
+
+      <view wx:else class="setup-group"><view class="setup-group__title">高级自主口径</view>
+        <view class="concept-split"><view class="concept-card"><view class="concept-card__title">起始自由本金</view><view class="concept-card__body">是一笔系统基准收入，进入净储蓄；后续生活消耗会降低净储蓄。适合表达“可以直接拿来过日子的起步资金”。</view></view><view class="concept-card concept-card--asset"><view class="concept-card__title">额外起始资产</view><view class="concept-card__body">是独立资产桶，只按日均成本折算自由天数，不进入账本净储蓄。只在你明确需要这个扩展时开启；同一笔钱不要重复填。</view></view></view>
+        <view class="setup-field"><view class="setup-field__label">起始自由本金（可为 0）</view><view class="money-input"><text>¥</text><input class="money-input__field" type="digit" value="{{onboarding.opening_balance}}" placeholder="例如 30000" bindinput="onOnboardingOpeningBalance" style="color:{{inputTextColor}};" placeholder-style="color:{{inputPlaceholderColor}};"/></view></view>
+        <view class="setup-field"><view class="setup-field__label">每日生活成本来源</view><view class="mini-segmented"><view class="mini-segmented__item {{onboarding.expense_mode === 'manual' ? 'mini-segmented__item--active' : ''}}" data-source="manual" bindtap="selectOnboardingExpenseMode">手动估计</view><view class="mini-segmented__item {{onboarding.expense_mode === 'ledger' ? 'mini-segmented__item--active' : ''}}" data-source="ledger" bindtap="selectOnboardingExpenseMode">账本估计</view></view></view>
+        <view wx:if="{{onboarding.expense_mode === 'manual'}}" class="setup-field"><view class="setup-field__label">手动日均生活成本</view><view class="money-input"><text>¥</text><input class="money-input__field" type="digit" value="{{onboarding.manual_daily_expense}}" placeholder="输入你认可的现实估计" bindinput="onOnboardingDailyExpense" style="color:{{inputTextColor}};" placeholder-style="color:{{inputPlaceholderColor}};"/></view></view>
+        <view wx:else class="advanced-hint">账本估计会用“累计生活消耗 ÷ 观察跨度”估计日均成本。它是估计方式，不是另一套财富自由公式；观察跨度可在设置中继续调整。</view>
+        <view class="setup-switch-row"><view class="setup-switch-copy"><view class="setup-switch-copy__title">额外纳入起始资产</view><view class="setup-switch-copy__desc">开启上面的独立资产桶；不要和“起始自由本金”重复填写同一笔钱。</view></view><switch checked="{{onboarding.use_initial_assets}}" bindchange="onOnboardingUseAssets" color="#d2ad4f"/></view>
+        <view wx:if="{{onboarding.use_initial_assets}}" class="setup-field"><view class="setup-field__label">额外起始资产（独立折算）</view><view class="money-input"><text>¥</text><input class="money-input__field" type="digit" value="{{onboarding.initial_assets}}" placeholder="0" bindinput="onOnboardingAssets" style="color:{{inputTextColor}};" placeholder-style="color:{{inputPlaceholderColor}};"/></view></view>
+        <view class="setup-switch-row"><view class="setup-switch-copy"><view class="setup-switch-copy__title">显示已经走过的人生</view><view class="setup-switch-copy__desc">打开后，出生至今天的日子也会画进人生方格。</view></view><switch checked="{{onboarding.show_past}}" bindchange="onOnboardingShowPast" color="#d2ad4f"/></view>
+      </view>
+      <view class="model-note">目标年龄只是可视化坐标；指南灯是数学观察模型，不提供投资收益或寿命预测。</view>
+      <view class="model-note model-note--storage">数据默认只保存在当前设备。建立指南灯后，可在“设置 → 数据备份与恢复”导出完整 JSON 备份。</view>
+    </view>
+  </scroll-view>
+
+  <view class="onboarding__foot"><view class="guide-dots"><view class="{{guideStep === 0 ? 'dot dot--active' : 'dot'}}"></view><view class="{{guideStep === 1 ? 'dot dot--active' : 'dot'}}"></view><view class="{{guideStep === 2 ? 'dot dot--active' : 'dot'}}"></view><view class="{{guideStep === 3 ? 'dot dot--active' : 'dot'}}"></view><view class="{{guideStep === 4 ? 'dot dot--active' : 'dot'}}"></view><view class="{{guideStep === 5 ? 'dot dot--active' : 'dot'}}"></view></view>
+    <view class="guide-actions"><button wx:if="{{guideStep > 0}}" class="secondary-btn" bindtap="prevGuide">上一步</button><view wx:else class="guide-actions__spacer"></view><button class="primary-btn primary-btn--compact" loading="{{onboardingSubmitting}}" bindtap="nextGuide">{{guideStep === 0 ? '开始' : (guideStep === 5 ? '建立我的指南灯' : '继续')}}</button></view>
+  </view>
+</view>
+</block>
+<block wx:else>
+<view class="home {{themeClass}} {{appearanceClass}}">
+  <view class="topbar">
+    <view class="topbar__brand">
+      <view class="topbar__eyebrow">DAYS OF FREEDOM</view>
+      <view class="topbar__title">财富自由指南灯</view>
+      <view class="topbar__subtitle">把钱换算成属于你的时间</view>
+    </view>
+    <view class="topbar__actions">
+      <button class="text-icon" bindtap="goGuide">理念</button>
+      <button class="text-icon" bindtap="goAnalysis">消费分析</button>
+      <button class="text-icon" bindtap="goSettings">设置</button>
+    </view>
+  </view>
+
+  <view wx:if="{{weeklyReview && weeklyReview.available}}" class="weekly-dock card {{weeklyReview.shouldGlow ? 'weekly-dock--glow' : ''}}" bindtap="goWeeklyReview">
+    <view class="weekly-dock__copy">
+      <view class="weekly-dock__eyebrow">WEEKLY REVIEW</view>
+      <view class="weekly-dock__title">上周回顾 · 消费分析</view>
+      <view class="weekly-dock__sub">{{weeklyReview.shouldGlow ? '新一周已开始，回看上周的钱和自由时间去了哪里。' : '已经看过，随时可以再次打开。'}}</view>
+    </view>
+    <view class="weekly-dock__status"><view class="weekly-dock__lamp"></view><text>{{weeklyReview.shouldGlow ? '待回顾' : '已查看'}}</text></view>
+  </view>
+
+  <block wx:for="{{homeModules}}" wx:key="id" wx:for-item="module">
+    <block wx:if="{{module.id === 'overview'}}">
+      <view class="hero home-module" data-module="overview">
+        <view class="hero__metric"><text class="hero__number {{heroFlip ? 'hero__number--flip' : ''}}">{{view.litCount}}</text><text class="hero__unit">天自由</text></view>
+        <view class="hero__sub">按当前口径，距目标还差 {{view.remainingDays}} 天</view>
+        <view class="progress-track"><view class="progress-fill" style="width: {{view.progressPct}};"></view></view>
+        <view class="progress-meta"><text>{{view.progressPct}}</text><text>{{view.modeLabel}} · {{view.costSource}}</text></view>
+      </view>
+
+      <view wx:if="{{stats.target_reached}}" class="coordinate-warning card" bindtap="goSettings"><view class="coordinate-warning__title">人生坐标终点已到</view><view class="coordinate-warning__copy">账本和财富数据仍然完整保留。请更新目标年龄后继续观察。</view><view class="coordinate-warning__action">更新目标年龄 ›</view></view>
+
+      <view class="mode-strip card" bindtap="goSettings">
+        <view class="mode-strip__copy"><view class="mode-strip__title">当前模式 · {{view.modeLabel}}</view><view class="mode-strip__desc">{{view.modeHint}}</view></view>
+        <view class="mode-strip__action">调整 ›</view>
+      </view>
+
+      <view class="insight card">
+        <view class="insight__mark"></view>
+        <view class="insight__content"><view class="insight__label">当前解读</view><view class="insight__text">{{insightText}}</view></view>
+      </view>
+    </block>
+
+    <block wx:elif="{{module.id === 'grid'}}">
+      <view class="grid-card card home-module" data-module="grid">
+        <view class="section-head">
+          <view><view class="section-title">人生方格</view><view class="section-sub">每一格 = 生命中的一天</view></view>
+          <view class="legend">
+            <view wx:if="{{stats.asset_lit > 0}}" class="legend-item"><view class="swatch swatch--asset"></view><text>资产自由</text></view>
+            <view class="legend-item"><view class="swatch swatch--lit"></view><text>{{stats.asset_lit > 0 ? '净储蓄自由' : '已点亮'}}</text></view>
+            <view class="legend-item"><view class="swatch"></view><text>未点亮</text></view>
+          </view>
+        </view>
+        <view id="gridDisplay" class="canvas-shell">
+          <image wx:if="{{gridImagePath}}" class="life-grid-image" src="{{gridImagePath}}" mode="scaleToFill"></image>
+          <view wx:if="{{gridImagePath && todayMarkerVisible}}" class="today-marker" style="{{todayMarkerStyle}}"><view class="today-marker__halo"></view><view class="today-marker__core"></view></view>
+          <view wx:if="{{!gridImagePath}}" class="grid-loading"><text>{{gridRendering ? '正在生成人生方格…' : '暂未生成方格'}}</text></view>
+        </view>
+        <view wx:if="{{settings.mode === 'quick'}}" class="grid-meta"><text>当前净储蓄 {{view.netSaving}}</text><text>日均 {{view.avgExpense}}</text></view>
+        <view wx:else class="grid-meta"><text>资产自由 {{view.assetFreedom}} 天</text><text>收入自由 {{view.incomeFreedom}} 天 · 日均 {{view.avgExpense}}</text></view>
+      </view>
+    </block>
+
+    <block wx:elif="{{module.id === 'habit'}}">
+      <view wx:if="{{settings.habit_center && habitSummary}}" class="habit-card card home-module" data-module="habit">
+        <view class="section-head"><view><view class="section-title">记录中心</view><view class="section-sub">记账本身就是签到，不另做签到任务。</view></view><view class="link" bindtap="goActivity">成就与详情 ›</view></view>
+        <view class="habit-metrics">
+          <view class="habit-metric"><view class="habit-metric__value">{{habitSummary.recordedDays}}</view><view class="habit-metric__label">累计记录天数</view></view>
+          <view class="habit-metric"><view class="habit-metric__value">{{habitSummary.currentStreak}}</view><view class="habit-metric__label">当前连续</view></view>
+          <view class="habit-metric"><view class="habit-metric__value">{{habitSummary.longestStreak}}</view><view class="habit-metric__label">最长连续</view></view>
+          <view class="habit-metric"><view class="habit-metric__value">{{habitSummary.coveragePct}}%</view><view class="habit-metric__label">近 {{habitSummary.coverageDenominator}} 天覆盖</view></view>
+        </view>
+        <view class="activity-head"><view>最近 12 周记录活动</view><view>{{habitSummary.todayCount ? '今天已留下记录' : '今天还没有记录'}}</view></view>
+        <view class="activity-grid"><view wx:for="{{activityRows}}" wx:key="id" wx:for-item="row" class="activity-row"><view wx:for="{{row.cells}}" wx:key="date" wx:for-item="cell" class="activity-cell activity-cell--{{cell.level}} {{cell.today ? 'activity-cell--today' : ''}} {{cell.future ? 'activity-cell--future' : ''}}"></view></view></view>
+        <view wx:if="{{achievementCountText}}" class="habit-bottom"><view class="achievement-preview" bindtap="goActivity"><view class="achievement-preview__eyebrow">ACHIEVEMENTS · {{achievementCountText}}</view><view class="achievement-preview__name">{{achievementPreview ? achievementPreview.name : '第一枚成就还在等你'}}</view></view></view>
+      </view>
+    </block>
+
+    <block wx:elif="{{module.id === 'record'}}">
+      <view wx:if="{{missedPrompt}}" class="missed-card card"><view class="missed-card__copy"><view class="missed-card__title">{{missedPrompt.title}}</view><view class="missed-card__text">{{missedPrompt.text}}</view></view><view class="missed-card__action" bindtap="prepareBackfill">补一笔 ›</view></view>
+
+      <view class="record-card card home-module" data-module="record">
+        <view class="record-head"><view><view class="section-title">记一笔真实的账</view><view class="record-sub">{{settings.mode === 'quick' ? '这里只记真正改变自由时间的事件；公式始终不变。' : '高级版只开放更多输入，仍只记录真正改变自由时间的事件。'}}</view></view><view class="record-help" bindtap="goUsageGuide">使用提示 ›</view></view>
+        <view wx:if="{{settings.inline_tips_enabled}}" class="inline-tip">最少只要 3 步：金额 → 主分类 → 保存。快捷标签、消费性质和备注都可以以后再补。</view>
+
+        <view class="segmented"><view class="segmented__item {{form.type === 'expense' ? 'segmented__item--expense-active' : ''}}" data-type="expense" bindtap="selectType">生活消耗</view><view class="segmented__item {{form.type === 'income' ? 'segmented__item--income-active' : ''}}" data-type="income" bindtap="selectType">新增财富</view></view>
+        <view class="event-scope" wx:if="{{form.type === 'expense'}}">只记真正消耗生活资源的支出。账户互转、已记过的信用卡还款不要重复记录；退款/报销时：删除原支出，再按最终真实净消耗重新记录。</view>
+        <view class="event-scope" wx:else>只记真正新增的可支配财富。账户互转、借款本金不是新增自由财富。</view>
+
+        <view wx:if="{{form.type === 'expense' && frequentPresets.length}}" class="quick-entry"><view class="quick-entry__label">最近常用</view><view class="chip-row chip-row--wrap"><view wx:for="{{frequentPresets}}" wx:key="id" class="choice-chip choice-chip--quick" data-id="{{item.id}}" bindtap="selectExpensePreset"><text class="choice-chip__label">{{item.label}}</text><text class="choice-chip__meta">{{item.categoryName}}</text></view></view></view>
+
+        <view class="amount-line"><text class="amount-line__currency">¥</text><input class="amount-input" type="digit" value="{{form.amount}}" placeholder="0.00" bindinput="onAmount" maxlength="12"/></view>
+
+        <view wx:if="{{form.type === 'expense'}}" class="expense-classify">
+          <view class="classify-head"><view class="classify-title">主分类</view><view class="classify-help">用于统计，每笔只算一次</view></view>
+          <scroll-view class="chip-scroll" scroll-x enhanced show-scrollbar="{{false}}"><view class="chip-row"><view wx:for="{{expenseCategories}}" wx:key="id" class="choice-chip {{form.category_id === item.id ? 'choice-chip--active' : ''}}" data-id="{{item.id}}" bindtap="selectExpenseCategory">{{item.name}}</view></view></scroll-view>
+
+          <view class="classify-head classify-head--sub"><view class="classify-title">快捷标签 <text class="optional">可选</text></view><view class="classify-link" bindtap="goCategoryPresets">管理 ›</view></view>
+          <view wx:if="{{form.category_id && visiblePresets.length}}" class="chip-row chip-row--wrap"><view wx:for="{{visiblePresets}}" wx:key="id" class="choice-chip choice-chip--small {{form.detail_tag === item.label ? 'choice-chip--active' : ''}}" data-id="{{item.id}}" bindtap="selectExpensePreset">{{item.label}}</view><view wx:if="{{form.detail_tag}}" class="choice-chip choice-chip--small" bindtap="clearExpensePreset">清除</view></view>
+          <view wx:elif="{{form.category_id}}" class="classify-empty" bindtap="goCategoryPresets">这个分类还没有快捷标签；可以自己预设“日常吃饭 / 聚餐 / 约会”等。</view>
+
+          <view class="classify-head classify-head--sub"><view class="classify-title">消费性质 <text class="optional">可选</text></view><view class="classify-help">只用于复盘，不改变自由天数公式</view></view>
+          <view class="chip-row chip-row--wrap"><view wx:for="{{expenseNatures}}" wx:key="id" class="choice-chip choice-chip--small nature-chip nature-chip--{{item.id}} {{form.nature === item.id ? 'choice-chip--active' : ''}}" data-id="{{item.id}}" bindtap="selectExpenseNature">{{item.name}}</view></view>
+        </view>
+
+        <view class="form-row"><picker class="date-picker" mode="date" value="{{form.date}}" start="{{settings.birth_date}}" end="{{today}}" bindchange="onDate"><view class="form-control">{{form.date}}</view></picker><input class="form-control form-control--note" value="{{form.note}}" placeholder="备注（选填，写具体内容）" bindinput="onNote" maxlength="40"/></view>
+
+        <button class="submit-btn {{form.type === 'expense' ? 'submit-btn--expense' : ''}}" loading="{{submitting}}" bindtap="submitTransaction"><text>{{form.type === 'expense' ? '记录生活消耗 · 更新自由时间' : '记录新增财富 · 更新自由时间'}}</text></button>
+
+        <view wx:if="{{lastFeedback}}" class="result result--{{lastFeedback.kind}}"><view class="result__head"><view class="result__title">{{lastFeedback.title}}</view><view class="result__delta">{{lastFeedback.gridLabel}}</view></view><view wx:if="{{settings.freedom_delta_hint && lastFeedback.exactDelta && lastFeedback.delta === 0}}" class="result__exact">本次记录后，自由天数估算 {{lastFeedback.exactDeltaText}}</view><view class="result__detail">{{lastFeedback.detail}}</view></view>
+        <view wx:if="{{achievementUnlock}}" class="achievement-unlock" bindtap="goActivity"><view class="achievement-unlock__mark">◆</view><view><view class="achievement-unlock__eyebrow">{{achievementUnlock.group}}成就解锁{{achievementUnlock.count > 1 ? ' · 同时 ' + achievementUnlock.count + ' 枚' : ''}}</view><view class="achievement-unlock__name">{{achievementUnlock.name}}</view></view><view class="achievement-unlock__arrow">›</view></view>
+      </view>
+    </block>
+  </block>
+
+  <view class="stats-row"><view class="stat card"><view class="stat__label">{{view.incomeLabel}}</view><view class="stat__value gold">{{view.totalIncome}}</view></view><view class="stat card"><view class="stat__label">生活消耗</view><view class="stat__value">{{view.totalExpense}}</view></view><view class="stat card"><view class="stat__label">日均生活成本</view><view class="stat__value">{{view.avgExpense}}</view></view><view class="stat card"><view class="stat__label">生活成本估计</view><view class="stat__value stat__value--text">{{view.costSource}}</view></view></view>
+
+  <view class="recent card"><view class="section-head"><view class="section-title">最近记录</view><view class="link" bindtap="goHistory">查看全部</view></view><view wx:if="{{recent.length === 0}}" class="empty"><view class="empty__title">还没有记录</view><view>记录第一笔真正改变自由时间的事件后，方格会严格按同一个核心公式重新计算。</view></view><block wx:for="{{recent}}" wx:key="id"><view class="tx-row"><view class="tx-row__main"><view class="tx-row__note">{{item.noteText}}</view><view class="tx-row__date">{{item.occurred_on}}<text wx:if="{{item.metaText}}"> · {{item.metaText}}</text></view></view><view class="tx-row__amount {{item.type === 'income' ? 'gold' : ''}}">{{item.sign}}{{item.amountText}}</view></view></block></view>
+
+  <view class="privacy-note">当前版本不登录、不上传账本。生日、交易和设置默认仅保存在当前设备的小程序本地存储。</view>
+</view>
+
+<!-- 静态方格快照专用 Canvas：永远放在可视滚动区域之外，只负责生成普通 image。 -->
+<canvas type="2d" id="lifeCanvas" class="snapshot-canvas"></canvas>
+
+<!-- 核心仪式舞台：只有自由天数发生整数格变化时才出现。Canvas 固定在视口，不参与页面滚动。 -->
+<view wx:if="{{ritualActive}}" class="ritual-overlay ritual-overlay--{{ritualKind}} {{themeClass}} {{appearanceClass}}" catchtouchmove="noop">
+  <view class="ritual-backdrop"></view>
+
+  <!-- FREE 是原版最高级别反馈：跨越最后一格后直接接管整个视口，而不是被困在方格卡片里。 -->
+  <view wx:if="{{freedomCelebration}}" class="freedom-stage freedom-stage--fullscreen">
+    <button class="freedom-skip" bindtap="skipRitual">跳过</button>
+    <view class="freedom-ripple freedom-ripple--1"></view>
+    <view class="freedom-ripple freedom-ripple--2"></view>
+    <view class="freedom-ripple freedom-ripple--3"></view>
+    <view class="freedom-ripple freedom-ripple--4"></view>
+    <view class="freedom-ripple freedom-ripple--5"></view>
+    <view class="freedom-content">
+      <view class="freedom-eyebrow">CURRENT HORIZON FULLY COVERED</view>
+      <view class="freedom-word">FREE</view>
+      <view class="freedom-zh">财 富 自 由</view>
+      <view class="freedom-sub">按当前生活成本与人生坐标，现有自由资源已覆盖剩余人生</view>
+    </view>
+  </view>
+
+  <view wx:else class="ritual-shell">
+    <!-- 主舞台必须是人生方格本身：Canvas 铺满视口，文字只做极轻的浮层反馈。 -->
+    <view id="ritualStage" class="ritual-stage">
+      <canvas type="2d" id="ritualCanvas" class="ritual-canvas"></canvas>
+    </view>
+    <view class="ritual-top-veil"></view>
+    <view class="ritual-bottom-veil"></view>
+
+    <view class="ritual-head">
+      <view>
+        <view class="ritual-eyebrow">{{ritualKind === 'ignite' ? 'BUY BACK YOUR TIME' : 'TIME EXCHANGED'}}</view>
+        <view class="ritual-title">{{ritualTitle}}</view>
+      </view>
+      <button class="ritual-skip" bindtap="skipRitual">跳过</button>
+    </view>
+
+    <view class="ritual-foot">
+      <view class="ritual-count">
+        <text class="ritual-count__current">{{ritualCurrent}}</text>
+        <text class="ritual-count__unit">天自由</text>
+      </view>
+      <view class="ritual-progress-copy">
+        <text>{{ritualDirectionText}}</text>
+        <text>{{ritualProgressText}}</text>
+      </view>
+    </view>
+  </view>
+</view>
+</block>

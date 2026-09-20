@@ -1,0 +1,85 @@
+<page-meta page-style="background-color: {{pageBackground}};" />
+<view class="container settings-page {{themeClass}} {{appearanceClass}}">
+  <view class="intro card"><view class="intro__title">一套公式，两种使用方式。</view><view class="intro__text">上手版减少需要理解的输入；高级自主版把口径控制权交给你。两者最终都使用同一个自由时间模型。</view></view>
+
+  <view class="section card"><view class="section-title">使用模式</view><view class="mode-select">
+    <view class="mode-option {{form.mode === 'quick' ? 'mode-option--active' : ''}}" data-mode="quick" bindtap="selectMode"><view class="mode-option__title">上手版</view><view class="mode-option__desc">手动给出日均生活成本与起始自由本金，直接得到第一份自由时间基准。</view></view>
+    <view class="mode-option {{form.mode === 'advanced' ? 'mode-option--active' : ''}}" data-mode="advanced" bindtap="selectMode"><view class="mode-option__title">高级自主版</view><view class="mode-option__desc">开放生活成本估计方式、观察跨度、额外起始资产和人生方格范围。</view></view>
+  </view></view>
+
+  <view class="section card"><view class="section-title">人生坐标</view><view class="section-copy">出生日期是人生方格的起点；目标年龄是你自己选择的观察终点。它们只决定这张“人生地图”画到哪里，不预测寿命。</view>
+    <view class="field"><view class="field__label">出生日期</view><picker mode="date" value="{{form.birth_date}}" start="1900-01-01" end="{{today}}" bindchange="onBirth"><view class="control">{{form.birth_date || '选择日期'}}</view></picker></view>
+    <view class="field"><view class="field__label">目标年龄</view><view class="inline"><input class="control control--input" type="number" value="{{form.target_age}}" bindinput="onAge" maxlength="3"/><text>岁</text></view></view>
+  </view>
+
+  <view wx:if="{{form.mode === 'quick'}}" class="section card"><view class="section-title">上手版 · 快速建立基准</view><view class="section-copy">你只需要回答两个问题：“一天大约要花多少钱生活？”以及“现在有多少真正愿意拿来支撑自主生活的钱？”</view>
+    <view class="field"><view class="field__label">日均生活成本估计</view><view class="money-control"><text>¥</text><input class="money-control__input" type="digit" value="{{form.manual_daily_expense}}" bindinput="onManualDailyExpense" placeholder="例如 80" style="color:{{inputTextColor}};" placeholder-style="color:{{inputPlaceholderColor}};"/></view><view class="field__help">先填一个你认可的现实估计即可；以后可以继续修改或切换到高级版的账本估计。</view></view>
+    <view class="field"><view class="field__label">起始自由本金</view><view class="money-control"><text>¥</text><input class="money-control__input" type="digit" value="{{form.opening_balance}}" bindinput="onOpeningBalance" placeholder="例如 30000" style="color:{{inputTextColor}};" placeholder-style="color:{{inputPlaceholderColor}};"/></view></view>
+    <view class="concept-box"><view class="concept-box__title">起始自由本金怎么用？</view><view>它会作为一笔“系统基准收入”进入净储蓄。之后真正的生活消耗会通过同一个公式降低净储蓄。适合表达现金、活期或你确实愿意拿来支撑生活的起步资金。</view></view>
+    <view class="current-balance">按现有账本预估的当前净储蓄：<text>{{quickNetSavings}}</text></view>
+  </view>
+
+  <block wx:else>
+    <view class="section card"><view class="section-title">两种“起始”不是一回事</view>
+      <view class="compare-box"><view class="compare-item"><view class="compare-item__title">起始自由本金</view><view class="compare-item__body">一笔系统基准收入，进入净储蓄；后续生活消耗会降低净储蓄。适合“可以直接拿来过日子”的起步资金。</view></view><view class="compare-item compare-item--asset"><view class="compare-item__title">额外起始资产</view><view class="compare-item__body">独立资产桶，只按日均成本折算自由天数，不进入净储蓄。只在你明确需要原项目这一扩展时开启。</view></view></view>
+      <view class="warning-box">同一笔钱只能选择一种表达方式，不能同时填进“起始自由本金”和“额外起始资产”，否则会被重复计算。</view>
+      <view class="field"><view class="field__label">起始自由本金（计入净储蓄，可为 0）</view><view class="money-control"><text>¥</text><input class="money-control__input" type="digit" value="{{form.opening_balance}}" bindinput="onOpeningBalance" placeholder="0" style="color:{{inputTextColor}};" placeholder-style="color:{{inputPlaceholderColor}};"/></view></view>
+    </view>
+
+    <view class="section card"><view class="section-title">生活成本怎么估计</view><view class="section-copy">生活成本是把财富换算成时间的“尺”。下面只是获得这把尺的两种方式，不是两套公式。</view>
+      <view class="field"><view class="field__label">估计方式</view><view class="source-select"><view class="source-option {{form.expense_mode === 'manual' ? 'source-option--active' : ''}}" data-source="manual" bindtap="selectExpenseMode">我自己估计</view><view class="source-option {{form.expense_mode === 'ledger' ? 'source-option--active' : ''}}" data-source="ledger" bindtap="selectExpenseMode">根据账本估计</view></view></view>
+      <view wx:if="{{form.expense_mode === 'manual'}}"><view class="explain-box">你直接给出“每天大约需要多少钱”。新增财富和生活消耗仍然改变净储蓄；只是这把生活成本尺不会随每笔支出自动变化。</view><view class="field"><view class="field__label">你的日均生活成本估计</view><view class="money-control"><text>¥</text><input class="money-control__input" type="digit" value="{{form.manual_daily_expense}}" bindinput="onManualDailyExpense" placeholder="输入你认可的现实估计" style="color:{{inputTextColor}};" placeholder-style="color:{{inputPlaceholderColor}};"/></view></view></view>
+      <view wx:else><view class="explain-box">账本估计使用“累计生活消耗 ÷ 观察跨度”。它是一种估计方法，不是绝对真值；默认从第一笔有效真实自由事件观察到今天。</view><view class="field"><view class="field__label">观察跨度覆盖（0 = 自动）</view><view class="inline"><input class="control control--input" type="number" value="{{form.tracking_days_override}}" bindinput="onTrackingDays"/><text>天</text></view><view class="field__help">只有当你明确知道自己想用多少天作为估计窗口时才覆盖；不确定就保持 0。</view></view></view>
+    </view>
+
+    <view class="section card"><view class="section-title">资产与方格</view>
+      <view class="switch-row"><view class="switch-copy"><view class="switch-copy__title">额外纳入起始资产</view><view class="switch-copy__sub">开启独立资产桶。它不会进入账本净储蓄，也不会被后续负净储蓄直接扣减。</view></view><switch checked="{{form.use_initial_assets}}" bindchange="onUseAssets" color="#d2ad4f"/></view>
+      <view wx:if="{{form.use_initial_assets}}" class="field"><view class="field__label">额外起始资产（独立折算）</view><view class="money-control"><text>¥</text><input class="money-control__input" type="digit" value="{{form.initial_assets}}" bindinput="onAssets" placeholder="0" style="color:{{inputTextColor}};" placeholder-style="color:{{inputPlaceholderColor}};"/></view></view>
+      <view class="switch-row"><view class="switch-copy"><view class="switch-copy__title">显示已经走过的人生</view><view class="switch-copy__sub">打开后，出生至今天的日子也会画进人生方格；关闭则聚焦从今天开始的剩余人生。</view></view><switch checked="{{form.show_past}}" bindchange="onShowPast" color="#d2ad4f"/></view>
+    </view>
+  </block>
+
+  <view class="section card"><view class="section-title">阅读与显示</view><view class="section-copy">只改变阅读体验，不改变任何计算结果。</view>
+    <view class="field"><view class="field__label">主题</view><view class="theme-list">
+      <view class="theme-option {{form.theme === 'midnight' ? 'theme-option--active' : ''}}" data-theme="midnight" bindtap="selectTheme"><view class="theme-preview theme-preview--midnight"><view class="theme-preview__glow"></view><view class="theme-preview__line"></view><view class="theme-preview__line theme-preview__line--short"></view></view><view class="theme-option__copy"><view class="theme-option__title">深夜金</view><view class="theme-option__desc">沉静、高对比，适合深色环境。</view></view></view>
+      <view class="theme-option {{form.theme === 'paper' ? 'theme-option--active' : ''}}" data-theme="paper" bindtap="selectTheme"><view class="theme-preview theme-preview--paper"><view class="theme-preview__glow"></view><view class="theme-preview__line"></view><view class="theme-preview__line theme-preview__line--short"></view></view><view class="theme-option__copy"><view class="theme-option__title">纸上自由</view><view class="theme-option__desc">暖纸、墨色与旧金，适合长时间阅读。</view></view></view>
+    </view></view>
+    <view class="field"><view class="field__label">字体</view><view class="read-choice"><view class="read-choice__item {{form.font_family === 'system' ? 'read-choice__item--active' : ''}}" data-font="system" bindtap="selectFontFamily">系统黑体</view><view class="read-choice__item read-choice__item--serif {{form.font_family === 'serif' ? 'read-choice__item--active' : ''}}" data-font="serif" bindtap="selectFontFamily">宋体阅读</view></view></view>
+    <view class="field"><view class="field__label">字体大小</view><view class="field__help">所有文字按同一比例缩放，保留标题、正文和辅助文字之间的层级。范围限制在 85%–115%，避免挤坏小屏布局。</view><scroll-view class="font-scale-scroll" scroll-x enhanced show-scrollbar="{{false}}"><view class="font-scale-row"><view wx:for="{{fontScaleOptions}}" wx:key="*this" class="font-scale-chip {{form.font_scale === item ? 'font-scale-chip--active' : ''}}" data-scale="{{item}}" bindtap="selectFontScale">{{item}}%</view></view></scroll-view></view>
+  </view>
+
+  <view class="section card"><view class="section-title">首页布局</view><view class="section-copy">把最常用的内容放到更前面。这里采用稳定的“调整模式”，不用在首页误触长按拖动；顺序保存后立即用于首页。</view>
+    <view class="layout-list"><view wx:for="{{homeLayoutRows}}" wx:key="id" class="layout-row"><view class="layout-row__handle">≡</view><view class="layout-row__copy"><view class="layout-row__title">{{item.name}}</view><view class="layout-row__desc">{{item.desc}}</view></view><view class="layout-row__actions"><button class="layout-move" data-id="{{item.id}}" data-delta="-1" disabled="{{index === 0}}" bindtap="moveHomeModule">↑</button><button class="layout-move" data-id="{{item.id}}" data-delta="1" disabled="{{index === homeLayoutRows.length - 1}}" bindtap="moveHomeModule">↓</button></view></view></view>
+    <view class="layout-reset" bindtap="resetHomeLayout">恢复默认顺序</view>
+  </view>
+
+  <view class="section card"><view class="section-title">使用帮助</view><view class="section-copy">首次引导只讲最必要的内容；完整说明留在这里，任何时候都能回来查。</view>
+    <view class="help-actions"><button class="backup-btn backup-btn--primary" bindtap="goUsageGuide"><text>打开使用指南</text></button><button class="backup-btn" bindtap="goIdeaGuide"><text>查看核心理念</text></button></view>
+    <view class="help-actions"><button class="backup-btn" bindtap="replayOnboarding"><text>重新播放新手引导</text></button><button class="backup-btn" bindtap="goActivity"><text>查看记录与成就</text></button></view>
+    <view class="switch-row"><view class="switch-copy"><view class="switch-copy__title">就地使用提示</view><view class="switch-copy__sub">在记账区保留极短的操作提示；关闭后不影响完整使用指南。</view></view><switch checked="{{form.inline_tips_enabled}}" bindchange="onInlineTips" color="#d2ad4f"/></view>
+  </view>
+
+  <view class="section card"><view class="section-title">记录反馈与习惯</view><view class="section-copy">这些功能只负责降低记账摩擦、增加反馈和回顾理由，不改变财富自由公式。你可以逐项关闭。</view>
+    <view class="switch-row"><view class="switch-copy"><view class="switch-copy__title">自由天数轻提示</view><view class="switch-copy__sub">每次保存后显示“本次记录后自由天数估算 ±0.xx 天”；真正跨过完整一天边界时仍由点灯 / 灭灯动画表达。</view></view><switch checked="{{form.freedom_delta_hint}}" bindchange="onFreedomDeltaHint" color="#d2ad4f"/></view>
+    <view class="switch-row"><view class="switch-copy"><view class="switch-copy__title">记录中心</view><view class="switch-copy__sub">在首页显示记录天数、连续性、近 30 天覆盖率和 12 周活动格。</view></view><switch checked="{{form.habit_center}}" bindchange="onHabitCenter" color="#d2ad4f"/></view>
+    <view class="switch-row"><view class="switch-copy"><view class="switch-copy__title">成就</view><view class="switch-copy__sub">包含正式里程碑和少量奇怪成就；只根据真实账本解锁，不单独签到。</view></view><switch checked="{{form.achievements_enabled}}" bindchange="onAchievements" color="#d2ad4f"/></view>
+    <view class="switch-row"><view class="switch-copy"><view class="switch-copy__title">常用快捷入口</view><view class="switch-copy__sub">把你最近真正用过的快捷标签放到记账区前面，点一下自动带入主分类、标签和默认性质。</view></view><switch checked="{{form.quick_entry_enabled}}" bindchange="onQuickEntry" color="#d2ad4f"/></view>
+    <view class="switch-row"><view class="switch-copy"><view class="switch-copy__title">温和漏记提示</view><view class="switch-copy__sub">只有在已经形成记录习惯、且昨天明显没有记录时才提示；“昨天确实没发生事件”也被视为正常。</view></view><switch checked="{{form.missed_prompt_enabled}}" bindchange="onMissedPrompt" color="#d2ad4f"/></view>
+    <view class="switch-row"><view class="switch-copy"><view class="switch-copy__title">每周回顾提醒灯</view><view class="switch-copy__sub">每周一开始，如果上一周有真实记录，就点亮“上周回顾”入口；打开后熄灭，没有通知轰炸。</view></view><switch checked="{{form.weekly_review_enabled}}" bindchange="onWeeklyReview" color="#d2ad4f"/></view>
+  </view>
+
+  <button class="save-btn" loading="{{saving}}" bindtap="save"><text>保存并重新计算</text></button>
+
+  <view class="section card"><view class="section-title">消费分类与分析</view><view class="section-copy">主分类决定统计口径；快捷标签只负责更细的登记。消费报告与完整恢复备份分开，避免“能恢复”和“好阅读”混成一个文件。</view>
+    <view class="backup-actions"><button class="backup-btn backup-btn--primary" bindtap="goAnalysis"><text>打开消费分析</text></button><button class="backup-btn" bindtap="goPresets"><text>管理快捷标签</text></button></view>
+    <view class="backup-note">周 / 月 / 年统计、周期对比和可读 CSV 都在“消费分析”中；这里的完整 JSON 继续承担灾备恢复。</view>
+  </view>
+
+  <view class="section card"><view class="section-title">数据备份与恢复</view><view class="section-copy">账本、设置和起始基准默认只存在当前微信设备。普通关闭不会清空，但清除小程序数据、卸载环境或更换设备都可能让本地数据无法恢复。重要数据请定期导出备份。</view>
+    <view class="backup-actions"><button class="backup-btn backup-btn--primary" loading="{{backupBusy}}" bindtap="exportBackup"><text>导出完整备份</text></button><button class="backup-btn" loading="{{backupBusy}}" bindtap="importBackup"><text>导入备份</text></button></view>
+    <view class="backup-note">备份文件为 JSON，包含设置、起始自由本金、快捷标签和全部账本记录，也包含你的个人财务信息。建议导出后发送到文件传输助手或你信任的位置保存；恢复时可直接从微信聊天选择这份 JSON。导入前会先校验格式并让你确认。</view>
+    <view wx:if="{{backupHint}}" class="backup-status">{{backupHint}}</view>
+  </view>
+
+  <view class="danger card"><view class="section-title">重置本地数据</view><view class="danger__copy">这会删除当前设备里的设置和全部账本，无法撤销。建议先导出一份备份，再执行重置。</view><button class="danger-btn" bindtap="clearData"><text>清空所有本地数据</text></button></view>
+</view>
