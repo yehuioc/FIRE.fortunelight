@@ -40,39 +40,8 @@ def srt_time(value):
     return f"{hours:02}:{minutes:02}:{seconds:02},{milliseconds:03}"
 
 
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--ffmpeg", default="ffmpeg")
-    args = parser.parse_args()
-    story = json.loads((ROOT / "story.json").read_text(encoding="utf-8"))
+def build_music():
     count = RATE * DURATION
-    voice = np.zeros(count, dtype=np.float64)
-    captions, pacing = [], []
-
-    for i, scene in enumerate(story["scenes"]):
-        durations = [len(read_wave(WORK / f"voice-{i:02}-{j}.wav")[0]) / read_wave(WORK / f"voice-{i:02}-{j}.wav")[1]
-                     for j in range(len(scene["subtitle"]))]
-        gap, onset, margin = .14, .23, .30
-        available = scene["end"] - scene["start"] - onset - margin
-        speed = max(1.0, sum(durations) / (available - gap * (len(durations) - 1)))
-        assert speed < 1.30, (scene["id"], "Narration too dense", speed)
-        cursor = scene["start"] + onset
-        for j, caption in enumerate(scene["subtitle"]):
-            adjusted = WORK / f"voice-adjusted-{i:02}-{j}.wav"
-            subprocess.run([args.ffmpeg, "-hide_banner", "-loglevel", "error", "-y", "-i", str(WORK / f"voice-{i:02}-{j}.wav"),
-                            "-af", f"atempo={speed:.6f},highpass=f=90,lowpass=f=7800,afade=t=in:d=0.02,afade=t=out:st={max(.1, durations[j]/speed-.04):.6f}:d=0.04",
-                            "-ar", str(RATE), "-ac", "1", "-c:a", "pcm_s16le", str(adjusted)], check=True)
-            sound, _ = read_wave(adjusted)
-            peak = np.max(np.abs(sound))
-            if peak:
-                sound *= .49 / peak
-            start = round(cursor * RATE)
-            voice[start:start + len(sound)] += sound[:max(0, min(len(sound), count-start))]
-            end = cursor + len(sound) / RATE
-            captions.append({"start": round(cursor, 4), "end": round(end, 4), "text": caption})
-            cursor = end + gap
-        pacing.append({"scene": scene["id"], "tempo": round(speed, 4), "end": round(cursor-gap, 3)})
-
     # Original generative ambient bed: slow open chords, no samples or external music.
     music = np.zeros((count, 2), dtype=np.float64)
     chords = [([146.832, 220.0, 277.183, 329.628], 0),
@@ -106,6 +75,43 @@ def main():
         bell(at,hz)
     fade=np.minimum(1,np.arange(count)/RATE/1.2)*np.minimum(1,(DURATION-np.arange(count)/RATE)/1.2)
     music*=fade[:,None]
+    return music
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--ffmpeg", default="ffmpeg")
+    args = parser.parse_args()
+    story = json.loads((ROOT / "story.json").read_text(encoding="utf-8"))
+    count = RATE * DURATION
+    voice = np.zeros(count, dtype=np.float64)
+    captions, pacing = [], []
+
+    for i, scene in enumerate(story["scenes"]):
+        durations = [len(read_wave(WORK / f"voice-{i:02}-{j}.wav")[0]) / read_wave(WORK / f"voice-{i:02}-{j}.wav")[1]
+                     for j in range(len(scene["subtitle"]))]
+        gap, onset, margin = .14, .23, .30
+        available = scene["end"] - scene["start"] - onset - margin
+        speed = max(1.0, sum(durations) / (available - gap * (len(durations) - 1)))
+        assert speed < 1.30, (scene["id"], "Narration too dense", speed)
+        cursor = scene["start"] + onset
+        for j, caption in enumerate(scene["subtitle"]):
+            adjusted = WORK / f"voice-adjusted-{i:02}-{j}.wav"
+            subprocess.run([args.ffmpeg, "-hide_banner", "-loglevel", "error", "-y", "-i", str(WORK / f"voice-{i:02}-{j}.wav"),
+                            "-af", f"atempo={speed:.6f},highpass=f=90,lowpass=f=7800,afade=t=in:d=0.02,afade=t=out:st={max(.1, durations[j]/speed-.04):.6f}:d=0.04",
+                            "-ar", str(RATE), "-ac", "1", "-c:a", "pcm_s16le", str(adjusted)], check=True)
+            sound, _ = read_wave(adjusted)
+            peak = np.max(np.abs(sound))
+            if peak:
+                sound *= .49 / peak
+            start = round(cursor * RATE)
+            voice[start:start + len(sound)] += sound[:max(0, min(len(sound), count-start))]
+            end = cursor + len(sound) / RATE
+            captions.append({"start": round(cursor, 4), "end": round(end, 4), "text": caption})
+            cursor = end + gap
+        pacing.append({"scene": scene["id"], "tempo": round(speed, 4), "end": round(cursor-gap, 3)})
+
+    music = build_music()
     mix=music+voice[:,None]
     assert np.max(np.abs(mix)) < .98
     write_wave(WORK / "soundtrack-raw.wav", mix)

@@ -1,0 +1,12 @@
+{
+  "language": "ja",
+  "segments": [
+    {
+      "start": 0,
+      "end": 7.4,
+      "text": "いいところに来たね、先生。かつぼうもかくや、というところさ。"
+    }
+  ],
+  "source": "E:/GoogleDownload/ch0070_eventlogin_2.ogg",
+  "transcription_method": "Local Whisper small; phonetic Japanese prompt"
+}
