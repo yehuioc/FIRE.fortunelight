@@ -8,11 +8,20 @@ git_mode: independent
 
 把现有自由资源，按你选择的生活成本估计，翻译成可以自主支配的天数。每一格是一天；消费是用未来自由交换今天的价值。
 
-本仓库以 Python + 浏览器的本地应用为主线，当前发布为 **1.0.0**。微信小程序作为平台变体保留在 [variants/wechat](variants/wechat/README.md)，独立沿用 **0.6.2** 的产品版本。两者共享理念和计算边界，各自维护适合平台的交互与存储实现。
+本仓库以 Python + 浏览器的本地应用为主线，当前产品版本为 **1.0.0**，按 [MIT 许可证](LICENSE) 开源。微信小程序作为平台变体保留在 [variants/wechat](variants/wechat/README.md)，独立沿用 **0.6.2** 的产品版本。两者共享理念和计算边界，各自维护适合平台的交互与存储实现。
+
+[观看 60 秒产品演示](https://yehui-personal-space.chalky-beech-3411.chatgpt.site/work-fire-fortunelight.html#demo) · [使用指南](使用指南.md) · [微信平台变体](variants/wechat/README.md)
 
 ## 直接使用
 
-安装 Python 3.10 或更新版本，在项目目录运行：
+安装 Python 3.10 或更新版本，从本仓库 **Code → Download ZIP** 下载并解压，或执行：
+
+~~~bash
+git clone https://github.com/yehuioc/FIRE.fortunelight.git
+cd FIRE.fortunelight
+~~~
+
+在项目目录运行：
 
 ~~~powershell
 # Windows
@@ -68,9 +77,16 @@ Unix 将 Python 路径替换为 `.venv/bin/python`。浏览器可通过 `FORTUNE
 
 ## Git 与来源
 
-本目录是独立 Git 仓库，主分支为 main。迁移基线 commit 保留此前本地源码，随后提交为本地主线；本地 1.0.0 不冒充微信 0.6.2，也不补造不存在的旧版本 tag。外层 AgentV2 仓库只负责项目导航，不再跟踪这里的代码。
+公开仓库为 [yehuioc/FIRE.fortunelight](https://github.com/yehuioc/FIRE.fortunelight)，本目录是其独立 Git 工作区。默认分支 `main` 直接提供本地应用的可运行源码；产品介绍、使用文档、演示和后续通用能力优先围绕这条主线维护。
+
+- **本地主线**：根目录的 `backend/`、`frontend/`、`run.py` 与当前使用文档是主入口。产品版本按本地主线独立推进。
+- **微信变体**：`variants/wechat/` 是微信适配代码的唯一维护位置；平台 API、页面与存储改动在这里完成，独立编号和验证。它与主线处于同一个 `main` 提交图中，无需长期复制一套平行主分支。
+- **共同能力**：金额和自由天数语义、备份兼容与计算边界以根目录设计说明为共同依据。通用功能先在本地主线验证，再按微信平台条件选择适配；两端不要求同时发布，不承诺自动同步。
+- **历史档案**：`archive/` 与 `VERSIONS.md` 保留此前已公开的微信源码快照及恢复证据，只用于追溯；当前运行和开发从根目录或 `variants/wechat/` 进入。缺失历史仍按原状态记录，不补造旧版本。
+
+外层 AgentV2 仓库只负责项目导航，不再跟踪这里的代码。已有本地 `v1.0.0` 标签保留其原发布提交；开源与仓库整合的后续变化见 `main` 提交历史。
 
 微信参考源是用户提供的 `财富自由指南灯_微信小程序_v0.6.2.zip`，SHA-256：
 `f9e9e1b21d460817097aa8bd89f68db82e4bc60d5b5868799d5dff7f0124a5bd`。
 
-这是本地交付，没有创建 GitHub 远程仓库或公开发布。公开分发的许可证待权利人确认；当前不代替原始代码权利人作出授权。
+本项目代码与文档采用 MIT 许可证，完整授权条款见根目录 `LICENSE`。第三方依赖遵守各自许可证；演示制作涉及的外部模型、参考音频和字体不随源码分发，其权利不由本项目许可证代为授予。

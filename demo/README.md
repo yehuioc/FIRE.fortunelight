@@ -4,20 +4,22 @@
 
 ## 播放与使用
 
-主成片：[Fortune-Light-60s-1080p.mp4](output/Fortune-Light-60s-1080p.mp4)，存储路径为 `demo/output/Fortune-Light-60s-1080p.mp4`。规格为 60 秒、1920 × 1080、30 fps、H.264 / AAC，字幕直接写入画面，配有中文合成旁白和原创合成轻配乐。
+公开演示：[在作品页观看日语配音版](https://yehui-personal-space.chalky-beech-3411.chatgpt.site/work-fire-fortunelight.html#demo)，可直接播放与下载，无需运行制作环境。
+
+本机生成的主成片路径为 `demo/output/Fortune-Light-60s-1080p.mp4`。规格为 60 秒、1920 × 1080、30 fps、H.264 / AAC，字幕直接写入画面，配有中文合成旁白和原创合成轻配乐。`output/` 属于生成物，不随 Git 源码下载。
 
 同目录提供封面 `Fortune-Light-cover.png` 和独立字幕 `Fortune-Light-60s.zh.srt`。直接分享 MP4 即可，播放不依赖本地服务。
 
 ## GPT-SoVITS 中日配音
 
-已使用用户提供的“圣娅”权重和日语参考音频 `E:\GoogleDownload\ch0070_eventlogin_2.ogg`，制作中文、日文两个 60 秒配音版本。权重虽然位于 `v2ProPlus` 目录，运行时按文件内容识别为 **v4 LoRA**，并使用本机已有的匹配底模加载；没有修改安装目录里的权重或默认配置。
+已使用作者提供的权重和日语参考音频，制作中文、日文两个 60 秒配音版本。制作时的权重目录标注为 `v2ProPlus`，运行时按文件内容识别为 **v4 LoRA**，并使用匹配底模加载；没有修改安装目录里的权重或默认配置。仓库不包含这些模型、参考音频或其授权，重新制作时须自行提供可使用的材料。
 
 | 语言 | 纯人声，48 kHz / 24 bit / 单声道 | 带原配乐的视频预览 | 配音字幕 |
 | --- | --- | --- | --- |
 | 中文 | [中文 WAV](output/Fortune-Light-60s-GPTSoVITS-zh.wav) | [中文 MP4](output/Fortune-Light-60s-GPTSoVITS-zh.mp4) | [中文 SRT](output/Fortune-Light-60s-GPTSoVITS-zh.srt) |
 | 日文 | [日文 WAV](output/Fortune-Light-60s-GPTSoVITS-ja.wav) | [日文 MP4](output/Fortune-Light-60s-GPTSoVITS-ja.mp4) | [日文 SRT](output/Fortune-Light-60s-GPTSoVITS-ja.srt) |
 
-具体存储目录：`E:\agentv2\workbench\projects\fortune\demo\output\`；文件名见上表链接。两版视频沿用原有中文界面和画面内中文字幕，日文 SRT 作为独立文件提供，画面没有进行日文化重制。原始演示文件继续保留。
+具体存储目录为本仓库的 `demo/output/`，文件名见上表；这些链接在完成本机生成后可用。两版视频沿用原有中文界面和画面内中文字幕，日文 SRT 作为独立文件提供，画面没有进行日文化重制。
 
 本次在 RTX 4070 SUPER 上，以半精度、逐句、单条推理运行：PyTorch 峰值预留为 **2,392 MiB（约 2.34 GiB）**，张量分配峰值为 2,211 MiB。完整合成运行中，整卡占用从 5,793 MiB 到观测峰值 9,224 MiB，增量约 **3.35 GiB**；此增量包含运行开销，也可能受其他程序占用变化影响。脚本将 PyTorch 分配器预算限定在 5 GiB，为用户要求的 6 GB 预算留出余量。任务完成后推理进程退出，显存释放。
 
@@ -28,11 +30,12 @@
 在项目根目录重新合成，可使用：
 
 ~~~powershell
-& 'E:\GPT-SoVITS-v2pro-20250604 (2)\GPT-SoVITS-v2pro-20250604\runtime\python.exe' -B -u demo/narrate_gptsovits.py --gsv-root 'E:\GPT-SoVITS-v2pro-20250604 (2)\GPT-SoVITS-v2pro-20250604' --reference 'E:\GoogleDownload\ch0070_eventlogin_2.ogg' --prompt-json demo/reference.ja.json
-& 'E:\Python312\python.exe' -B demo/compose_gptsovits.py --ffmpeg 'E:\Python312\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe' --manifest demo/.work/gptsovits/synthesis-selected.json
+$gsvRoot = '你的 GPT-SoVITS 安装目录'
+& "$gsvRoot/runtime/python.exe" -B -u demo/narrate_gptsovits.py --gsv-root $gsvRoot --gpt-weight '你的 GPT 权重文件' --sovits-weight '你的 SoVITS 权重文件' --reference '你的参考音频文件' --prompt-json demo/reference.ja.json
+python -B demo/compose_gptsovits.py --ffmpeg '你的 FFmpeg 7+ 可执行文件' --manifest demo/.work/gptsovits/synthesis-selected.json
 ~~~
 
-第二条命令重建本次已选定的声音；若使用新一轮合成结果，应将 `--manifest` 改为对应的 `synthesis-<seed>.json`。这两个脚本不会训练模型或上传参考音频。
+先把 `reference.ja.json` 中的台词改成所用参考音频的准确台词。第二条命令重建本次已选定的声音；新下载的源码没有私有 `synthesis-selected.json`，使用新一轮合成结果时应将 `--manifest` 改为第一条命令生成的 `synthesis-<seed>.json`。这两个脚本不会训练模型或上传参考音频。
 
 影片采用合成账本，未拍摄或使用个人真实收支。录屏来自本地 v1.0.0 的真实操作：手动日均成本 ¥100、净自由资源 ¥30,000，对应 300 天；新增财富 ¥3,000 后为 330 天；生活消耗 ¥300 后为 327 天。镜头保留实际点亮、熄灭、消费分析和完整账本，不用动画改写计算结果。日均成本是本例的明确假设，不是对未来生活成本的保证。
 
