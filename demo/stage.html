@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="zh-CN"><meta charset="utf-8"><title>Fortune Light · 60 秒演示</title>
+<style>html,body{margin:0;background:#080d15;overflow:hidden}canvas{display:block;width:1920px;height:1080px}</style>
+<canvas id="stage" width="1920" height="1080"></canvas>
+<script>
+/* Editorial animation. Product pictures and clips are captured from the real app. */
+const W=1920,H=1080,canvas=document.querySelector('canvas'),out=canvas.getContext('2d');
+const surfaces=[document.createElement('canvas'),document.createElement('canvas')];
+surfaces.forEach(c=>{c.width=W;c.height=H});
+let story,media,images={},frameCache=new Map(),captionTiming=[];
+const C={bg:'#080d15',fg:'#f2efe7',muted:'#9ca7b7',gold:'#e6bd76',gold2:'#a98046',line:'#29313d',panel:'#131a23'};
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const ease=x=>{x=clamp(x);return 1-Math.pow(1-x,3)};
+const smooth=x=>{x=clamp(x);return x*x*(3-2*x)};
+function rect(ctx,x,y,w,h,r=0,fill,stroke){ctx.beginPath();ctx.roundRect(x,y,w,h,r);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=1.5;ctx.stroke()}}
+function text(ctx,s,x,y,size=40,color=C.fg,opts={}){ctx.save();ctx.fillStyle=color;ctx.font=`${opts.weight||400} ${size}px ${opts.serif?'"SimSun",serif':opts.numeric?'"Bahnschrift","Arial",sans-serif':'"Microsoft YaHei",sans-serif'}`;ctx.textAlign=opts.align||'left';ctx.textBaseline='alphabetic';if(opts.spacing)ctx.letterSpacing=opts.spacing+'px';ctx.fillText(s,x,y);ctx.restore()}
+function line(ctx,x1,y1,x2,y2,color=C.line,width=1){ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.strokeStyle=color;ctx.lineWidth=width;ctx.stroke()}
+function logo(ctx,x,y,size,alpha=1){ctx.save();ctx.globalAlpha*=alpha;ctx.translate(x,y);ctx.rotate(Math.PI/4);ctx.strokeStyle=C.gold;ctx.lineWidth=size/22;ctx.strokeRect(-size/2,-size/2,size,size);ctx.fillStyle=C.gold;ctx.fillRect(-size*.20,-size*.20,size*.40,size*.40);ctx.restore()}
+function background(ctx,t,warm=false){
+  ctx.fillStyle=warm?'#100f11':C.bg;ctx.fillRect(0,0,W,H);
+  const glow=ctx.createRadialGradient(1470+Math.sin(t*.07)*120,370,10,1470,420,1050);
+  glow.addColorStop(0,warm?'#7c57391e':'#83633b1f');glow.addColorStop(1,'#080d1500');ctx.fillStyle=glow;ctx.fillRect(0,0,W,H);
+  const blue=ctx.createRadialGradient(230,960,10,230,960,950);blue.addColorStop(0,'#203d6320');blue.addColorStop(1,'#080d1500');ctx.fillStyle=blue;ctx.fillRect(0,0,W,H);
+  ctx.save();ctx.globalAlpha=.13;
+  for(let r=0;r<15;r++)for(let c=0;c<31;c++){
+    const x=30+c*64,y=40+r*72;ctx.fillStyle=(c+r)%11===0?C.gold:'#47576a';ctx.fillRect(x,y,1.6,1.6);
+  }ctx.restore();
+}
+function header(ctx,chapter='',progress=0){
+  logo(ctx,116,81,24);text(ctx,'FORTUNE LIGHT',153,92,24,C.fg,{numeric:true,spacing:5});
+  if(chapter)text(ctx,chapter,1800,91,24,C.muted,{align:'right'});
+  line(ctx,104,122,1816,122,'#ffffff12');
+  line(ctx,104,1048,1816,1048,'#ffffff14',2);line(ctx,104,1048,104+1712*clamp(progress),1048,C.gold,2);
+}
+function pill(ctx,label,x,y,w,color=C.gold){rect(ctx,x,y,w,43,21,'#e6bd760d','#e6bd7629');text(ctx,label,x+w/2,y+29,21,color,{align:'center'});}
+function dayField(ctx,x,y,cols,rows,size,lit,t,opts={}){
+  const gap=opts.gap||6;
+  const originalAlpha=ctx.globalAlpha;
+  for(let i=0;i<cols*rows;i++){
+    const col=i%cols,row=Math.floor(i/cols),px=x+col*(size+gap),py=y+row*(size+gap);
+    const on=i<lit;
+    ctx.globalAlpha=originalAlpha*(on?(opts.alpha??.82):.23);
+    ctx.fillStyle=on?C.gold:'#4a5565';ctx.fillRect(px,py,size,size);
+    if(on&&i>=Math.floor(lit)-3){ctx.save();ctx.globalAlpha=.22+.1*Math.sin(t*4);ctx.shadowColor=C.gold;ctx.shadowBlur=20;ctx.fillRect(px,py,size,size);ctx.restore()}
+  }ctx.globalAlpha=originalAlpha;
+}
+function imageFit(ctx,img,x,y,w,h,mode='contain',anchor=.5){
+  if(!img)return;const iw=img.naturalWidth||img.width,ih=img.naturalHeight||img.height;
+  const scale=(mode==='cover'?Math.max:Math.min)(w/iw,h/ih),dw=iw*scale,dh=ih*scale;
+  ctx.drawImage(img,x+(w-dw)/2,y+(h-dh)*anchor,dw,dh);
+}
+function productWindow(ctx,img,x,y,w,h,{label='FORTUNE LIGHT · 本地账本',zoom=1,anchor=.5}={}){
+  ctx.save();ctx.shadowColor='#00000065';ctx.shadowBlur=56;ctx.shadowOffsetY=22;rect(ctx,x,y,w,h+46,18,'#10161f');ctx.restore();
+  rect(ctx,x,y,w,h+46,18,null,'#56616e55');
+  for(let i=0;i<3;i++){ctx.beginPath();ctx.arc(x+24+i*18,y+23,4,0,Math.PI*2);ctx.fillStyle=['#837363','#666f77','#6c8079'][i];ctx.fill()}
+  text(ctx,label,x+w/2,y+30,18,C.muted,{align:'center'});
+  ctx.save();ctx.beginPath();ctx.roundRect(x+1,y+46,w-2,h-1,[0,0,17,17]);ctx.clip();
+  ctx.fillStyle='#0b1016';ctx.fillRect(x,y+46,w,h);
+  ctx.translate(x+w/2,y+46+h/2);ctx.scale(zoom,zoom);ctx.translate(-x-w/2,-y-46-h/2);
+  imageFit(ctx,img,x,y+46,w,h,'contain',anchor);ctx.restore();
+}
+function moveIn(ctx,t,delay,fn){const p=ease((t-delay)/.7);ctx.save();ctx.globalAlpha=p;ctx.translate(0,(1-p)*28);fn();ctx.restore()}
+function sceneQuestion(ctx,t,global){
+  background(ctx,global);header(ctx,'把钱，看成时间',global/60);
+  const enter=ease(t/.9);ctx.save();ctx.globalAlpha=enter;ctx.translate(0,(1-enter)*25);
+  if(t<3.2){
+    const a=1-smooth((t-2.8)/.4);ctx.globalAlpha*=a;
+    text(ctx,'钱，记下了。',122,408,112,C.fg,{serif:true});
+    text(ctx,'但生活的选择呢？',128,516,56,C.muted,{serif:true});
+    text(ctx,'¥ 300',128,684,83,C.muted,{numeric:true});
+    text(ctx,'一笔支出，只有一个金额吗',130,744,25,C.muted);
+  }else{
+    ctx.globalAlpha*=ease((t-3.2)/.7);
+    text(ctx,'还能够自由生活',122,394,86,C.fg,{serif:true});
+    text(ctx,'多少天？',120,533,132,C.gold,{serif:true});
+    line(ctx,128,594,716,594,'#e6bd7640');
+    text(ctx,'给每一笔钱，多一个时间的视角。',130,663,32,C.muted);
+  }ctx.restore();
+  ctx.save();ctx.translate(1185,276);ctx.rotate(-.045+Math.sin(t*.15)*.004);
+  dayField(ctx,0,0,23,23,15,Math.floor(300*ease((t-.6)/3)),t,{gap:7,alpha:.68});
+  ctx.restore();
+}
+function scenePromise(ctx,t,global){
+  background(ctx,global);header(ctx,'财富自由指南灯',global/60);
+  ctx.save();ctx.globalAlpha=.16;dayField(ctx,80,790,78,4,12,312,global,{gap:11});ctx.restore();
+  const pulse=1+.022*Math.sin(t*1.5);logo(ctx,960,303,66*pulse);
+  moveIn(ctx,t,.2,()=>text(ctx,'把钱，翻译成时间。',960,505,111,C.fg,{align:'center',serif:true}));
+  moveIn(ctx,t,.65,()=>text(ctx,'每一格，都是一天。',960,605,42,C.gold,{align:'center'}));
+  moveIn(ctx,t,1.2,()=>text(ctx,'不只看见收支，也看见自己的长期选择权。',960,688,32,C.muted,{align:'center'}));
+}
+function sceneBaseline(ctx,t,global){
+  background(ctx,global);header(ctx,'01  /  建立一个可用的估计',global/60);
+  moveIn(ctx,t,.1,()=>text(ctx,'先给生活',120,279,68,C.fg,{serif:true}));
+  moveIn(ctx,t,.22,()=>text(ctx,'一个真实的估计。',120,368,68,C.fg,{serif:true}));
+  moveIn(ctx,t,.6,()=>{text(ctx,'可用自由资源',124,452,25,C.muted);text(ctx,'¥30,000',120,539,81,C.fg,{numeric:true});
+    text(ctx,'÷  日均生活成本 ¥100',126,603,31,C.muted);line(ctx,124,646,804,646,'#e6bd7638');});
+  moveIn(ctx,t,1.2,()=>{text(ctx,'300',115,846,180,C.gold,{numeric:true});text(ctx,'天选择权',472,830,45,C.fg);});
+  ctx.save();const p=ease((t-.3)/.85);ctx.globalAlpha=p;ctx.translate((1-p)*35,0);
+  text(ctx,'你的自由概览',1390,214,24,C.muted,{align:'center'});
+  ctx.save();ctx.shadowColor='#00000075';ctx.shadowBlur=60;ctx.shadowOffsetY=22;
+  imageFit(ctx,images['overview-300'],1058,245,670,652);ctx.restore();ctx.restore();
+}
+function sceneTransaction(ctx,t,global,income,frame){
+  background(ctx,global,!income);header(ctx,income?'02  /  记录新增财富':'03  /  看见选择的代价',global/60);
+  const name=income?'新增财富':'生活消耗';
+  moveIn(ctx,t,.1,()=>{text(ctx,name,114,271,59,C.fg,{serif:true});text(ctx,income?'¥3,000':'¥300',108,388,100,C.fg,{numeric:true});});
+  const reveal=ease((t-1.5)/.9);ctx.save();ctx.globalAlpha=reveal;
+  text(ctx,income?'+30':'−3',108,598,159,income?C.gold:'#c7b79a',{numeric:true});text(ctx,'天',income?402:370,589,54,C.fg);
+  text(ctx,income?'300 天  →  330 天':'330 天  →  327 天',117,666,35,C.muted,{numeric:true});
+  dayField(ctx,119,722,income?15:3,income?2:1,14,income?Math.floor(30*ease((t-1.6)/5)):Math.max(0,3-Math.floor(clamp((t-2)/5)*3)),t,{gap:10});
+  ctx.restore();
+  moveIn(ctx,t,2.5,()=>{
+    text(ctx,income?'把时间，一天一天点亮。':'消费不是惩罚。',117,837,31,C.fg);
+    if(!income)text(ctx,'值不值，由你决定。',117,885,28,C.muted);
+  });
+  const shift=(1-ease(t/.7))*24;
+  productWindow(ctx,frame,724+shift,160,1084,762);
+  const completed=smooth((t-(income?9:8))/.5);
+  if(completed>0){ctx.save();ctx.globalAlpha=completed;productWindow(ctx,images[income?'overview-330':'overview-327'],724,160,1084,762,{label:'现在，可用的自由时间'});ctx.restore();}
+  pill(ctx,income?'收入，也是一段自由时间':'未来自由，交换今天的价值',income?123:117,177,income?352:365);
+}
+function sceneReview(ctx,t,global){
+  background(ctx,global);header(ctx,'04  /  给下一次选择留依据',global/60);
+  moveIn(ctx,t,.05,()=>{text(ctx,'让下一次选择，',112,290,63,C.fg,{serif:true});text(ctx,'更有依据。',112,379,76,C.gold,{serif:true});});
+  const labels=[['01','分类看去向'],['02','趋势看变化'],['03','账本可修正']];
+  labels.forEach(([n,label],i)=>moveIn(ctx,t,.6+i*.5,()=>{text(ctx,n,119,531+i*94,27,C.gold,{numeric:true});text(ctx,label,187,535+i*94,35,C.fg);line(ctx,118,562+i*94,614,562+i*94,'#ffffff12')}));
+  const switchAt=4.7,blend=smooth((t-switchAt)/.6);
+  ctx.save();ctx.globalAlpha=1-blend;productWindow(ctx,images.analysis,724,160,1084,762,{label:'消费分析 · 周 / 月 / 年',zoom:1+.012*clamp(t/switchAt)});ctx.restore();
+  if(blend>0){ctx.save();ctx.globalAlpha=blend;productWindow(ctx,images.history,724,160,1084,762,{label:'完整账本 · 可搜索，可修正',zoom:1+.008*clamp((t-switchAt)/4)});ctx.restore();}
+  moveIn(ctx,t,2,()=>text(ctx,'看清钱花到哪里。',118,839,30,C.muted));
+}
+function sceneClosing(ctx,t,global){
+  background(ctx,global);header(ctx,'从一笔真实记录开始',global/60);
+  const gold=ctx.createRadialGradient(960,400,10,960,400,600);gold.addColorStop(0,'#e6bd7610');gold.addColorStop(1,'#e6bd7600');ctx.fillStyle=gold;ctx.fillRect(0,0,W,H);
+  logo(ctx,960,270,62);
+  moveIn(ctx,t,.1,()=>text(ctx,'看见自由。保留选择。',960,462,104,C.fg,{serif:true,align:'center'}));
+  moveIn(ctx,t,.5,()=>text(ctx,'FORTUNE LIGHT',960,576,43,C.gold,{numeric:true,spacing:12,align:'center'}));
+  moveIn(ctx,t,.75,()=>text(ctx,'财富自由指南灯',960,644,30,C.muted,{align:'center',spacing:5}));
+  moveIn(ctx,t,1.15,()=>{pill(ctx,'本地运行',701,710,166);pill(ctx,'完整备份',887,710,166);pill(ctx,'数据由你保管',1073,710,206);});
+  moveIn(ctx,t,1.5,()=>text(ctx,'让每笔钱对长期选择权的影响，变得可见。',960,862,37,C.fg,{align:'center'}));
+}
+function subtitle(ctx,t){
+  const line=captionTiming.find(c=>t>=c.start&&t<c.end);if(!line)return;
+  // This exact line already appears as the larger closing statement.
+  if(t>=52&&line.text===story.scenes[6].subtitle[1])return;
+  const opacity=Math.min(ease((t-line.start)/.14),ease((line.end-t)/.15));
+  ctx.save();ctx.globalAlpha=opacity;ctx.font='400 34px "Microsoft YaHei",sans-serif';const width=ctx.measureText(line.text).width;
+  rect(ctx,(W-width)/2-25,969,width+50,57,8,'#070b11df');
+  text(ctx,line.text,960,1010,34,'#f6f3ed',{align:'center'});ctx.restore();
+}
+function footnote(ctx,index){if(index>=2&&index<=5)text(ctx,'示例：手动日均成本 ¥100 · 合成账本',120,944,19,'#778397');}
+async function frame(name,time){
+  const index=clamp(Math.floor(Math.max(0,time)*30)+1,1,media[name].frames);
+  const key=name+'-'+String(index).padStart(4,'0');
+  if(!frameCache.has(key)){const im=new Image();im.src='.work/frames/'+key+'.jpg';await im.decode();frameCache.set(key,im);if(frameCache.size>8)frameCache.delete(frameCache.keys().next().value)}
+  return frameCache.get(key);
+}
+async function drawScene(ctx,index,local,global){
+  ctx.globalAlpha=1;
+  switch(index){
+    case 0:sceneQuestion(ctx,local,global);break;
+    case 1:scenePromise(ctx,local,global);break;
+    case 2:sceneBaseline(ctx,local,global);break;
+    case 3:sceneTransaction(ctx,local,global,true,await frame('income',local-.2));break;
+    case 4:sceneTransaction(ctx,local,global,false,await frame('expense',local-.2));break;
+    case 5:sceneReview(ctx,local,global);break;
+    case 6:sceneClosing(ctx,local,global);break;
+  }
+  footnote(ctx,index);
+}
+window.ready=(async()=>{
+  [story,media,captionTiming]=await Promise.all(['story.json','.work/media.json','.work/captions.json'].map(u=>fetch(u).then(r=>r.json())));
+  const list=['home','home-paper','overview-300','overview-330','overview-327','life-300','analysis','history','trend'];
+  await Promise.all(list.map(async name=>{const im=new Image();im.src='assets/'+name+'.png';await im.decode();images[name]=im}));
+  await document.fonts.ready;return true;
+})();
+window.renderAt=async t=>{
+  await window.ready;t=clamp(t,0,59.999);let index=story.scenes.findIndex(s=>t>=s.start&&t<s.end);if(index<0)index=6;
+  const local=t-story.scenes[index].start;
+  await drawScene(surfaces[0].getContext('2d'),index,local,t);
+  out.globalAlpha=1;out.drawImage(surfaces[0],0,0);
+  if(index>0&&local<.45){await drawScene(surfaces[1].getContext('2d'),index-1,story.scenes[index-1].end-story.scenes[index-1].start-.001,t);out.globalAlpha=1-smooth(local/.45);out.drawImage(surfaces[1],0,0);out.globalAlpha=1;}
+  subtitle(out,t);
+  if(t<.45){out.fillStyle=`rgba(0,0,0,${1-smooth(t/.45)})`;out.fillRect(0,0,W,H)}
+  if(t>59.6){out.fillStyle=`rgba(0,0,0,${smooth((t-59.6)/.4)})`;out.fillRect(0,0,W,H)}
+  return {time:t,scene:story.scenes[index].id};
+};
+</script></html>
