@@ -17,6 +17,9 @@ This file is the authoritative status index for source snapshots currently recov
 | v0.5.0 | Complete | `archive/all-versions/` | Included in verified historical Zstandard archive |
 | v0.5.1 | **Pending exact source** | — | Original release identity is known, but exact source bytes have not yet been completely archived here |
 | v0.5.2 | Complete | `archive/v0.5.2/` | 11/11 Git blobs match local source parts; reconstructed archive SHA-256 verified |
+| v0.6.0 | Not separately archived | — | Exists in the local development Git history, but no independent GitHub source snapshot is published here |
+| v0.6.1 | Not separately archived | — | Exists in the local development Git history, but no independent GitHub source snapshot is published here |
+| v0.6.2 | **Complete** | `archive/v0.6.2/` | 15/15 Git blobs match local source parts byte-for-byte; compact runtime archive is restorable |
 
 ## Historical archive identity
 
@@ -36,8 +39,28 @@ Compact decoded Zstandard archive SHA-256:
 
 `59c9aebcf211576c8daad233a3ee92a956848987435e210d5ebc2a867c250b7e`
 
+## v0.6.2 identities
+
+Official release ZIP SHA-256:
+
+`f9e9e1b21d460817097aa8bd89f68db82e4bc60d5b5868799d5dff7f0124a5bd`
+
+Compact runtime Zstandard archive SHA-256:
+
+`b5c863cb584e9681b5618520e190bdb8632317a3ae66c24d9c03e615b23c2204`
+
+Local development Git bundle SHA-256:
+
+`0ac1ea0eb2af6ba005c9b4a4f66c334584478d32a23f0bcc1511a676a390fcf4`
+
+Local v0.6.2 commit:
+
+`b51bc8433de4810544bab25efc8a68b3bbce10f5`
+
+The GitHub archive branch is not presented as the original local development commit history; it stores independently verified restorable snapshots.
+
 ## v0.5.1 boundary
 
 The old `archive/v0.5.1-v0.5.2/` directory is a partial transfer and is not a valid recovery source.
 
-v0.5.1 will only be marked complete after the exact original v0.5.1 release ZIP or original Git bundle is available for byte-level reconstruction and verification. No inferred or reverse-engineered snapshot should be presented as the original release.
+v0.5.1 remains intentionally unresolved rather than being reverse-engineered from a later version.
